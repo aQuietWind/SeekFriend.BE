@@ -83,10 +83,10 @@
             <artifactId>Util</artifactId>
         </dependency>
         <!--        该项目的Config依赖-->
-        <dependency>
-            <groupId>com.seek.friend</groupId>
-            <artifactId>Config</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.seek.friend</groupId>-->
+<!--            <artifactId>Config</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
