@@ -1,0 +1,105 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 4MB               #这个代表最大的单个文件大小
+      max-request-size: 16MB           #这个代表最大的单次请求传输的数据大小（应对一次传输数个文件）
+  #es的连接地址
+  elasticsearch:
+    uris: http://127.0.0.1:9200
+    username:
+    password:
+    connection-timeout: 10s
+  cloud:
+    #sentinel的配置
+    sentinel:
+      transport:
+        #sentinel的地址
+        dashboard: 127.0.0.1:8090
+      #开启web上下文聚合，进行全服务统一限制规则
+      web-context-unify: false
+  data:
+  #redis的地址
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+    mongodb:
+      # 连接地址，集群填写多个逗号分隔
+      uri: mongodb://127.0.0.1:27017/?authSource=admin
+#  Mybatsi的配置
+mybatis:
+  configuration:
+    #开启下划线转驼峰
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#  Feign的配置
+feign:
+  sentinel:
+    #开启Feign整合Sentinel
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 1000
+        readTimeout: 3000
+        #开启基础重试（注意：默认只重试1次，且只针对GET请求）
+        retryer: feign.Retryer.Default
+
+# #  seata设置
+seata:
+  #设置模式为AT模式
+  data-source-proxy-mode: AT
+  register:
+    #类型
+    type: nacos
+    nacos:
+      #nacos服务地点
+      server-addr: 127.0.0.1:8848
+      #命名空间，可为空
+      namespace: ""
+      #服务组名称
+      group: SEATA_GROUP
+      #服务名称
+      application: seata-server
+      #事务组
+  tx-server-group: default_tx_group
+  service:
+    vgroup-mapping:     #与事务组的映射关系
+      #seata集群名
+      default_tx_group: default   
+    default:
+      #seata地址
+      grouplist: 127.0.0.1:8091     
+
+# rocketmq的相关配置
+rocketmq:
+  # namesrv地址，多个用分号隔开 127.0.0.1:9876;127.0.0.2:9876
+  name-server: 127.0.0.1:9876
+  producer:
+    # 生产者分组
+    group: seek-friend-producer-group
+    # 发送超时，单位毫秒
+    send-message-timeout: 3000
+    # 同步发送失败重试次数，默认2，总共 1+2=3次发送
+    retry-times-when-send-failed: 2
+    # 异步发送失败重试次数，默认2
+    retry-times-when-send-async-failed: 2
+
+
+# langchain4j的相关配置
+langchain4j:
+  ollama:
+    chat‑model:
+      base‑url: http://127.0.0.1:11434
+      model‑name: qwen3.5:4b
+      temperature: 0.8
+      timeout: 180s
+      connect‑timeout: 20s
+      log‑requests: true
+      log‑responses: true
+    streaming‑chat‑model:
+      base‑url: http://127.0.0.1:11434
+      model‑name: qwen3.5:4b
+      temperature: 0.2
+      timeout: 180s
