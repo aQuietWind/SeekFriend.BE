@@ -44,6 +44,6 @@ public class OPTUtil {
         if ( originOpt== null) throw new BizException(ErrorCodeEnum.OPT_NOT_SURVIVE);
         if (!originOpt.equals(opt)) throw new BizException(ErrorCodeEnum.OPT_NOT_SAME);
         //如果删除验证码失败，则拒绝
-        if (!redisUtil.delete(key,null)) throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
+        if (!redisUtil.delete(key,id)) throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
     }
 }

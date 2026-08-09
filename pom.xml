@@ -186,6 +186,7 @@
         <module>ServiceObject</module>
         <module>ConfigObject</module>
         <module>Config</module>
+        <module>MQUtli</module>
     </modules>
 
 

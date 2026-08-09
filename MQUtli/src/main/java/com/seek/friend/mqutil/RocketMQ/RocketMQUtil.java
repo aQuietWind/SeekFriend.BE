@@ -1,4 +1,4 @@
-package com.seek.friend.util.RocketMQ;
+package com.seek.friend.mqutil.RocketMQ;
 
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

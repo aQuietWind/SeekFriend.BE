@@ -7,21 +7,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="AiChat" />
-        <module name="UserChat" />
+        <module name="UserFriend" />
+        <module name="MQUtli" />
         <module name="User" />
         <module name="AiFriend" />
-        <module name="Friend" />
         <module name="Report" />
         <module name="Config" />
-        <module name="Gateway" />
-        <module name="ServiceObject" />
         <module name="Util" />
         <module name="Admin" />
+        <module name="AiChat" />
+        <module name="UserChat" />
+        <module name="Gateway" />
+        <module name="ServiceObject" />
         <module name="ConfigObject" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="21" />
+    <bytecodeTargetLevel target="21">
+      <module name="Friend" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -32,10 +35,12 @@
       <module name="ConfigObject" options="-parameters" />
       <module name="Friend" options="-parameters" />
       <module name="Gateway" options="-parameters" />
+      <module name="MQUtli" options="-parameters" />
       <module name="Report" options="-parameters" />
       <module name="ServiceObject" options="-parameters" />
       <module name="User" options="-parameters" />
       <module name="UserChat" options="-parameters" />
+      <module name="UserFriend" options="-parameters" />
       <module name="Util" options="-parameters" />
     </option>
   </component>

@@ -59,16 +59,8 @@
             <artifactId>Util</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.apache.rocketmq</groupId>
-                    <artifactId>rocketmq-spring-boot-starter</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.springframework.data</groupId>
                     <artifactId>spring-data-elasticsearch</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

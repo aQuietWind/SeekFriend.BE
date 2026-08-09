@@ -5,6 +5,7 @@ import com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig;
 import com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserTopic;
 import com.seek.friend.config.NacosConfig.User.UserParamsRulesConfig;
 import com.seek.friend.config.NacosConfig.User.UserRedisKeyConfig;
+import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
 import com.seek.friend.serviceobject.User.UserDTO;
 import com.seek.friend.user.Caffeine.PhoneCaffeine;
 import com.seek.friend.user.Caffeine.UserCaffeine;
@@ -16,7 +17,6 @@ import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.FileUtil.FileSave;
 import com.seek.friend.util.OPT.OPTUtil;
 import com.seek.friend.util.Redis.RedisUtil;
-import com.seek.friend.util.RocketMQ.RocketMQUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public  UserDTO getUserSelfInfo(){
         long userId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         //直接返回mysql最新数据,避免用户自身的一致性问题
-        return userMapper.getUserDetailInfo(userId);
+        return getUserDetailInfo(userId);
     }
 
 
@@ -149,6 +149,7 @@ public class UserServiceImpl implements UserService {
         //检查冷却
         redisUtil.checkCooldown(userRedisKeyConfig.getUpdateInfoCooldown(),userId);
         userDTO.setUserId(userId);
+        //更新信息
         quickUpdateUser(k->userMapper.updateUserInfo(userDTO),userId);
     }
 
@@ -196,7 +197,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void quickDeleteHeaderImage(String addr){
-        rocketMQUtil.send(userTopic.getTopicName(),userTopic.getDeleteFile().getTag(),Paths.get(userParamsRulesConfig.getHeaderImageDest(),addr));
+        rocketMQUtil.send(userTopic.getTopicName(),userTopic.getDeleteFile().getTag(),Paths.get(userParamsRulesConfig.getHeaderImageDest(),addr).toString());
     }
 
 

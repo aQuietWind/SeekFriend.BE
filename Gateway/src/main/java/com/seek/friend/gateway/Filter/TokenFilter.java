@@ -11,6 +11,7 @@ import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.JWT.JWTUtil;
 import com.seek.friend.util.JWT.TokenCheckResult;
 import com.seek.friend.util.JWT.TokenUtil;
+import com.seek.friend.util.Redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -40,17 +41,18 @@ public class TokenFilter implements GlobalFilter {
     private final HashMap<String,String> jwtHeaders=new HashMap<>();
     //字节码化的Result
     private final static byte[] errorBytes = new Gson().toJson(Result.error(ErrorCodeEnum.UNAUTHORIZED)).getBytes();
-    private final TokenUtil tokenUtil;
+    private final RedisUtil redisUtil;
 
     // 构造器注入
     @Autowired
-    public TokenFilter(JWTConfig jwtConfig, GatewayRequestPathConfig gatewayRequestPathConfig, CommonRedisKeyConfig commonRedisKeyConfig, TokenUtil tokenUtil) {
+    public TokenFilter(JWTConfig jwtConfig, GatewayRequestPathConfig gatewayRequestPathConfig
+            , CommonRedisKeyConfig commonRedisKeyConfig, RedisUtil redisUtil) {
         this.jwtConfig = jwtConfig;
         this.gatewayRequestPathConfig = gatewayRequestPathConfig;
         this.commonRedisKeyConfig = commonRedisKeyConfig;
-        this.tokenUtil = tokenUtil;
         //初始化角色的token标识列表
         for (JWTRoleData jwtData : jwtConfig.getAllJWTData()) jwtHeaders.put(jwtData.getHeaderSign(), jwtData.getSecretKey());
+        this.redisUtil = redisUtil;
     }
 
 
@@ -98,7 +100,7 @@ public class TokenFilter implements GlobalFilter {
         }
         if (result.getResultId()==JWTUtil.FailResult)return JWTUtil.FailResult;
         //检验redis是否存在该token
-        if(!tokenUtil.checkTokenIsExist(commonRedisKeyConfig.getTokenStore(),result.getResultId(), result.getToken())) return JWTUtil.FailResult;
+        if(!redisUtil.zSetXIsExistByScore(commonRedisKeyConfig.getTokenStore(),result.getResultId(), result.getToken())) return JWTUtil.FailResult;
         return result.getResultId();
     }
 
@@ -109,9 +111,9 @@ public class TokenFilter implements GlobalFilter {
         ServerHttpRequest newReq = request.mutate()
                 .headers(headers -> {
                     // 清空客户端伪造的同名header
-                    headers.remove(jwtConfig.getGlobal().getRequestHeaderTokenName());
+                    headers.remove(jwtConfig.getGlobal().getRequestHeaderTokenIdName());
                     // 新增，此时列表只有一条
-                    headers.add(jwtConfig.getGlobal().getRequestHeaderTokenName(), String.valueOf(ownId));
+                    headers.add(jwtConfig.getGlobal().getRequestHeaderTokenIdName(), String.valueOf(ownId));
                 })
                 .build();
         //放入id

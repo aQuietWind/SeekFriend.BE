@@ -12,11 +12,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.stereotype.Component;
 
+//不能被Gateway引入，否则所持有的特殊类会导致冲突报错
 public class TokenUtil {
     private static DefaultRedisScript<Boolean> tokenAddScript;
 
@@ -50,7 +49,8 @@ public class TokenUtil {
 
     //统一进行token的获取与Redis存储
     //发放登录信息
-    public void getAndRecordToken(Long tokenId, HttpServletResponse response, JWTRoleData jwtRoleData, JWTGlobalData  jwtGlobalData, RedisKeyData key){
+    public void getAndRecordToken(Long tokenId, HttpServletResponse response, JWTRoleData jwtRoleData
+            , JWTGlobalData  jwtGlobalData, RedisKeyData key){
         if (tokenId==null) throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
         //获取token，并且放在请求头上
         String token=getToken(tokenId, response,jwtRoleData,jwtGlobalData);
