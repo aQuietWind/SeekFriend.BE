@@ -7,12 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    public UserDTO getUserDetailMessage(long userId);
+    public UserDTO getUserDetailInfo(long userId);
     public boolean updateUserPassword(String phoneNumber,String newPassword);
     public boolean updateUserHeader(long userId, String addr,String oldAddr);
-    public boolean updateUserMessage(UserDTO userDTO);
-    public boolean increaseOrderAmount(long userId);
-    public List<UserDTO> getUsersSimpleMessage(List<Long> userIds);
+    public boolean updateUserInfo(UserDTO userDTO);
+    public List<UserDTO> getUsersSimpleInfo(List<Long> userIds);
     public String getPhoneNumber(long userId);
     public boolean deleteUser(long userId);
     public String getHeaderPath(long userId);

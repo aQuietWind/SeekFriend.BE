@@ -21,7 +21,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,7 +61,8 @@ public class UserServiceImpl implements UserService {
         this.rocketMQUtil = rocketMQUtil;
         this.userTopic = userTopic;
     }
-    // Bean 注入完成后再执行初始化
+
+    //Bean注入完成后再执行初始化
     @PostConstruct
     public void initPath() {
         //提前创建目录，后面头像保存无需再校验
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         //验证id是否属于userId而不是别的
         commonParamRulesConfig.userIdCheck(userId);
         //从缓存中取出结果并且返回
-        return userCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeineInfo(), key->userMapper.getUserDetailMessage(userId));
+        return userCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeineInfo(), key->userMapper.getUserDetailInfo(userId));
     }
 
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public  UserDTO getUserSelfInfo(){
         long userId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         //直接返回mysql最新数据,避免用户自身的一致性问题
-        return userMapper.getUserDetailMessage(userId);
+        return userMapper.getUserDetailInfo(userId);
     }
 
 
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
         //检查冷却
         redisUtil.checkCooldown(userRedisKeyConfig.getUpdateInfoCooldown(),userId);
         userDTO.setUserId(userId);
-        quickUpdateUser(k->userMapper.updateUserMessage(userDTO),userId);
+        quickUpdateUser(k->userMapper.updateUserInfo(userDTO),userId);
     }
 
 
@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
         if (userIds.isEmpty())return new ArrayList<>();
         //校验参数
         for (Long userId:userIds) commonParamRulesConfig.userIdCheck(userId);
-        return userMapper.getUsersSimpleMessage(userIds);
+        return userMapper.getUsersSimpleInfo(userIds);
     }
 
 
