@@ -43,6 +43,11 @@ public class JvmCaffeineParent<T,E> {
                 .build();
     }
 
+    protected void defaultDestroy(){
+        CACHE.cleanUp();
+        CACHE.invalidateAll();
+    }
+
     // 存缓存
     public void put(T key, E value) {
         CACHE.put(key, value);

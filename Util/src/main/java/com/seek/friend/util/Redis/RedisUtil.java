@@ -44,12 +44,12 @@ public class RedisUtil {
         if (Boolean.FALSE.equals(stringRedisTemplate.opsForValue().setIfAbsent(
                 key.getRedisKey(id)
                 , cooldownValue,
-                DurationUtil.getSecondDuration(key.getSecondDuration()) ))) throw new BizException(ErrorCodeEnum.REQUEST_IN_COOLDOWN);
+                DurationUtil.getSecondDuration(key.getDurationSeconds()) ))) throw new BizException(ErrorCodeEnum.REQUEST_IN_COOLDOWN);
     }
 
     //快速设置
     public boolean trySetStringWithExpire(RedisKeyData key,Object id,String value){
-        return Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key.getRedisKey(id), value, DurationUtil.getSecondDuration(key.getSecondDuration())));
+        return Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key.getRedisKey(id), value, DurationUtil.getSecondDuration(key.getDurationSeconds())));
     }
 
     //快速设置
@@ -59,7 +59,7 @@ public class RedisUtil {
 
     //快速设置
     public void justSetStringWithExpire(RedisKeyData key,Object id,String value){
-        stringRedisTemplate.opsForValue().set(key.getRedisKey(id), value,DurationUtil.getSecondDuration(key.getSecondDuration()));
+        stringRedisTemplate.opsForValue().set(key.getRedisKey(id), value,DurationUtil.getSecondDuration(key.getDurationSeconds()));
     }
 
 
@@ -76,6 +76,11 @@ public class RedisUtil {
     //快速自增
     public Long increase(RedisKeyData key,Object id,int value){
         return stringRedisTemplate.opsForValue().increment(key.getRedisKey(id), value);
+    }
+
+    //快速设置过期
+    public boolean expire(RedisKeyData key,Object id){
+        return Boolean.TRUE.equals(stringRedisTemplate.expire(key.getRedisKey(id),DurationUtil.getSecondDuration(key.getDurationSeconds())));
     }
 
 

@@ -17,8 +17,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
-@Component
-@Lazy
 public class TokenUtil {
     private static DefaultRedisScript<Boolean> tokenAddScript;
 

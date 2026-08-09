@@ -6,10 +6,12 @@ import com.seek.friend.config.NacosConfig.Common.JWTConfig;
 import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig;
 import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig;
 import com.seek.friend.configobject.CommonData.JWTGlobalData;
+import com.seek.friend.configobject.RedisData.RedisKeyData;
 import com.seek.friend.gateway.Caffeine.BlackIdCaffeine;
 import com.seek.friend.gateway.Caffeine.BlackIpCaffeine;
 import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
+import com.seek.friend.util.Redis.RedisUtil;
 import com.seek.friend.util.TimeUtil.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +19,12 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.TimeUnit;
 
 @Order(2)
 @Component
@@ -32,30 +32,25 @@ import java.util.concurrent.TimeUnit;
 public class RequestFilter implements GlobalFilter{
 
     //构造器注入
-    private final StringRedisTemplate stringRedisTemplate;
     private final GatewayRedisKeyConfig gatewayRedisKeyConfig;
     private final BlackIpCaffeine blackIpCaffeine;
     private final BlackIdCaffeine blackIdCaffeine;
     private final JWTGlobalData globalJWT;
-    private final int blackIpTimes;
-    private final int blackIpDuration;
-    private final int blackIdTimes;
-    private final int blackIdDuration;
+    private final GatewayBlockConfig gatewayBlockConfig;
     //字节码化的Result
     private final static byte[] errorBytes = new Gson().toJson(Result.error(ErrorCodeEnum.UNAUTHORIZED)).getBytes();
     private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
+    private final RedisUtil redisUtil;
+
     // 构造器注入
-    public RequestFilter(StringRedisTemplate stringRedisTemplate, GatewayRedisKeyConfig gatewayRedisKeyConfig, BlackIpCaffeine blackIpCaffeine
-    , BlackIdCaffeine blackIdCaffeine, GatewayBlockConfig gatewayBlockConfig, JWTConfig jwtConfig) {
-        this.stringRedisTemplate = stringRedisTemplate;
+    public RequestFilter(GatewayRedisKeyConfig gatewayRedisKeyConfig, BlackIpCaffeine blackIpCaffeine
+    , BlackIdCaffeine blackIdCaffeine, GatewayBlockConfig gatewayBlockConfig, JWTConfig jwtConfig, RedisUtil redisUtil) {
         this.gatewayRedisKeyConfig = gatewayRedisKeyConfig;
         this.blackIpCaffeine = blackIpCaffeine;
         this.blackIdCaffeine = blackIdCaffeine;
         this.globalJWT = jwtConfig.getGlobal();
-        this.blackIpTimes= gatewayBlockConfig.getIp().getCounts();
-        this.blackIdTimes= gatewayBlockConfig.getId().getCounts();
-        this.blackIpDuration= gatewayBlockConfig.getIp().getBlockHours();
-        this.blackIdDuration= gatewayBlockConfig.getId().getBlockHours();
+        this.gatewayBlockConfig = gatewayBlockConfig;
+        this.redisUtil = redisUtil;
     }
 
 
@@ -73,7 +68,7 @@ public class RequestFilter implements GlobalFilter{
     //ip名单校验
     private boolean ipCheck(ServerHttpRequest request){
         //获取ip
-        String ip=request.getHeaders().getFirst("X-Forwarded-For");
+        String ip=request.getHeaders().getFirst(gatewayBlockConfig.getBlockIpRequestHeaderName());
         if(ip==null||ip.equals("unknown")||ip.isBlank()){
             return false;
         }
@@ -83,8 +78,7 @@ public class RequestFilter implements GlobalFilter{
                 gatewayRedisKeyConfig.getIpBlock(),
                 ip,
                 gatewayRedisKeyConfig.getIpCheck(),
-                blackIpTimes,
-                blackIpDuration
+                gatewayBlockConfig.getIpCounts()
                 );      //检查名单
     }
 
@@ -95,31 +89,31 @@ public class RequestFilter implements GlobalFilter{
                 gatewayRedisKeyConfig.getIdBlock(),
                 id,
                 gatewayRedisKeyConfig.getIdCheck(),
-                blackIdTimes,
-                blackIdDuration
+                gatewayBlockConfig.getIdCounts()
         );
     }
 
     //检查流程
-    private boolean recordCount(Cache<String,Long> cache,String redisBlackKey,String value,String redisRecordKey,int maxCounts,int blackDuration){
+    private boolean recordCount(Cache<String,Long> cache, RedisKeyData redisBlockKey, String value,RedisKeyData redisRecordKey
+            , int maxCounts){
         //检查caffeine和redis中是否存在黑名单
         if (cache.get(value,key-> {
-                String redisCheckResult =stringRedisTemplate.opsForValue().get(redisBlackKey+value);
+                String redisCheckResult =redisUtil.getString(redisBlockKey,value);
                 return redisCheckResult==null?null:Long.parseLong(redisCheckResult);})!=null)return false;
         //自增来访次数并检查
-        long count=stringRedisTemplate.opsForValue().increment(redisRecordKey+value);
+        long count=redisUtil.increase(redisRecordKey,value,1);
         if (count>= maxCounts){
             //持续时间戳
-            long aimStamp= TimeUtil.getPlusHoursStampByNow(blackDuration);
+            long aimStamp= TimeUtil.getPlusSecondsStampByNow(redisBlockKey.getDurationSeconds());
             //封禁并且设置有效期
-            stringRedisTemplate.opsForValue().set(redisBlackKey+value, ""+aimStamp,blackDuration, TimeUnit.HOURS);
+            redisUtil.justSetStringWithExpire(redisBlockKey,value,""+aimStamp);
             //回写jvm缓存
             cache.put(value,aimStamp);
             //拒绝放行
             return false;
         }
         //第一次来访设置1分钟有效期
-        if (count==1)stringRedisTemplate.expire(redisRecordKey+value,1,TimeUnit.MINUTES);
+        if (count==1)redisUtil.expire(redisRecordKey,value);
         //同意放行
         return true;
     }

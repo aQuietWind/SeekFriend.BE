@@ -143,13 +143,18 @@
       "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig"
     },
     {
-      "name": "gateway.self.block.id",
-      "type": "com.seek.friend.configobject.CommonData.CountsBlockData",
+      "name": "gateway.self.block.block-ip-request-header-name",
+      "type": "java.lang.String",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
     },
     {
-      "name": "gateway.self.block.ip",
-      "type": "com.seek.friend.configobject.CommonData.CountsBlockData",
+      "name": "gateway.self.block.id-counts",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
+    },
+    {
+      "name": "gateway.self.block.ip-counts",
+      "type": "java.lang.Integer",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
     },
     {
@@ -164,22 +169,22 @@
     },
     {
       "name": "gateway.self.redis.key.name.id-block",
-      "type": "java.lang.String",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
     },
     {
       "name": "gateway.self.redis.key.name.id-check",
-      "type": "java.lang.String",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
     },
     {
       "name": "gateway.self.redis.key.name.ip-block",
-      "type": "java.lang.String",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
     },
     {
       "name": "gateway.self.redis.key.name.ip-check",
-      "type": "java.lang.String",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
     },
     {

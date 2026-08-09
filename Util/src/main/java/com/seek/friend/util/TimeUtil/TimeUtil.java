@@ -23,6 +23,10 @@ public class TimeUtil {
         return LocalDateTime.now().plusHours(number).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
+    public static long getPlusSecondsStampByNow(long number) {
+        return LocalDateTime.now().plusSeconds(number).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
     public static long getStampByNow() {
         return System.currentTimeMillis();
     }

@@ -29,7 +29,6 @@ public class BlackIpCaffeine extends JvmCaffeineParent<String,Long> {
     // 容器销毁清理缓存
     @PreDestroy
     public void destroy() {
-        super.CACHE.cleanUp();
-        super.CACHE.invalidateAll();
+        defaultDestroy();
     }
 }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Component
-@Lazy
 public class OPTUtil {
 
     private final RedisUtil redisUtil;

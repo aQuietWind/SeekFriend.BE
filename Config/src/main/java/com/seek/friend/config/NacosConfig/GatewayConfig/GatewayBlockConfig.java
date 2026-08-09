@@ -1,7 +1,6 @@
 package com.seek.friend.config.NacosConfig.GatewayConfig;
 
 import com.seek.friend.config.Enum.ConfigKeyEnum;
-import com.seek.friend.configobject.CommonData.CountsBlockData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GatewayBlockConfig {
-    private CountsBlockData ip;
-    private CountsBlockData id;
+    private Integer ipCounts;
+    private Integer idCounts;
+    private String blockIpRequestHeaderName;
 }
