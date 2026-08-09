@@ -99,6 +99,11 @@
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-toolkit-logback-1.x</artifactId>
         </dependency>
+        <!--        配置对象集依赖-->
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>ConfigObject</artifactId>
+        </dependency>
 
 
     </dependencies>

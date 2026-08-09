@@ -1,8 +1,8 @@
 package com.seek.friend.config.NativeConfig.Handler;
 
 import com.seek.food.dto.Common.Result;
-import com.seek.food.util.Exception.BizException;
-import com.seek.food.util.Exception.ErrorCodeEnum;
+import com.seek.friend.util.Exception.BizException;
+import com.seek.friend.util.Exception.ErrorCodeEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

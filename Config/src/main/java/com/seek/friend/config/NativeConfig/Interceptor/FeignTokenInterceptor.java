@@ -1,7 +1,7 @@
 package com.seek.friend.config.NativeConfig.Interceptor;
 
 import com.seek.food.config.NacosConfig.Common.JWTConfig;
-import com.seek.food.util.Context.TokenIdContext;
+import com.seek.friend.util.Context.TokenIdContext;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

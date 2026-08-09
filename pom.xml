@@ -113,30 +113,6 @@
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-            <!--该项目的ServiceObject模块        -->
-            <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>ServiceObject</artifactId>
-                <version>${self.version}</version>
-            </dependency>
-            <!--该项目的ConfigObject模块        -->
-            <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>ConfigObject</artifactId>
-                <version>${self.version}</version>
-            </dependency>
-            <!--该项目的Util模块        -->
-            <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>Util</artifactId>
-                <version>${self.version}</version>
-            </dependency>
-            <!--该项目的Config模块        -->
-            <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>Config</artifactId>
-                <version>${self.version}</version>
-            </dependency>
             <!--        cookie解析包-->
             <dependency>
                 <groupId>jakarta.servlet</groupId>
@@ -167,6 +143,30 @@
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-spring-boot-starter</artifactId>
                 <version>${langchain4j.version}</version>
+            </dependency>
+            <!--该项目的ServiceObject模块        -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>ServiceObject</artifactId>
+                <version>${self.version}</version>
+            </dependency>
+            <!--该项目的ConfigObject模块        -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>ConfigObject</artifactId>
+                <version>${self.version}</version>
+            </dependency>
+            <!--该项目的Util模块        -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>Util</artifactId>
+                <version>${self.version}</version>
+            </dependency>
+            <!--该项目的Config模块        -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>Config</artifactId>
+                <version>${self.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,7 +1,7 @@
 package com.seek.friend.gateway.Caffeine;
 
 import com.seek.food.config.NacosConfig.Gateway.GatewayBlackConfig;
-import com.seek.food.util.Caffeine.JvmCaffeineParent;
+import com.seek.friend.util.Caffeine.JvmCaffeineParent;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,9 @@
+package com.seek.friend.configobject.CaffeineData;
+
+import lombok.Data;
+
+@Data
+public class CaffeineData {
+    private int maxSize;
+    private long expireTime;
+}
