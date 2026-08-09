@@ -4,16 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.seek.friend.configobject.CaffeineData.CaffeineData;
 import com.seek.friend.configobject.RedisData.RedisKeyData;
 import com.seek.friend.util.Exception.BizException;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
-import com.seek.friend.util.TimeUtil.DurationUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 
@@ -36,6 +35,14 @@ public class JvmCaffeineParent<T,E> {
         this.resultClass=resultClass;
     }
 
+    protected void defaultInit(CaffeineData setting){
+        this.CACHE=Caffeine.newBuilder()
+                .maximumSize(setting.getMaxSize())
+                .expireAfterWrite(setting.getExpireSeconds(), TimeUnit.SECONDS)
+                .recordStats()
+                .build();
+    }
+
     // 存缓存
     public void put(T key, E value) {
         CACHE.put(key, value);
@@ -55,6 +62,9 @@ public class JvmCaffeineParent<T,E> {
     //清空所有缓存
     public void clear() {
         CACHE.invalidateAll();
+    }
+    public Cache<T,E> getCACHE() {
+        return CACHE;
     }
 
 

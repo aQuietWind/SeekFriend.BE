@@ -1,13 +1,12 @@
 package com.seek.friend.gateway.Filter;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.seek.food.config.Data.JWTData;
-import com.seek.food.config.NacosConfig.Common.CommonRedisKeyConfig;
-import com.seek.food.config.NacosConfig.Common.JWTConfig;
-import com.seek.food.config.NacosConfig.Gateway.GatewayRequestPathConfig;
-import com.seek.food.dto.Common.Result;
+import com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig;
+import com.seek.friend.config.NacosConfig.Common.JWTConfig;
+import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig;
+import com.seek.friend.configobject.CommonData.JWTRoleData;
+import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.JWT.JWTUtil;
 import com.seek.friend.util.JWT.TokenCheckResult;
@@ -47,12 +46,12 @@ public class TokenFilter implements GlobalFilter {
     // 构造器注入
     @Autowired
     public TokenFilter(JWTConfig jwtConfig, GatewayRequestPathConfig gatewayRequestPathConfig, StringRedisTemplate stringRedisTemplate,
-                       CommonRedisKeyConfig commonRedisKeyConfig, ObjectMapper objectMapper) {
+                       CommonRedisKeyConfig commonRedisKeyConfig) {
         this.jwtConfig = jwtConfig;
         this.gatewayRequestPathConfig = gatewayRequestPathConfig;
         this.stringRedisTemplate = stringRedisTemplate;
         this.commonRedisKeyConfig = commonRedisKeyConfig;
-        for (JWTData jwtData : jwtConfig.getAllJWTData()) jwtHeaders.put(jwtData.getHeaderSign(), jwtData.getSecretKey());
+        for (JWTRoleData jwtData : jwtConfig.getAllJWTData()) jwtHeaders.put(jwtData.getHeaderSign(), jwtData.getSecretKey());
     }
 
 
@@ -84,7 +83,7 @@ public class TokenFilter implements GlobalFilter {
         // 1. 获取全部Cookie集合
         MultiValueMap<String, HttpCookie> cookies = request.getCookies();
         // 2. 根据Cookie名称拿token（登录接口Set-Cookie里的key，比如access_token）
-        List<HttpCookie> tokenCookies = cookies.get(jwtConfig.getRequestTokenName());
+        List<HttpCookie> tokenCookies = cookies.get(jwtConfig.getGlobal().getRequestHeaderTokenName());
         String token = null;
         if (tokenCookies != null && !tokenCookies.isEmpty())token = tokenCookies.getFirst().getValue();
         return token;
@@ -97,14 +96,14 @@ public class TokenFilter implements GlobalFilter {
         if(token == null||token.isEmpty())return JWTUtil.FailResult;
         TokenCheckResult result;
         //检查token是否有效
-        try {result= JWTUtil.jwtCheckByList(token, jwtConfig.getHeaderSeparator(),jwtHeaders);}
+        try {result= JWTUtil.jwtCheckByList(token, jwtConfig.getGlobal().getTokenHeaderSeparator(),jwtHeaders);}
         catch (Exception e){
             logger.warn("token:{},解码失败",token);
             return JWTUtil.FailResult;
         }
         if (result.getResultId()==JWTUtil.FailResult)return JWTUtil.FailResult;
         //检验redis是否存在该token
-        if(stringRedisTemplate.opsForZSet().score(commonRedisKeyConfig.getLoginToken().getRedisKey(result.getResultId()), result.getToken())==null) return JWTUtil.FailResult;
+        if(stringRedisTemplate.opsForZSet().score(commonRedisKeyConfig.getTokenStore().getRedisKey(result.getResultId()), result.getToken())==null) return JWTUtil.FailResult;
         return result.getResultId();
     }
 
@@ -115,9 +114,9 @@ public class TokenFilter implements GlobalFilter {
         ServerHttpRequest newReq = request.mutate()
                 .headers(headers -> {
                     // 清空客户端伪造的同名header
-                    headers.remove(jwtConfig.getHeaderTokenName());
+                    headers.remove(jwtConfig.getGlobal().getRequestHeaderTokenName());
                     // 新增，此时列表只有一条
-                    headers.add(jwtConfig.getHeaderTokenName(), String.valueOf(ownId));
+                    headers.add(jwtConfig.getGlobal().getRequestHeaderTokenName(), String.valueOf(ownId));
                 })
                 .build();
         //放入id

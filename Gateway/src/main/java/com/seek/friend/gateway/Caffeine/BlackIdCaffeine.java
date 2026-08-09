@@ -1,32 +1,29 @@
 package com.seek.friend.gateway.Caffeine;
 
-import com.seek.food.config.NacosConfig.Gateway.GatewayBlackConfig;
+import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig;
 import com.seek.friend.util.Caffeine.JvmCaffeineParent;
+import com.seek.friend.util.Redis.RedisUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class BlackIdCaffeine extends JvmCaffeineParent<String,Long> {
 
     // 构造注入配置
-    private final GatewayBlackConfig gatewayBlackConfig;
+    private final GatewayCaffeineConfig gatewayCaffeineConfig;
     @Autowired
-    public BlackIdCaffeine(GatewayBlackConfig gatewayBlackConfig) {
-        this.gatewayBlackConfig = gatewayBlackConfig;
+    public BlackIdCaffeine(GatewayCaffeineConfig gatewayCaffeineConfig, RedisUtil redisUtil) {
+        super(redisUtil,Long.class);
+        this.gatewayCaffeineConfig = gatewayCaffeineConfig;
     }
 
     // 容器启动构建缓存
     @PostConstruct
     public void init() {
-        super.CACHE = com.seek.friend.gateway.Caffeine.newBuilder()
-                .maximumSize(gatewayBlackConfig.getId().getCaffeineMaxSize())
-                .expireAfterWrite(gatewayBlackConfig.getId().getCaffeineExpireTime(), TimeUnit.MINUTES)
-                .recordStats()
-                .build();
+        super.defaultInit(gatewayCaffeineConfig.getIdBlock());
     }
 
     // 容器销毁清理缓存

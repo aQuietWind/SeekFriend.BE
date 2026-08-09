@@ -7,7 +7,7 @@ import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seek.food.dto.Common.Result;
+import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

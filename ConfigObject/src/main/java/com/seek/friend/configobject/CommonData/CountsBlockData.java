@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CountsBlackData {
+public class CountsBlockData {
     private int counts;
-    private int duration;
+    private int blockHours;
 }

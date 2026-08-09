@@ -1,31 +1,28 @@
 package com.seek.friend.util.Redis;
 
 import com.seek.friend.configobject.RedisData.RedisKeyData;
-import com.seek.friend.configobject.RedisData.RedisStreamData;
 import com.seek.friend.util.Exception.BizException;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
-import com.seek.friend.util.Function.RunWithParam;
 import com.seek.friend.util.TimeUtil.DurationUtil;
-import com.seek.friend.util.TimeUtil.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-@Component
+
 @Slf4j
 @Lazy
 public class RedisUtil {
     public static final String cooldownValue="true";
 
     private final StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
     public RedisUtil(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
     }
@@ -47,12 +44,12 @@ public class RedisUtil {
         if (Boolean.FALSE.equals(stringRedisTemplate.opsForValue().setIfAbsent(
                 key.getRedisKey(id)
                 , cooldownValue,
-                DurationUtil.getSecondDuration(key.getDuration()) ))) throw new BizException(ErrorCodeEnum.REQUEST_IN_COOLDOWN);
+                DurationUtil.getSecondDuration(key.getSecondDuration()) ))) throw new BizException(ErrorCodeEnum.REQUEST_IN_COOLDOWN);
     }
 
     //快速设置
     public boolean trySetStringWithExpire(RedisKeyData key,Object id,String value){
-        return Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key.getRedisKey(id), value, DurationUtil.getSecondDuration(key.getDuration())));
+        return Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key.getRedisKey(id), value, DurationUtil.getSecondDuration(key.getSecondDuration())));
     }
 
     //快速设置
@@ -62,7 +59,7 @@ public class RedisUtil {
 
     //快速设置
     public void justSetStringWithExpire(RedisKeyData key,Object id,String value){
-        stringRedisTemplate.opsForValue().set(key.getRedisKey(id), value,DurationUtil.getSecondDuration(key.getDuration()));
+        stringRedisTemplate.opsForValue().set(key.getRedisKey(id), value,DurationUtil.getSecondDuration(key.getSecondDuration()));
     }
 
 

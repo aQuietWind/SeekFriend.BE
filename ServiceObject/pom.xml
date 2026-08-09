@@ -31,5 +31,13 @@
             <!-- 使该依赖仅仅提供特殊类,而不自动启动springBoot           -->
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>Util</artifactId>
+        </dependency>
     </dependencies>
 </project>

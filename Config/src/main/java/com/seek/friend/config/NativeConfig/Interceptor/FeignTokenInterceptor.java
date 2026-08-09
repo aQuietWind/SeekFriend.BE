@@ -1,6 +1,6 @@
 package com.seek.friend.config.NativeConfig.Interceptor;
 
-import com.seek.food.config.NacosConfig.Common.JWTConfig;
+import com.seek.friend.config.NacosConfig.Common.JWTConfig;
 import com.seek.friend.util.Context.TokenIdContext;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class FeignTokenInterceptor {
             logger.info("tokenId:{} ,调用了feign",tokenId);
             if (tokenId != null && !tokenId.isBlank()) {
                 //Feign发起远程调用时自动带上该Header
-                template.header(jwtConfig.getHeaderTokenName(), tokenId);
+                template.header(jwtConfig.getGlobal().getRequestHeaderTokenIdName(), tokenId);
                 //用于sentinel检测
                 template.header("x-origin", "service");
             }

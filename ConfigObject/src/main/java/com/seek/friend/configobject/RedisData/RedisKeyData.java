@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class RedisKeyData {
     private String name;
-    private Long duration;
+    private Long secondDuration;
     public String getRedisKey(Object key){
-        if (key!=null) return name + key;
-        return name;
+        if (key==null||key.equals("")) return name;
+        return name+key;
     }
 }

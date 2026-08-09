@@ -1,6 +1,6 @@
 package com.seek.friend.config.NativeConfig.Interceptor;
 
-import com.seek.food.config.NacosConfig.Common.JWTConfig;
+import com.seek.friend.config.NacosConfig.Common.JWTConfig;
 import com.seek.friend.util.Context.TokenIdContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object Handle)throws Exception{
         // 获取TokenId
-        String tokenId  = request.getHeader(jwtConfig.getHeaderTokenName());
+        String tokenId  = request.getHeader(jwtConfig.getGlobal().getRequestHeaderTokenIdName());
         logger.info("tokenId:{} ,进入该模块", tokenId);
         //放入context上下文
         if (tokenId!=null)TokenIdContext.set(tokenId);

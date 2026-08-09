@@ -1,6 +1,6 @@
 package com.seek.friend.config.NativeConfig.Handler;
 
-import com.seek.food.dto.Common.Result;
+import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.BizException;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import jakarta.servlet.http.HttpServletResponse;

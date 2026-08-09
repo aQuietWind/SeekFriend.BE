@@ -4,13 +4,9 @@ import com.seek.friend.configobject.RedisData.RedisKeyData;
 import com.seek.friend.util.Function.RunFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
-@Lazy
 public class RedisBitMapUtil {
 
 

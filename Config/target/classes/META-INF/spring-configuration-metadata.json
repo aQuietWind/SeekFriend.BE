@@ -1,0 +1,200 @@
+{
+  "groups": [
+    {
+      "name": "common.jwt",
+      "type": "com.seek.friend.config.NacosConfig.Common.JWTConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
+    },
+    {
+      "name": "common.param.rules",
+      "type": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.redis.key.name",
+      "type": "com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.block",
+      "type": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
+    },
+    {
+      "name": "gateway.self.jvm-caffeine",
+      "type": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig"
+    },
+    {
+      "name": "gateway.self.redis.key.name",
+      "type": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.request.path",
+      "type": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "common.jwt.admin",
+      "type": "com.seek.friend.configobject.CommonData.JWTRoleData",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
+    },
+    {
+      "name": "common.jwt.global",
+      "type": "com.seek.friend.configobject.CommonData.JWTGlobalData",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
+    },
+    {
+      "name": "common.jwt.user",
+      "type": "com.seek.friend.configobject.CommonData.JWTRoleData",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
+    },
+    {
+      "name": "common.param.rules.admin-id-start",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.code-regex",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.id-bitmap-area-number",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.id-capacity",
+      "type": "java.lang.Long",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.image-size",
+      "type": "java.lang.Long",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.image-type",
+      "type": "java.util.HashSet<java.lang.String>",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.merchant-id-start",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.need-number-max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.need-number-min",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.password-regex",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.person-name-max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.phone-number-regex",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.rider-id-start",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.seed-number-max",
+      "type": "java.lang.Long",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.sex-values",
+      "type": "java.util.HashSet<java.lang.Integer>",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.should-amount-max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.param.rules.user-id-start",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
+    },
+    {
+      "name": "common.redis.key.name.token-store",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.block.id",
+      "type": "com.seek.friend.configobject.CommonData.CountsBlockData",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
+    },
+    {
+      "name": "gateway.self.block.ip",
+      "type": "com.seek.friend.configobject.CommonData.CountsBlockData",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig"
+    },
+    {
+      "name": "gateway.self.jvm-caffeine.id-block",
+      "type": "com.seek.friend.configobject.CaffeineData.CaffeineData",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig"
+    },
+    {
+      "name": "gateway.self.jvm-caffeine.ip-block",
+      "type": "com.seek.friend.configobject.CaffeineData.CaffeineData",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig"
+    },
+    {
+      "name": "gateway.self.redis.key.name.id-block",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.redis.key.name.id-check",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.redis.key.name.ip-block",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.redis.key.name.ip-check",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig"
+    },
+    {
+      "name": "gateway.self.request.path.allow-path",
+      "type": "java.util.HashSet<java.lang.String>",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
+    },
+    {
+      "name": "gateway.self.request.path.reject-path",
+      "type": "java.util.HashSet<java.lang.String>",
+      "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}

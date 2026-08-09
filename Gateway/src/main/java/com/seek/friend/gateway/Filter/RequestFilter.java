@@ -1,15 +1,14 @@
 package com.seek.friend.gateway.Filter;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.gson.Gson;
-import com.seek.food.config.NacosConfig.Common.JWTConfig;
-import com.seek.food.config.NacosConfig.Gateway.GatewayBlackConfig;
-import com.seek.food.config.NacosConfig.Gateway.GatewayRedisKeyConfig;
-import com.seek.food.dto.Common.Result;
-import com.seek.food.gateway.Caffeine.BlackIdCaffeine;
-import com.seek.food.gateway.Caffeine.BlackIpCaffeine;
+import com.seek.friend.config.NacosConfig.Common.JWTConfig;
+import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayBlockConfig;
+import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig;
+import com.seek.friend.configobject.CommonData.JWTGlobalData;
+import com.seek.friend.gateway.Caffeine.BlackIdCaffeine;
+import com.seek.friend.gateway.Caffeine.BlackIpCaffeine;
+import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.TimeUtil.TimeUtil;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ public class RequestFilter implements GlobalFilter{
     private final GatewayRedisKeyConfig gatewayRedisKeyConfig;
     private final BlackIpCaffeine blackIpCaffeine;
     private final BlackIdCaffeine blackIdCaffeine;
-    private final JWTConfig jwtConfig;
+    private final JWTGlobalData globalJWT;
     private final int blackIpTimes;
     private final int blackIpDuration;
     private final int blackIdTimes;
@@ -45,26 +44,25 @@ public class RequestFilter implements GlobalFilter{
     //字节码化的Result
     private final static byte[] errorBytes = new Gson().toJson(Result.error(ErrorCodeEnum.UNAUTHORIZED)).getBytes();
     private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     // 构造器注入
     public RequestFilter(StringRedisTemplate stringRedisTemplate, GatewayRedisKeyConfig gatewayRedisKeyConfig, BlackIpCaffeine blackIpCaffeine
-    , BlackIdCaffeine blackIdCaffeine, GatewayBlackConfig gatewayBlackConfig, JWTConfig jwtConfig) {
+    , BlackIdCaffeine blackIdCaffeine, GatewayBlockConfig gatewayBlockConfig, JWTConfig jwtConfig) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.gatewayRedisKeyConfig = gatewayRedisKeyConfig;
         this.blackIpCaffeine = blackIpCaffeine;
         this.blackIdCaffeine = blackIdCaffeine;
-        this.jwtConfig = jwtConfig;
-        this.blackIpTimes= gatewayBlackConfig.getIp().getCounts();
-        this.blackIdTimes= gatewayBlackConfig.getId().getCounts();
-        this.blackIpDuration= gatewayBlackConfig.getIp().getDuration();
-        this.blackIdDuration= gatewayBlackConfig.getId().getDuration();
+        this.globalJWT = jwtConfig.getGlobal();
+        this.blackIpTimes= gatewayBlockConfig.getIp().getCounts();
+        this.blackIdTimes= gatewayBlockConfig.getId().getCounts();
+        this.blackIpDuration= gatewayBlockConfig.getIp().getBlockHours();
+        this.blackIdDuration= gatewayBlockConfig.getId().getBlockHours();
     }
 
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain){
         ServerHttpRequest request = exchange.getRequest();
-        String tokenId = request.getHeaders().getFirst(jwtConfig.getHeaderTokenName());
+        String tokenId = request.getHeaders().getFirst(globalJWT.getRequestHeaderTokenName());
         //检验是不是去公开路径的,并检查ip是否处于黑名单
         if (("".equals(tokenId)||tokenId==null)&&ipCheck(request))return chain.filter(exchange);
         else if (tokenId!=null&&idRecord(tokenId))return chain.filter(exchange);
@@ -82,7 +80,7 @@ public class RequestFilter implements GlobalFilter{
         //进行ip检查
         return recordCount(
                 blackIpCaffeine.getCACHE(),
-                gatewayRedisKeyConfig.getIpBlack(),
+                gatewayRedisKeyConfig.getIpBlock(),
                 ip,
                 gatewayRedisKeyConfig.getIpCheck(),
                 blackIpTimes,
@@ -94,7 +92,7 @@ public class RequestFilter implements GlobalFilter{
     private boolean idRecord(String id){
         return recordCount(
                 blackIdCaffeine.getCACHE(),
-                gatewayRedisKeyConfig.getIdBlack(),
+                gatewayRedisKeyConfig.getIdBlock(),
                 id,
                 gatewayRedisKeyConfig.getIdCheck(),
                 blackIdTimes,
