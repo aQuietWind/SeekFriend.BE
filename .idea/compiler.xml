@@ -10,6 +10,7 @@
         <module name="AiChat" />
         <module name="UserChat" />
         <module name="User" />
+        <module name="AiFriend" />
         <module name="Friend" />
         <module name="Report" />
         <module name="Config" />
@@ -26,6 +27,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Admin" options="-parameters" />
       <module name="AiChat" options="-parameters" />
+      <module name="AiFriend" options="-parameters" />
       <module name="Config" options="-parameters" />
       <module name="ConfigObject" options="-parameters" />
       <module name="Friend" options="-parameters" />

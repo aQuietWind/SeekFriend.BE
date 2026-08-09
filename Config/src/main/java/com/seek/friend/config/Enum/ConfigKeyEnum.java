@@ -15,11 +15,7 @@ public class ConfigKeyEnum {
     public static final String User_Caffeine_Config="user.self.jvm-caffeine";
     public static final String User_Redis_Stream_Config="user.self.redis.stream";
 
-    public static final String User_Exchange_Config="mq.name.bind.user-exchange";
-    public static final String Merchant_Exchange_Config="mq.name.bind.merchant-exchange";
-    public static final String Employee_Exchange_Config="mq.name.bind.employee-exchange";
-    public static final String Meal_Exchange_Config="mq.name.bind.meal-exchange";
-    public static final String Fund_Exchange_Config="mq.name.bind.fund-exchange";
+    public static final String User_Topic_Config="mq.name.bind.user-topic";
 //    public static final String =;
 //    public static final String =;
 }

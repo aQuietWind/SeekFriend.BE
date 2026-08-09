@@ -175,7 +175,8 @@
     <modules>
         <module>Gateway</module>
         <module>User</module>
-        <module>Friend</module>
+        <module>UserFriend</module>
+        <module>AiFriend</module>
         <module>UserChat</module>
         <module>AiChat</module>
         <module>Report</module>

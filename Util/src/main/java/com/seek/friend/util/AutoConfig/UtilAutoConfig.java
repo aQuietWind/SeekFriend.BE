@@ -6,6 +6,8 @@ import com.seek.friend.util.OPT.OPTUtil;
 import com.seek.friend.util.Redis.RedisBitMapUtil;
 import com.seek.friend.util.Redis.RedisStreamUtil;
 import com.seek.friend.util.Redis.RedisUtil;
+import com.seek.friend.util.RocketMQ.RocketMQUtil;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -42,5 +44,10 @@ public class UtilAutoConfig {
     @Lazy
     public IdUtil idUtil(RedisUtil redisUtil) {
         return new IdUtil(redisUtil);
+    }
+    @Bean
+    @Lazy
+    public RocketMQUtil rocketMQUtil(RocketMQTemplate rocketMQTemplate) {
+        return new RocketMQUtil(rocketMQTemplate);
     }
 }

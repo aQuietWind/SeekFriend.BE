@@ -37,9 +37,9 @@ public class OPTUtil {
         return opt;
     }
 
-    public void checkFromRedis( RedisKeyData key, String opt){
+    public void checkFromRedis( RedisKeyData key,Object id, String opt){
         //获取redis的验证码
-        String originOpt=redisUtil.getString(key,null);
+        String originOpt=redisUtil.getString(key,id);
         //检验验证码
         if ( originOpt== null) throw new BizException(ErrorCodeEnum.OPT_NOT_SURVIVE);
         if (!originOpt.equals(opt)) throw new BizException(ErrorCodeEnum.OPT_NOT_SAME);

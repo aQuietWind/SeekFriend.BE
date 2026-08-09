@@ -13,8 +13,7 @@ import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
 import com.seek.friend.util.TimeUtil.TimeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -29,6 +28,7 @@ import reactor.core.publisher.Mono;
 @Order(2)
 @Component
 @RefreshScope
+@Slf4j
 public class RequestFilter implements GlobalFilter{
 
     //构造器注入
@@ -37,9 +37,8 @@ public class RequestFilter implements GlobalFilter{
     private final BlackIdCaffeine blackIdCaffeine;
     private final JWTGlobalData globalJWT;
     private final GatewayBlockConfig gatewayBlockConfig;
-    //字节码化的Result
+    //字节码化的Result,用于快速响应
     private final static byte[] errorBytes = new Gson().toJson(Result.error(ErrorCodeEnum.UNAUTHORIZED)).getBytes();
-    private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
     private final RedisUtil redisUtil;
 
     // 构造器注入
@@ -61,7 +60,7 @@ public class RequestFilter implements GlobalFilter{
         //检验是不是去公开路径的,并检查ip是否处于黑名单
         if (("".equals(tokenId)||tokenId==null)&&ipCheck(request))return chain.filter(exchange);
         else if (tokenId!=null&&idRecord(tokenId))return chain.filter(exchange);
-        logger.warn("requestFilter拒绝请求");
+        log.warn("requestFilter拒绝请求");
         return reject(exchange);
     }
 
@@ -120,14 +119,14 @@ public class RequestFilter implements GlobalFilter{
 
     //拒绝放行
     private Mono<Void> reject(ServerWebExchange exchange) {
-        logger.warn("非法请求被RequestFilter拦截");
+        log.warn("非法请求被RequestFilter拦截");
         ServerHttpResponse response=exchange.getResponse();
         response.setStatusCode(ErrorCodeEnum.UNAUTHORIZED.getHttpStatus());      //设置状态码
         try {
             //使返回失败结果
             return response.writeWith(Mono.just(response.bufferFactory().wrap(errorBytes)));
         }catch (Exception e){
-            logger.error(e.getMessage(),e);
+            log.error(e.getMessage(),e);
             return response.setComplete();
         }
     }

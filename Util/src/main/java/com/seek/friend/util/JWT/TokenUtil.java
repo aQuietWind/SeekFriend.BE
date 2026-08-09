@@ -59,4 +59,9 @@ public class TokenUtil {
                 ,jwtGlobalData.getMaxStore(),token, ""+ TimeUtil.getStampByNow());     //ARGV参数
     }
 
+    //检查token
+    public boolean checkTokenIsExist(RedisKeyData key,Object id,String value){
+        return redisUtil.zSetXIsExistByScore(key,id,value);
+    }
+
 }

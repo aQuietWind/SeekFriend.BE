@@ -83,6 +83,11 @@ public class RedisUtil {
         return Boolean.TRUE.equals(stringRedisTemplate.expire(key.getRedisKey(id),DurationUtil.getSecondDuration(key.getDurationSeconds())));
     }
 
+    //快速检查zset中某个value值是否存在
+    public boolean zSetXIsExistByScore(RedisKeyData key,Object id,String value){
+        return stringRedisTemplate.opsForZSet().score(key.getRedisKey(id), value)!=null;
+    }
+
 
 
 
