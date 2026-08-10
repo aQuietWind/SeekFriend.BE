@@ -13,8 +13,10 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 public class UserChatParamsRulesConfig {
     private Integer descriptionMax;
     private String chatRecordImageDest;
+    private Long fileDeleteDelaySeconds;
+    private Long recordAbleWithdrawSeconds;
 
-    public void checkDescription(String description) {
+    public void descriptionCheck(String description) {
         if (description==null|| description.isEmpty() ||description.length()>descriptionMax)throw new BizException(ErrorCodeEnum.PARAM_ERROR);
     }
 }

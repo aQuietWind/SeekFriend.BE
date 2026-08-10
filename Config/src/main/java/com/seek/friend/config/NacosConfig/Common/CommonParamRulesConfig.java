@@ -15,9 +15,6 @@ import java.util.HashSet;
 @Data
 public class CommonParamRulesConfig {
     private int userIdStart;
-    private int merchantIdStart;
-    private int riderIdStart;
-    private int adminIdStart;
     private int personNameMax;
     private int idBitmapAreaNumber;
     private long idCapacity;
@@ -35,18 +32,6 @@ public class CommonParamRulesConfig {
     //校验参数
     public void userIdCheck(long userId) {
         if (!((userId/idCapacity)==userIdStart) ) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
-    }
-    public void merchantIdCheck(long merchantId) {
-        if (! ((merchantId/idCapacity)==merchantIdStart) ) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
-    }
-    public void userOrMerchantIdCheck(long tokenId) {
-        if (! ((tokenId/idCapacity)==merchantIdStart)&& !((tokenId/idCapacity)==userIdStart) ) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
-    }
-    public void riderIdCheck(long riderId) {
-        if (! ((riderId/idCapacity)==riderIdStart) ) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
-    }
-    public void adminIdCheck(long adminId) {
-        if (! ((adminId/idCapacity)==adminIdStart) ) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
     }
     public void passwordCheck(String password) {
         if (password == null || !password.matches(passwordRegex)) throw new BizException(ErrorCodeEnum.PARAM_ERROR);
