@@ -52,6 +52,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.userIdCheck(userId);
         long ownId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getApplyConnectionCooldown(),userId);
+        System.err.println(1111);
         userFriendMapper.applyFriend(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
     }
 

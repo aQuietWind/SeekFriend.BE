@@ -13,7 +13,7 @@
     <insert id="applyFriend">
         insert into "user_friend_connection"
         (connection_id,applicant_user_id,respondent_user_id)
-        values(#{connectionId},applicantUserId,respondentUserId);
+        values(#{connectionId},#{applicantUserId},#{respondentUserId});
     </insert>
 
     <select id="getApplicantList" resultMap="UserFriendConnectionResultMap">
@@ -62,9 +62,9 @@
     </update>
 
     <update id="deleteFriend">
-        update "user" set is_delete=true
+        update "user_friend_connection" set is_delete=true
         where connection_id=#{connectionId} and (respondent_user_id=#{userId} or applicant_user_id=#{userId})
-        and is_delete=false and is_accept is null
+        and is_delete=false and is_accept=true
     </update>
 
 
