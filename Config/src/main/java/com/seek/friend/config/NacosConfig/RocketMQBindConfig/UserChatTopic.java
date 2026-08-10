@@ -9,9 +9,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @Data
 @RefreshScope
-@ConfigurationProperties(ConfigKeyEnum.User_Friend_Topic_Config)
-public class UserFriendTopic {
+@ConfigurationProperties(ConfigKeyEnum.User_Chat_Topic_Config)
+public class UserChatTopic {
     private String topicName;
-    private ConsumerData initChatRoom;
-    private ConsumerData deleteChatRoom;
+    private ConsumerData syncChatRoom;
 }

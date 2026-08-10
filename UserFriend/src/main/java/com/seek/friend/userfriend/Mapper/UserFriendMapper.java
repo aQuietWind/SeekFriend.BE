@@ -10,6 +10,7 @@ public interface UserFriendMapper {
     public List<UserFriendConnectionDTO> getApplicantList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getRespondentList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getFriendList(int start, int need,long userId);
+    public long getApplicantUserId(long connectionId,long respondentUserId);
     public void respondApplication(long connectionId,Boolean value,long userId);
     public void deleteFriend(long connectionId,long userId);
 }

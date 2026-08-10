@@ -1,8 +1,11 @@
 package com.seek.friend.userfriend.Service.Impl;
 
 import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
+import com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic;
 import com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig;
+import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
 import com.seek.friend.serviceobject.UserFriend.UserFriendConnectionDTO;
+import com.seek.friend.serviceobject.UserFriend.UserFriendMQConnectionDTO;
 import com.seek.friend.userfriend.Mapper.UserFriendMapper;
 import com.seek.friend.userfriend.Service.UserFriendService;
 import com.seek.friend.util.Context.TokenIdContext;
@@ -23,13 +26,17 @@ public class UserFriendServiceImpl implements UserFriendService {
     private final RedisUtil redisUtil;
     private final UserFriendRedisKeyConfig userFriendRedisKeyConfig;
     private final UserFriendMapper userFriendMapper;
+    private final RocketMQUtil rocketMQUtil;
+    private final UserFriendTopic userFriendTopic;
     @Autowired
     public UserFriendServiceImpl(CommonParamRulesConfig commonParamRulesConfig, RedisUtil redisUtil, UserFriendRedisKeyConfig userFriendRedisKeyConfig
-    , UserFriendMapper userFriendMapper) {
+    , UserFriendMapper userFriendMapper, RocketMQUtil rocketMQUtil, UserFriendTopic userFriendTopic) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.redisUtil = redisUtil;
         this.userFriendRedisKeyConfig = userFriendRedisKeyConfig;
         this.userFriendMapper = userFriendMapper;
+        this.rocketMQUtil = rocketMQUtil;
+        this.userFriendTopic = userFriendTopic;
     }
 
     @Override
@@ -70,6 +77,11 @@ public class UserFriendServiceImpl implements UserFriendService {
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getRespondApplicationCooldown(),userId);
         userFriendMapper.respondApplication(connectionId,value,userId);
+        if (value){
+            rocketMQUtil.send(userFriendTopic.getTopicName()
+                    ,userFriendTopic.getInitChatRoom().getTag()
+                    ,new UserFriendMQConnectionDTO(connectionId,userId,userFriendMapper.getApplicantUserId(connectionId,userId)));
+        }
     }
 
     @Override
@@ -78,6 +90,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getDeleteConnectionCooldown(),userId);
         userFriendMapper.deleteFriend(connectionId,userId);
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag(),connectionId);
     }
 
     private long quickGetUserId(){
