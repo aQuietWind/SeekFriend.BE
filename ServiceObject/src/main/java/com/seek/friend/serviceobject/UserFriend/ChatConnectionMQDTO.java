@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserFriendMQConnectionDTO {
+public class ChatConnectionMQDTO {
     private long connectionId;
-    private long firstUserId;
-    private long secondUserId;
+    private Integer version;
 }

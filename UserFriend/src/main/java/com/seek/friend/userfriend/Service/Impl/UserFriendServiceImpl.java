@@ -4,14 +4,12 @@ import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
 import com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic;
 import com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig;
 import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
+import com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO;
 import com.seek.friend.serviceobject.UserFriend.UserFriendConnectionDTO;
-import com.seek.friend.serviceobject.UserFriend.UserFriendMQConnectionDTO;
 import com.seek.friend.userfriend.Mapper.UserFriendMapper;
 import com.seek.friend.userfriend.Service.UserFriendService;
 import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
-import com.seek.friend.util.Exception.BizException;
-import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +56,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         if (connectionId==null){
             userFriendMapper.insertFriendApplication(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
         }else {
-            userFriendMapper.applyFriend(connectionId,userId);
+            userFriendMapper.applyFriend(connectionId,ownId,userId);
         }
 
     }
@@ -92,11 +90,9 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.commonIdCheck(connectionId);
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getRespondApplicationCooldown(),userId);
-        userFriendMapper.respondApplication(connectionId,value,userId);
+        Integer version=userFriendMapper.respondApplication(connectionId,value,userId);
         if (value){
-            rocketMQUtil.send(userFriendTopic.getTopicName()
-                    ,userFriendTopic.getInitChatRoom().getTag()
-                    ,new UserFriendMQConnectionDTO(connectionId,userId,userFriendMapper.getApplicantUserId(connectionId,userId)));
+            rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getInitChatRoom().getTag(),new ChatConnectionMQDTO(connectionId,version));
         }
     }
 
@@ -105,8 +101,9 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.commonIdCheck(connectionId);
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getDeleteConnectionCooldown(),userId);
-        userFriendMapper.deleteFriend(connectionId,userId);
-        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag(),connectionId);
+        //逻辑删除该好友关系，并且发送信息到UserChat模块进行聊天室状态切换
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag()
+                ,new ChatConnectionMQDTO(connectionId,userFriendMapper.deleteFriend(connectionId,userId)));
     }
 
     private long quickGetUserId(){

@@ -67,21 +67,16 @@
     },
     {
       "name": "userfriend.self.params.rules",
-      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig",
-      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig"
+      "type": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
     },
     {
       "name": "userfriend.self.redis.key",
-      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig",
-      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+      "type": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
     }
   ],
   "properties": [
-    {
-      "name": "common.jwt.admin",
-      "type": "com.seek.friend.configobject.CommonData.JWTRoleData",
-      "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
-    },
     {
       "name": "common.jwt.global",
       "type": "com.seek.friend.configobject.CommonData.JWTGlobalData",
@@ -368,6 +363,16 @@
       "sourceType": "com.seek.friend.config.NacosConfig.User.UserRedisKeyConfig"
     },
     {
+      "name": "userfriend.self.params.rules.chat-record-image-dest",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules.description-max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
+    },
+    {
       "name": "userfriend.self.redis.key.apply-connection-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
@@ -398,9 +403,39 @@
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
     },
     {
+      "name": "userfriend.self.redis.key.record-get-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.record-id-count",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.record-insert-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.record-withdraw-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
       "name": "userfriend.self.redis.key.respond-application-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.room-get-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.room-id-count",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
     }
   ],
   "hints": [],

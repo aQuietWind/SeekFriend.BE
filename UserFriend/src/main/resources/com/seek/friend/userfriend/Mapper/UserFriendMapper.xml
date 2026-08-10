@@ -20,16 +20,17 @@
 
     <update id="applyFriend">
         update "user_friend_connection"
-        set applicant_user_id=#{applicantUserId},is_delete=false,is_accept=null
+        set applicant_user_id=#{applicantUserId},respondent_user_id=#{respondentUserId},is_delete=false,is_accept=null
         where connection_id=#{connectionId}
         and applicant_user_id is null
+        and respondent_user_id is null
         and is_delete=true
     </update>
 
     <insert id="insertFriendApplication">
         insert into "user_friend_connection"
-        (connection_id,first_user_id,second_user_id,applicant_user_id)
-        values(#{connectionId},#{applicantUserId},#{respondentUserId},#{applicantUserId});
+        (connection_id,first_user_id,second_user_id,applicant_user_id,respondent_user_id)
+        values(#{connectionId},#{applicantUserId},#{respondentUserId},#{applicantUserId},#{respondentUserId});
     </insert>
 
     <select id="getApplicantList" resultMap="UserFriendConnectionResultMap">
@@ -69,22 +70,19 @@
         and is_accept=true and is_delete=false limit #{need},offset #{start}
     </select>
 
-    <select id="getApplicantUserId">
-        select applicant_user_id from "user_friend_connection" where respondent_user_id=#{respondentUserId}
-        and is_accept=true
-        and is_delete=false
+    <select id="respondApplication" resultType="java.lang.Integer">
+        update "user_friend_connection" set is_accept=#{value}
+        <if test="value==false">,is_delete=true</if>
+        where connection_id=#{connectionId} and respondent_user_id=#{respondentUserId} and is_delete=false and is_accept is null
+        <if test="value==true">returning version</if>
     </select>
 
-    <update id="respondApplication">
-        update "user_friend_connection" set is_accept=#{value}
-        where connection_id=#{connectionId} and respondent_user_id=#{respondentUserId} and is_delete=false and is_accept is null
-    </update>
-
-    <update id="deleteFriend">
-        update "user_friend_connection" set is_delete=true
-        where connection_id=#{connectionId} and (respondent_user_id=#{userId} or applicant_user_id=#{userId})
+    <select id="deleteFriend" resultType="java.lang.Integer">
+        update "user_friend_connection" set is_delete=true,version=version+1
+        where connection_id=#{connectionId} and (first_user_id=#{userId} or second_user_id=#{userId})
         and is_delete=false and is_accept=true
-    </update>
+        returning version
+    </select>
 
 
 

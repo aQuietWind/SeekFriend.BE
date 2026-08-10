@@ -14,6 +14,7 @@ public class UserFriendConnectionDTO {
     private Long firstUserId;
     private Long secondUserId;
     private Long applicantUserId;
+    private Long respondentUserId;
     private LocalDateTime createTime;
     private Boolean accept;
     private Boolean delete;
