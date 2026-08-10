@@ -13,6 +13,8 @@ public class ChatRoomDTO {
     private Long roomId;
     private Long firstUserId;
     private Long secondUserId;
+    private Long connectionId;
+    private Integer version;
     private LocalDateTime lastestChatTime;
     private LocalDateTime createTime;
     private Boolean ableChat;

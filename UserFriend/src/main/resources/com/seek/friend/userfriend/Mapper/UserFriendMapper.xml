@@ -75,21 +75,21 @@
         and is_accept=true and is_delete=false limit #{need} offset #{start}
     </select>
 
-    <select id="respondApplication" resultType="java.lang.Integer">
+    <select id="respondApplication" resultType="com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO">
         update "user_friend_connection" set is_accept=#{value},
         respondent_user_id=null,applicant_user_id=null
         <if test="value==true">,version=version+1</if>
         <if test="value==false">,is_delete=true</if>
         where connection_id=#{connectionId} and respondent_user_id=#{respondentUserId} and is_delete=false and is_accept is null
-        <if test="value==true">returning version</if>
+        <if test="value==true">returning connection_id,first_user_id,second_user_id,version</if>
     </select>
 
-    <select id="deleteFriend" resultType="java.lang.Integer">
+    <select id="deleteFriend" resultType="com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO">
         update "user_friend_connection" set is_delete=true,version=version+1,
         respondent_user_id=null,applicant_user_id=null
         where connection_id=#{connectionId} and (first_user_id=#{userId} or second_user_id=#{userId})
         and is_delete=false and is_accept=true
-        returning version
+        returning connection_id,first_user_id,second_user_id,version
     </select>
 
 

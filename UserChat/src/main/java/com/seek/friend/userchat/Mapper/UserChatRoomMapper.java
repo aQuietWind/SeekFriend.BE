@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface UserChatRoomMapper {
     public List<ChatRoomDTO> getList(int start, int need,long userId);
-    public boolean updateState(long firstUserId,long secondUserId,boolean value);
-    public boolean insertChatRoom(long firstUserId,long secondUserId);
+    public boolean updateAbleChat(long connectionId, boolean value, int version);
+    public boolean insertChatRoom(long connectionId,long firstUserId,long secondUserId);
 }

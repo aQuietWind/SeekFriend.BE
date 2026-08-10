@@ -1,5 +1,6 @@
 package com.seek.friend.userfriend.Mapper;
 
+import com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO;
 import com.seek.friend.serviceobject.UserFriend.UserFriendConnectionDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +14,6 @@ public interface UserFriendMapper {
     public List<UserFriendConnectionDTO> getApplicantList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getRespondentList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getFriendList(int start, int need,long userId);
-    public Integer respondApplication(long connectionId,boolean value,long respondentUserId);
-    public Integer deleteFriend(long connectionId,long userId);
+    public ChatConnectionMQDTO respondApplication(long connectionId, boolean value, long respondentUserId);
+    public ChatConnectionMQDTO deleteFriend(long connectionId,long userId);
 }

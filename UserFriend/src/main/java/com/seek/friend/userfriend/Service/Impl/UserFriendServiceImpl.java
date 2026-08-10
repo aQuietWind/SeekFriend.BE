@@ -90,9 +90,9 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.commonIdCheck(connectionId);
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getRespondApplicationCooldown(),userId);
-        Integer version=userFriendMapper.respondApplication(connectionId,value,userId);
         if (value){
-            rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getInitChatRoom().getTag(),new ChatConnectionMQDTO(connectionId,version));
+            ChatConnectionMQDTO result=userFriendMapper.respondApplication(connectionId,value,userId);
+            rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getInitChatRoom().getTag(),result);
         }
     }
 
@@ -102,8 +102,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getDeleteConnectionCooldown(),userId);
         //逻辑删除该好友关系，并且发送信息到UserChat模块进行聊天室状态切换
-        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag()
-                ,new ChatConnectionMQDTO(connectionId,userFriendMapper.deleteFriend(connectionId,userId)));
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag(),userFriendMapper.deleteFriend(connectionId,userId));
     }
 
     private long quickGetUserId(){

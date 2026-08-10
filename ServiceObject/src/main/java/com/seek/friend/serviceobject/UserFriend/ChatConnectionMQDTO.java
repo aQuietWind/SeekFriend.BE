@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatConnectionMQDTO {
-    private long connectionId;
+    private Long connectionId;
+    private Long firstUserId;
+    private Long secondUserId;
     private Integer version;
 }

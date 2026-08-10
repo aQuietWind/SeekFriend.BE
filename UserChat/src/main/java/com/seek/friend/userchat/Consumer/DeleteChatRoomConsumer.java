@@ -18,16 +18,16 @@ import org.springframework.stereotype.Component;
 //下次我还是更加喜欢RabbitMQ
 @RocketMQMessageListener(consumerGroup = "userFriendTopicInitChatRoomConsumer",
         topic = "userChatTopic",
-        selectorExpression = "initChatRoom")
-public class InitChatRoomConsumer implements RocketMQListener<ChatConnectionMQDTO> {
+        selectorExpression = "deleteChatRoom")
+public class DeleteChatRoomConsumer implements RocketMQListener<ChatConnectionMQDTO> {
 
     private final UserChatRedisKeyConfig userChatRedisKeyConfig;
     private final RedisUtil redisUtil;
     private final UserChatRoomMapper userChatRoomMapper;
     private final CommonParamRulesConfig commonParamRulesConfig;
     @Autowired
-    public InitChatRoomConsumer(UserChatRedisKeyConfig userChatRedisKeyConfig,RedisUtil redisUtil,UserChatRoomMapper userChatRoomMapper
-    ,CommonParamRulesConfig commonParamRulesConfig) {
+    public DeleteChatRoomConsumer(UserChatRedisKeyConfig userChatRedisKeyConfig, RedisUtil redisUtil, UserChatRoomMapper userChatRoomMapper
+    , CommonParamRulesConfig commonParamRulesConfig) {
         this.userChatRedisKeyConfig = userChatRedisKeyConfig;
         this.redisUtil = redisUtil;
         this.userChatRoomMapper = userChatRoomMapper;
@@ -41,9 +41,7 @@ public class InitChatRoomConsumer implements RocketMQListener<ChatConnectionMQDT
 
     @Override
     public void onMessage(ChatConnectionMQDTO data){
-        //用版本号实现幂等效果，即，无论如何重试，什么意味，结果总是往更加新鲜的方向进行同步，直到两边结果完全一致
-        if (userChatRoomMapper.updateAbleChat(data.getConnectionId(), true, data.getVersion()))return;
-        userChatRoomMapper.insertChatRoom(data.getConnectionId(),data.getFirstUserId(),  data.getSecondUserId());
+        userChatRoomMapper.updateAbleChat(data.getConnectionId(),false, data.getVersion());
     }
 
 

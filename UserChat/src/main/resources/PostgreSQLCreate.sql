@@ -5,6 +5,8 @@ CREATE TABLE "chat_room" (
                         "room_id" bigint NOT NULL,
                         "first_user_id" bigint NOT NULL,
                         "second_user_id" bigint NOT NULL,
+                        "connection_id" bigint NOT NULL,
+                        "version" int NOT NULL default 0,
                         "lastest_chat_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         "create_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         "able_chat" boolean NOT NULL DEFAULT true,
