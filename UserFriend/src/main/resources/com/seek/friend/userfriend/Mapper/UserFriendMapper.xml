@@ -10,12 +10,12 @@
         <result property="delete" column="is_delete" />
     </resultMap>
 
-    <select id="getConnectionIdByUser" resultType="java.lang.String">
+    <select id="getConnectionIdByUser" resultType="java.lang.Long">
         select
-        connection_id,
+        connection_id
         from "user_friend_connection"
-        where (first_connection_id=#{firstUserId} or second_user_id=#{firstUserId})
-        and (first_connection_id=#{secondUserId} or second_user_id=#{secondUserId})
+        where (first_user_id=#{firstUserId} and second_user_id=#{secondUserId})
+        or (first_user_id=#{secondUserId} and second_user_id=#{firstUserId})
     </select>
 
     <update id="applyFriend">
@@ -39,46 +39,54 @@
         first_user_id,
         second_user_id,
         applicant_user_id,
+        respondent_user_id,
         create_time,
         is_accept,
         is_delete
         from "user_friend_connection" where respondent_user_id=#{userId} and is_accept is null and is_delete=false
-        limit #{need},offset #{start}
+        limit #{need} offset #{start}
     </select>
 
     <select id="getRespondentList" resultMap="UserFriendConnectionResultMap">
         select
         connection_id,
+        first_user_id,
+        second_user_id,
         applicant_user_id,
         respondent_user_id,
         create_time,
         is_accept,
         is_delete
         from "user_friend_connection" where applicant_user_id=#{userId} and is_accept is null and is_delete=false
-        limit #{need},offset #{start}
+        limit #{need} offset #{start}
     </select>
 
     <select id="getFriendList" resultMap="UserFriendConnectionResultMap">
         select
         connection_id,
+        first_user_id,
+        second_user_id,
         applicant_user_id,
         respondent_user_id,
         create_time,
         is_accept,
         is_delete
-        from "user_friend_connection" where (applicant_user_id=#{userId} or respondent_user_id=#{userId})
-        and is_accept=true and is_delete=false limit #{need},offset #{start}
+        from "user_friend_connection" where (first_user_id=#{userId} or second_user_id=#{userId})
+        and is_accept=true and is_delete=false limit #{need} offset #{start}
     </select>
 
     <select id="respondApplication" resultType="java.lang.Integer">
-        update "user_friend_connection" set is_accept=#{value}
+        update "user_friend_connection" set is_accept=#{value},
+        respondent_user_id=null,applicant_user_id=null
+        <if test="value==true">,version=version+1</if>
         <if test="value==false">,is_delete=true</if>
         where connection_id=#{connectionId} and respondent_user_id=#{respondentUserId} and is_delete=false and is_accept is null
         <if test="value==true">returning version</if>
     </select>
 
     <select id="deleteFriend" resultType="java.lang.Integer">
-        update "user_friend_connection" set is_delete=true,version=version+1
+        update "user_friend_connection" set is_delete=true,version=version+1,
+        respondent_user_id=null,applicant_user_id=null
         where connection_id=#{connectionId} and (first_user_id=#{userId} or second_user_id=#{userId})
         and is_delete=false and is_accept=true
         returning version
