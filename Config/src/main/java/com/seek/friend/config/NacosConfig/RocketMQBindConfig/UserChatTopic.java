@@ -12,5 +12,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(ConfigKeyEnum.User_Chat_Topic_Config)
 public class UserChatTopic {
     private String topicName;
-    private ConsumerData syncChatRoom;
+    private ConsumerData syncLastestChatTimeRoom;
+    private ConsumerData deleteFile;
 }

@@ -233,7 +233,7 @@
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
     },
     {
-      "name": "mq.name.bind.user-chat-topic.sync-chat-room",
+      "name": "mq.name.bind.user-chat-topic.sync-lastest-chat-time-room",
       "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
     },
