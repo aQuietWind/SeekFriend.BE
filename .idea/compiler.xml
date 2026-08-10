@@ -8,9 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="UserFriend" />
-        <module name="MQUtli" />
         <module name="User" />
         <module name="AiFriend" />
+        <module name="MQUtil" />
         <module name="Report" />
         <module name="Config" />
         <module name="Util" />
@@ -35,7 +35,7 @@
       <module name="ConfigObject" options="-parameters" />
       <module name="Friend" options="-parameters" />
       <module name="Gateway" options="-parameters" />
-      <module name="MQUtli" options="-parameters" />
+      <module name="MQUtil" options="-parameters" />
       <module name="Report" options="-parameters" />
       <module name="ServiceObject" options="-parameters" />
       <module name="User" options="-parameters" />

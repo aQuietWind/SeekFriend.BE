@@ -8,8 +8,10 @@ import com.seek.friend.serviceobject.UserFriend.UserFriendConnectionDTO;
 import com.seek.friend.serviceobject.UserFriend.UserFriendMQConnectionDTO;
 import com.seek.friend.userfriend.Mapper.UserFriendMapper;
 import com.seek.friend.userfriend.Service.UserFriendService;
+import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
 import com.seek.friend.util.Redis.RedisUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -28,15 +30,21 @@ public class UserFriendServiceImpl implements UserFriendService {
     private final UserFriendMapper userFriendMapper;
     private final RocketMQUtil rocketMQUtil;
     private final UserFriendTopic userFriendTopic;
+    private final IdUtil idUtil;
     @Autowired
     public UserFriendServiceImpl(CommonParamRulesConfig commonParamRulesConfig, RedisUtil redisUtil, UserFriendRedisKeyConfig userFriendRedisKeyConfig
-    , UserFriendMapper userFriendMapper, RocketMQUtil rocketMQUtil, UserFriendTopic userFriendTopic) {
+    , UserFriendMapper userFriendMapper, RocketMQUtil rocketMQUtil, UserFriendTopic userFriendTopic, IdUtil idUtil) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.redisUtil = redisUtil;
         this.userFriendRedisKeyConfig = userFriendRedisKeyConfig;
         this.userFriendMapper = userFriendMapper;
         this.rocketMQUtil = rocketMQUtil;
         this.userFriendTopic = userFriendTopic;
+        this.idUtil = idUtil;
+    }
+    @PostConstruct
+    public void init(){
+        redisUtil.trySetString(userFriendRedisKeyConfig.getConnectionIdCount(),null,""+commonParamRulesConfig.getIdCapacity());
     }
 
     @Override
@@ -44,7 +52,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.userIdCheck(userId);
         long ownId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getApplyConnectionCooldown(),userId);
-        userFriendMapper.applyFriend(ownId,userId);
+        userFriendMapper.applyFriend(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
     }
 
     @Override

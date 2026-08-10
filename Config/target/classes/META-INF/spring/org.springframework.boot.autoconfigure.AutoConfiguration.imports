@@ -8,4 +8,3 @@ com.seek.friend.config.NativeConfig.SentinelConfig.HeaderOriginParser
 com.seek.friend.config.NativeConfig.SentinelConfig.SentinelBlockHandler
 com.seek.friend.config.NativeConfig.SentinelConfig.SentinelGlobalApiConfig
 com.seek.friend.config.NativeConfig.CommonConfig.WebConfig
-com.seek.friend.config.NativeConfig.CommonConfig.EsConfig

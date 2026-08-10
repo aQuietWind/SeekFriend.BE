@@ -36,6 +36,16 @@
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
     },
     {
+      "name": "mq.name.bind.user-chat-topic",
+      "type": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
+    },
+    {
+      "name": "mq.name.bind.user-friend-topic",
+      "type": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic"
+    },
+    {
       "name": "mq.name.bind.user-topic",
       "type": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserTopic",
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserTopic"
@@ -54,6 +64,16 @@
       "name": "user.self.redis.key",
       "type": "com.seek.friend.config.NacosConfig.User.UserRedisKeyConfig",
       "sourceType": "com.seek.friend.config.NacosConfig.User.UserRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules",
+      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key",
+      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
     }
   ],
   "properties": [
@@ -218,6 +238,31 @@
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
     },
     {
+      "name": "mq.name.bind.user-chat-topic.sync-chat-room",
+      "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
+    },
+    {
+      "name": "mq.name.bind.user-chat-topic.topic-name",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
+    },
+    {
+      "name": "mq.name.bind.user-friend-topic.delete-chat-room",
+      "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic"
+    },
+    {
+      "name": "mq.name.bind.user-friend-topic.init-chat-room",
+      "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic"
+    },
+    {
+      "name": "mq.name.bind.user-friend-topic.topic-name",
+      "type": "java.lang.String",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic"
+    },
+    {
       "name": "mq.name.bind.user-topic.change-ai-friend-amount",
       "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserTopic"
@@ -321,6 +366,41 @@
       "name": "user.self.redis.key.user-id-count",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.User.UserRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.apply-connection-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.connection-id-count",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.delete-connection-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-applicant-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-friend-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-respondent-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.respond-application-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
     }
   ],
   "hints": [],
