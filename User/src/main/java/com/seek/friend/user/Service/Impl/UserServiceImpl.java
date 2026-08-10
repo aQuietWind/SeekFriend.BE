@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
@@ -178,11 +179,12 @@ public class UserServiceImpl implements UserService {
 
     //删除用户
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteUser(String opt){
         //userId获取
         long userId=TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         //检验验证码
-        oPTUtil.checkFromRedis(userRedisKeyConfig.getDeleteUserOpt(),userId,opt);
+        oPTUtil.checkFromRedis(userRedisKeyConfig.getDeleteUserOpt(),phoneCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeinePhone(),userMapper::getPhoneNumber),opt);
         //逻辑删除用户
         quickUpdateUser(k->userMapper.deleteUser(userId),userId);
         //清空token

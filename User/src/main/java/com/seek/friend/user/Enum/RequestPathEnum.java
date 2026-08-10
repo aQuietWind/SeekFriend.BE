@@ -13,7 +13,7 @@ public class RequestPathEnum {
     public static final String User = "/user";
     public static final String User_Update_Header_Image = "/header";
     public static final String User_Update_Password = "/password";
-    public static final String User_Update_Message = "/message";
+    public static final String User_Update_Info = "/info";
     public static final String User_Get_Detail = "/detail";
     public static final String User_Get_Self = "/self";
     public static final String User_Get_Simple = "/simple";

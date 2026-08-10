@@ -53,7 +53,7 @@ public class UserController{
     }
 
     //改用户自身信息
-    @PutMapping(RequestPathEnum.User_Update_Message)
+    @PutMapping(RequestPathEnum.User_Update_Info)
     public Result<Void> updateUserMessage(@RequestBody UserDTO userDTO){
         userService.updateUserInfo(userDTO);
         return Result.success();

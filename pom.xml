@@ -162,6 +162,12 @@
                 <artifactId>Util</artifactId>
                 <version>${self.version}</version>
             </dependency>
+            <!--该项目的MQUtil模块        -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>MQUtil</artifactId>
+                <version>${self.version}</version>
+            </dependency>
             <!--该项目的Config模块        -->
             <dependency>
                 <groupId>${groupId}</groupId>
@@ -186,7 +192,7 @@
         <module>ServiceObject</module>
         <module>ConfigObject</module>
         <module>Config</module>
-        <module>MQUtli</module>
+        <module>MQUtil</module>
     </modules>
 
 

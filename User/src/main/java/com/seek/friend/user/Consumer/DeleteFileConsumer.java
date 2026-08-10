@@ -17,7 +17,6 @@ public class DeleteFileConsumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String path){
-        System.err.println(path);
         FileRemove.removeFileByPath(path);
     }
 

@@ -13,9 +13,10 @@ public class ConfigKeyEnum {
     public static final String User_Params_Rules_Config="user.self.params.rules";
     public static final String User_Redis_Key_Config="user.self.redis.key";
     public static final String User_Caffeine_Config="user.self.jvm-caffeine";
-    public static final String User_Redis_Stream_Config="user.self.redis.stream";
+
+    public static final String User_Friend_Params_Rules_Config="userfriend.self.params.rules";
+    public static final String User_Friend_Redis_Key_Config="userfriend.self.redis.key";
 
     public static final String User_Topic_Config="mq.name.bind.user-topic";
-//    public static final String =;
-//    public static final String =;
+    public static final String User_Friend_Topic_Config="mq.name.bind.user-topic";
 }

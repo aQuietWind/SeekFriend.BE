@@ -33,7 +33,7 @@
         <if test="oldAddr==null">IS NULL</if>
     </update>
     
-    <update id="updateUserMessage">
+    <update id="updateUserInfo">
         update "user"
         <set>
             <if test="username!=null">username=#{username},</if>
@@ -47,7 +47,7 @@
         update "user" set order_amomunt=order_amount+1 where user_id=#{userId} and is_delete=false
     </update>
 
-    <select id="getUsersSimpleMessage" resultMap="UserResultMap">
+    <select id="getUsersSimpleInfo" resultMap="UserResultMap">
         select
         user_id,
         username,
@@ -66,7 +66,7 @@
     </select>
 
     <update id="deleteUser">
-        update "user" set is_delete=true and phone_number=concat(user_id,"删除",phone_number)
+        update "user" set is_delete=true, phone_number=concat(user_id,'删除',phone_number)
         where user_id=#{userId} and is_delete=false
     </update>
 
