@@ -82,10 +82,20 @@
             <groupId>com.seek.friend</groupId>
             <artifactId>Util</artifactId>
         </dependency>
+        <!--        该项目的Util依赖-->
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>MQUtil</artifactId>
+        </dependency>
         <!--        该项目的Config依赖-->
         <dependency>
             <groupId>com.seek.friend</groupId>
             <artifactId>Config</artifactId>
+        </dependency>
+        <!--        Websocket通话技术依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
     </dependencies>
 

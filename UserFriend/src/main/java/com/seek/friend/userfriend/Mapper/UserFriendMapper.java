@@ -7,8 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface UserFriendMapper {
-
-    public void applyFriend(long connectionId,long applicantUserId,long respondentUserId);
+    public Long getConnectionIdByUser(long firstUserId,long secondUserId);
+    public boolean applyFriend(long connectionId,long applicantUserId);
+    public boolean insertFriendApplication(long connectionId,long applicantUserId,long respondentUserId);
     public List<UserFriendConnectionDTO> getApplicantList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getRespondentList(int start, int need,long userId);
     public List<UserFriendConnectionDTO> getFriendList(int start, int need,long userId);

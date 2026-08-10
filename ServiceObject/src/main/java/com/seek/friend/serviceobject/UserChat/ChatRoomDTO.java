@@ -1,4 +1,4 @@
-package com.seek.friend.serviceobject.UserFriend;
+package com.seek.friend.serviceobject.UserChat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserFriendConnectionDTO {
-    private Long connectionId;
+@NoArgsConstructor
+public class ChatRoomDTO {
+    private Long roomId;
     private Long firstUserId;
     private Long secondUserId;
-    private Long applicantUserId;
+    private LocalDateTime lastestChatTime;
     private LocalDateTime createTime;
-    private Boolean accept;
-    private Boolean delete;
+    private Boolean ableChat;
 }

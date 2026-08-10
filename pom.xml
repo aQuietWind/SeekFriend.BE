@@ -186,7 +186,6 @@
         <module>UserChat</module>
         <module>AiChat</module>
         <module>Report</module>
-        <module>Admin</module>
         <module>Util</module>
         <module>Config</module>
         <module>ServiceObject</module>

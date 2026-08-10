@@ -10,6 +10,8 @@ import com.seek.friend.userfriend.Mapper.UserFriendMapper;
 import com.seek.friend.userfriend.Service.UserFriendService;
 import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
+import com.seek.friend.util.Exception.BizException;
+import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +54,13 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.userIdCheck(userId);
         long ownId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getApplyConnectionCooldown(),userId);
-        System.err.println(1111);
-        userFriendMapper.applyFriend(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
+        Long connectionId=userFriendMapper.getConnectionIdByUser(ownId,userId);
+        if (connectionId==null){
+            userFriendMapper.insertFriendApplication(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
+        }else {
+            userFriendMapper.applyFriend(connectionId,userId);
+        }
+
     }
 
     @Override

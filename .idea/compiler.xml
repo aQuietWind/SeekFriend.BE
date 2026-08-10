@@ -14,7 +14,6 @@
         <module name="Report" />
         <module name="Config" />
         <module name="Util" />
-        <module name="Admin" />
         <module name="AiChat" />
         <module name="UserChat" />
         <module name="Gateway" />
@@ -23,6 +22,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
+      <module name="Admin" target="21" />
       <module name="Friend" target="21" />
     </bytecodeTargetLevel>
   </component>

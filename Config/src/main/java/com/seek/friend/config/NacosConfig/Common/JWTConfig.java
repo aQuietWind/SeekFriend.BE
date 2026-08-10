@@ -17,10 +17,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @NoArgsConstructor
 public class JWTConfig {
     private JWTRoleData user;
-    private JWTRoleData admin;
     private JWTGlobalData global;
 
     public JWTRoleData[] getAllJWTData() {
-        return new JWTRoleData[]{user,admin};
+        return new JWTRoleData[]{user};
     }
 }

@@ -10,21 +10,39 @@
         <result property="delete" column="is_delete" />
     </resultMap>
 
-    <insert id="applyFriend">
+    <select id="getConnectionIdByUser" resultType="java.lang.String">
+        select
+        connection_id,
+        from "user_friend_connection"
+        where (first_connection_id=#{firstUserId} or second_user_id=#{firstUserId})
+        and (first_connection_id=#{secondUserId} or second_user_id=#{secondUserId})
+    </select>
+
+    <update id="applyFriend">
+        update "user_friend_connection"
+        set applicant_user_id=#{applicantUserId},is_delete=false,is_accept=null
+        where connection_id=#{connectionId}
+        and applicant_user_id is null
+        and is_delete=true
+    </update>
+
+    <insert id="insertFriendApplication">
         insert into "user_friend_connection"
-        (connection_id,applicant_user_id,respondent_user_id)
-        values(#{connectionId},#{applicantUserId},#{respondentUserId});
+        (connection_id,first_user_id,second_user_id,applicant_user_id)
+        values(#{connectionId},#{applicantUserId},#{respondentUserId},#{applicantUserId});
     </insert>
 
     <select id="getApplicantList" resultMap="UserFriendConnectionResultMap">
         select
         connection_id,
+        first_user_id,
+        second_user_id,
         applicant_user_id,
-        respondent_user_id,
         create_time,
         is_accept,
         is_delete
         from "user_friend_connection" where respondent_user_id=#{userId} and is_accept is null and is_delete=false
+        limit #{need},offset #{start}
     </select>
 
     <select id="getRespondentList" resultMap="UserFriendConnectionResultMap">
@@ -36,6 +54,7 @@
         is_accept,
         is_delete
         from "user_friend_connection" where applicant_user_id=#{userId} and is_accept is null and is_delete=false
+        limit #{need},offset #{start}
     </select>
 
     <select id="getFriendList" resultMap="UserFriendConnectionResultMap">
@@ -47,7 +66,7 @@
         is_accept,
         is_delete
         from "user_friend_connection" where (applicant_user_id=#{userId} or respondent_user_id=#{userId})
-        and is_accept=true and is_delete=false
+        and is_accept=true and is_delete=false limit #{need},offset #{start}
     </select>
 
     <select id="getApplicantUserId">
