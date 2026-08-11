@@ -1,33 +1,34 @@
-CREATE DATABASE seek_friend_user_friend;
+
+CREATE DATABASE seek_friend_ai_friend;
 -- 这里需要自己找方法切换数据库
-drop table if exists "user_friend_connection";
-CREATE TABLE "user_friend_connection" (
-                        "connection_id" bigint NOT NULL,
-                        "first_user_id" bigint NOT NULL,
-                        "second_user_id" bigint NOT NULL,
-                        "applicant_user_id" bigint,
-                        "respondent_user_id" bigint,
-                        "version" int not null default 0,
-                        "create_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                        "is_accept" boolean,
-                        "is_delete" boolean NOT NULL DEFAULT false,
-                        PRIMARY KEY ("connection_id")
+drop table if exists "ai_friend";
+CREATE TABLE "ai_friend" (
+                             "ai_friend_id" bigint NOT NULL,
+                             "user_id" bigint NOT NULL,
+                             "name" varchar(20) not null ,
+                             "description" varchar(300),
+                             "hobbies" varchar(300) ,
+                             "characteristic" varchar(300) ,
+                             "like_score" int not null default 10,
+                             "character_history" varchar(800) not null ,
+                             "header_image_addr" varchar(50) unique ,
+                             "create_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                             "is_delete" boolean NOT NULL DEFAULT false,
+                             PRIMARY KEY ("ai_friend_id")
 );
-COMMENT ON TABLE "user_friend_connection" IS '用户好友关系表';
-COMMENT ON COLUMN "user_friend_connection"."connection_id" IS '该关系的id';
-COMMENT ON COLUMN "user_friend_connection"."first_user_id" IS '第一个用户的id';
-COMMENT ON COLUMN "user_friend_connection"."second_user_id" IS '第二个用户的id';
-COMMENT ON COLUMN "user_friend_connection"."applicant_user_id" IS '发出该申请的用户id';
-COMMENT ON COLUMN "user_friend_connection"."respondent_user_id" IS '响应该申请的用户id';
-COMMENT ON COLUMN "user_friend_connection"."version" IS '目前版本号';
-COMMENT ON COLUMN "user_friend_connection"."create_time" IS '创建时间';
-COMMENT ON COLUMN "user_friend_connection"."is_accept" IS '是否被接受';
-COMMENT ON COLUMN "user_friend_connection"."is_delete" IS '是否被删除';
+COMMENT ON TABLE "ai_friend" IS 'ai好友表';
+COMMENT ON COLUMN "ai_friend"."ai_friend_id" IS '该ai好友的id';
+COMMENT ON COLUMN "ai_friend"."user_id" IS '所属用户的id';
+COMMENT ON COLUMN "ai_friend"."name" IS 'ai的名称';
+COMMENT ON COLUMN "ai_friend"."description" IS '该ai的描述';
+COMMENT ON COLUMN "ai_friend"."hobbies" IS '该ai的爱好';
+COMMENT ON COLUMN "ai_friend"."characteristic" IS '特点，个性等等';
+COMMENT ON COLUMN "ai_friend"."like_score" IS '对你的喜爱分数';
+COMMENT ON COLUMN "ai_friend"."character_history" IS 'ai角色的历史背景，由ai自己生成';
+COMMENT ON COLUMN "ai_friend"."create_time" IS '创建时间';
+COMMENT ON COLUMN "ai_friend"."is_delete" IS '是否被删除';
 -- 普通索引（pg CREATE INDEX 放在表外面）
-CREATE INDEX "apply_index" ON "user_friend_connection"(applicant_user_id);
-CREATE INDEX "respondent_index" ON "user_friend_connection"(respondent_user_id);
-CREATE INDEX "first_user_index" ON "user_friend_connection"(first_user_id);
-CREATE INDEX "second_user_index" ON "user_friend_connection"(second_user_id);
+CREATE INDEX "user_index" ON "ai_friend"(user_id);
 
 
 
