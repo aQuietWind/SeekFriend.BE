@@ -90,8 +90,8 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.commonIdCheck(connectionId);
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getRespondApplicationCooldown(),userId);
-        if (value){
-            ChatConnectionMQDTO result=userFriendMapper.respondApplication(connectionId,value,userId);
+        ChatConnectionMQDTO result=userFriendMapper.respondApplication(connectionId,value,userId);
+        if (value&&result!=null){
             rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getInitChatRoom().getTag(),result);
         }
     }

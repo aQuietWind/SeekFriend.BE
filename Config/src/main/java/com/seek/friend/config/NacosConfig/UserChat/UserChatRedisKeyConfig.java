@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @RefreshScope
-@ConfigurationProperties(ConfigKeyEnum.User_Friend_Redis_Key_Config)
+@ConfigurationProperties(ConfigKeyEnum.User_Chat_Redis_Key_Config)
 @Data
 public class UserChatRedisKeyConfig {
     private RedisKeyData roomGetListCooldown;

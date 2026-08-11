@@ -11,5 +11,5 @@ public interface UserChatRoomMapper {
     public boolean updateAbleChat(long connectionId, boolean value, int version);
     public boolean insertChatRoom(long roomId,long connectionId,long firstUserId,long secondUserId);
     public boolean syncLastestChatTime(long roomId);
-    public ChatRoomDTO checkRoomConnectionWithUser(long roomId,long userId);
+    public boolean checkRoomConnectionWithUser(long roomId,long userId);
 }

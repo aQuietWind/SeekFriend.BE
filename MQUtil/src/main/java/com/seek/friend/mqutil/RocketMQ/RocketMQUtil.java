@@ -22,6 +22,7 @@ public class RocketMQUtil {
         rocketMQTemplate.syncSend(getDestination(topic,tag), message);
     }
 
+    //只能用于72h以内的延时
     public void sendDelay(String topic,String tag, Object message,long delaySeconds) throws UnsupportedEncodingException, MQBrokerException, RemotingException, InterruptedException, MQClientException {
         Message msg=new Message(topic,tag,message.toString().getBytes(RemotingHelper.DEFAULT_CHARSET));
         msg.setDelayTimeSec(delaySeconds);

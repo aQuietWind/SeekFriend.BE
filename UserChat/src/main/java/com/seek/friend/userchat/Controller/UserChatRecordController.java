@@ -4,9 +4,13 @@ import com.seek.friend.serviceobject.Common.Result;
 import com.seek.friend.serviceobject.UserChat.ChatRecordDTO;
 import com.seek.friend.userchat.Enum.RequestPathEnum;
 import com.seek.friend.userchat.Service.UserChatRecordService;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -21,8 +25,8 @@ public class UserChatRecordController {
 
     //插入聊天
     @PostMapping(RequestPathEnum.Chat_Record_Chat)
-    public Result<Void> insert(String description, @RequestBody MultipartFile file, long chatRoomId){
-        userChatRecordService.insert(description,file,chatRoomId);
+    public Result<Void> insert(String description, @RequestBody MultipartFile file, long roomId) throws MQBrokerException, RemotingException, UnsupportedEncodingException, InterruptedException, MQClientException {
+        userChatRecordService.insert(description,file,roomId);
         return Result.success();
     }
 

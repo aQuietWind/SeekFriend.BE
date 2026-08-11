@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
 //下次我还是更加喜欢RabbitMQ
 @RocketMQMessageListener(consumerGroup = "userFriendTopicInitChatRoomConsumer",
         topic = "userFriendTopic",
-        selectorExpression = "insertChatRecord")
+        maxReconsumeTimes = 0,
+        selectorExpression = "initChatRoom")
 public class InitChatRoomConsumer implements RocketMQListener<ChatConnectionMQDTO> {
 
     private final UserChatRedisKeyConfig userChatRedisKeyConfig;
@@ -45,6 +46,7 @@ public class InitChatRoomConsumer implements RocketMQListener<ChatConnectionMQDT
 
     @Override
     public void onMessage(ChatConnectionMQDTO data){
+        System.err.println("init chat room:"+data);
         //用版本号实现幂等效果，即，无论如何重试，什么意味，结果总是往更加新鲜的方向进行同步，直到两边结果完全一致
         if (userChatRoomMapper.updateAbleChat(data.getConnectionId(), true, data.getVersion()))return;
         try {

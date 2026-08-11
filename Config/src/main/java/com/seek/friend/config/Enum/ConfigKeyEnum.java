@@ -17,6 +17,9 @@ public class ConfigKeyEnum {
     public static final String User_Friend_Params_Rules_Config="userfriend.self.params.rules";
     public static final String User_Friend_Redis_Key_Config="userfriend.self.redis.key";
 
+    public static final String User_Chat_Params_Rules_Config="userchat.self.params.rules";
+    public static final String User_Chat_Redis_Key_Config="userchat.self.redis.key";
+
     public static final String User_Topic_Config="mq.name.bind.user-topic";
     public static final String User_Friend_Topic_Config="mq.name.bind.user-friend-topic";
     public static final String User_Chat_Topic_Config="mq.name.bind.user-chat-topic";

@@ -9,14 +9,16 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @Slf4j
 //可以用配置地址取代该常量配置,But,I am too lazy to do it!
 //下次我还是更加喜欢RabbitMQ
-@RocketMQMessageListener(consumerGroup = "userChatTopicChatInformConsumer",
+@RocketMQMessageListener(consumerGroup = "userChatTopicChatInformConsumer-"+"${userchat.self.server-id}",
         topic = "userFriendTopic",
         selectorExpression = "insertChatRecord")
-public class ChatInformConsumer implements RocketMQListener<ChatConnectionMQDTO> {
+public class ChatInformConsumer implements RocketMQListener<Long> {
 
     private final ChatInformServer chatInformServer;
     @Autowired
@@ -25,8 +27,12 @@ public class ChatInformConsumer implements RocketMQListener<ChatConnectionMQDTO>
     }
 
     @Override
-    public void onMessage(ChatConnectionMQDTO data){
-
+    public void onMessage(Long roomId){
+        try {
+            chatInformServer.broadcastRoomId(roomId,"有新的消息");
+        } catch (IOException e) {
+            log.error("消费者广播聊天消息时出现异常",e);
+        }
     }
 
 

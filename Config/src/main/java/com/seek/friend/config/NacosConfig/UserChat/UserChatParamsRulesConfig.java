@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @RefreshScope
-@ConfigurationProperties(ConfigKeyEnum.User_Friend_Params_Rules_Config)
+@ConfigurationProperties(ConfigKeyEnum.User_Chat_Params_Rules_Config)
 @Data
 public class UserChatParamsRulesConfig {
     private Integer descriptionMax;

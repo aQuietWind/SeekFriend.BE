@@ -1,16 +1,15 @@
 package com.seek.friend.userchat.WebSocketServer.WebSocketServer;
 
 import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
-import com.seek.friend.config.NacosConfig.Common.JWTConfig;
 import com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig;
-import com.seek.friend.configobject.RedisData.RedisKeyData;
-import com.seek.friend.userchat.Service.UserChatRoomService;
+import com.seek.friend.userchat.Mapper.UserChatRoomMapper;
 import com.seek.friend.util.Context.TokenIdContext;
+import com.seek.friend.util.Exception.BizException;
+import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.util.UriComponents;
@@ -34,15 +33,15 @@ public class ChatInformServer implements WebSocketHandler {
     private final CommonParamRulesConfig commonParamRulesConfig;
     private final UserChatRedisKeyConfig userChatRedisKeyConfig;
     private final RedisUtil redisUtil;
-    private final UserChatRoomService userChatRoomService;
+    private final UserChatRoomMapper userChatRoomMapper;
 
     @Autowired
     public ChatInformServer(CommonParamRulesConfig commonParamRulesConfig
-    , UserChatRedisKeyConfig userChatRedisKeyConfig, RedisUtil redisUtil, UserChatRoomService userChatRoomService) {
+    , UserChatRedisKeyConfig userChatRedisKeyConfig, RedisUtil redisUtil, UserChatRoomMapper userChatRoomMapper) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.userChatRedisKeyConfig = userChatRedisKeyConfig;
         this.redisUtil = redisUtil;
-        this.userChatRoomService = userChatRoomService;
+        this.userChatRoomMapper = userChatRoomMapper;
     }
 
     // 连接建立成功
@@ -54,7 +53,7 @@ public class ChatInformServer implements WebSocketHandler {
         //获取该请求账户的Id
         long userId=quickGetIdAndCheckCooldown();
         //检查该账户是否有权限监听该合格聊天室
-        userChatRoomService.checkRoomConnectionWithUser(roomId, userId);
+        if (!userChatRoomMapper.checkRoomConnectionWithUser(roomId, userId))throw new BizException(ErrorCodeEnum.CONDITION_NOT_PASS);
         //放置该session
         quickSaveSession(session,roomId,userId);
     }
@@ -79,9 +78,8 @@ public class ChatInformServer implements WebSocketHandler {
 
 
     //对指定的聊天室id广播消息
-    public void broadcastRoomId(long roomId,long userId,String msg) throws IOException {
-        ConcurrentHashMap<Long,WebSocketSession> map=Session_Map.get(roomId);
-        for (Map.Entry<Long, WebSocketSession> entry : map.entrySet()) {
+    public void broadcastRoomId(long roomId,String msg) throws IOException {
+        for (Map.Entry<Long, WebSocketSession> entry : Session_Map.get(roomId).entrySet()) {
             //发送消息
             if (entry.getValue().isOpen()) entry.getValue().sendMessage(new TextMessage(msg));
         }
@@ -98,12 +96,12 @@ public class ChatInformServer implements WebSocketHandler {
         if (roomId!=null)Session_Map.get((Long) roomId).remove( (Long) session.getAttributes().get(User_Id),session);
     }
 
-    private void quickSaveSession(WebSocketSession session,long roomId,long userId){
+    private void quickSaveSession(WebSocketSession session,long roomId,long userId) throws IOException {
         //先放置，方便后续拿取
         session.getAttributes().put(Room_Id, roomId);
         session.getAttributes().put(User_Id, userId);
         Session_Map.computeIfAbsent(roomId, k -> new ConcurrentHashMap<>());
-        Session_Map.get(roomId).put(userId,session);
+        if (Session_Map.get(roomId).putIfAbsent(userId,session)!=null)session.close();
     }
 
 

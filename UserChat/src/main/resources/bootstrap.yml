@@ -36,7 +36,11 @@ spring:
 
 #  端口设置
 server:
-  port: 10002
+  port: 10003
+
+userchat:
+  self:
+    server-id: 1
 
 
 

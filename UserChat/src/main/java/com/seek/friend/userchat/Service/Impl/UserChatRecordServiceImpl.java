@@ -7,11 +7,9 @@ import com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig;
 import com.seek.friend.configobject.RedisData.RedisKeyData;
 import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
 import com.seek.friend.serviceobject.UserChat.ChatRecordDTO;
-import com.seek.friend.serviceobject.UserChat.RoomInformMQDTO;
 import com.seek.friend.userchat.Mapper.UserChatRecordMapper;
 import com.seek.friend.userchat.Mapper.UserChatRoomMapper;
 import com.seek.friend.userchat.Service.UserChatRecordService;
-import com.seek.friend.userchat.Service.UserChatRoomService;
 import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
 import com.seek.friend.util.Exception.BizException;
@@ -31,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,13 +47,13 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
     private final RocketMQUtil rocketMQUtil;
     private final UserChatTopic userChatTopic;
     private final IdUtil idUtil;
-    private final UserChatRoomService userChatRoomService;
+    private final UserChatRoomMapper userChatRoomMapper;
 
     @Autowired
     public UserChatRecordServiceImpl(StringRedisTemplate stringRedisTemplate, UserChatRedisKeyConfig userChatRedisKeyConfig
             , CommonParamRulesConfig commonParamRulesConfig, UserChatParamsRulesConfig userChatParamsRulesConfig
             , UserChatRecordMapper userChatRecordMapper, RedisUtil redisUtil, RocketMQUtil rocketMQUtil, UserChatTopic userChatTopic
-            , IdUtil idUtil , UserChatRoomService userChatRoomService) {
+            , IdUtil idUtil , UserChatRoomMapper userChatRoomMapper) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.userChatRedisKeyConfig = userChatRedisKeyConfig;
         this.commonParamRulesConfig = commonParamRulesConfig;
@@ -66,7 +63,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         this.rocketMQUtil = rocketMQUtil;
         this.userChatTopic = userChatTopic;
         this.idUtil = idUtil;
-        this.userChatRoomService = userChatRoomService;
+        this.userChatRoomMapper = userChatRoomMapper;
     }
 
     @PostConstruct
@@ -84,8 +81,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         //获取tokenId,并且检测冷却
         long userId=quickGetIdAndCheckCooldown(userChatRedisKeyConfig.getRecordInsertCooldown());
         //事先检查是否存在该关联以及是否可以去聊天，该操作可以通过redis实现（但是会引入redis宕机所必须应对麻烦，对该操作性能提升可能不是很明显），此处不多展示
-        //顺便获取另外一个用户Id,目的是用于等一会的通知效果
-        Long anotherUserId=userChatRoomService.checkRoomConnectionWithUser(roomId,userId);
+        if (!userChatRoomMapper.checkRoomConnectionWithUser(roomId,userId))throw new BizException(ErrorCodeEnum.CONDITION_NOT_PASS);
         //先保存文件
         String addr=null;
         if (file!=null&&!file.isEmpty())addr=quickSaveRecordImage(file);
@@ -96,7 +92,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
                 , description, addr, LocalDateTime.now().plusSeconds(userChatParamsRulesConfig.getRecordAbleWithdrawSeconds()),null, null));
         //通过MQ消费者通知WebSocket有新的聊天记录,当然,此处也可以选择直接进行通知,我也不清楚性能相差怎么样
         //同时这里的消息也会被另外一个消费者组拿走消费（同步最新聊天时间）,因为他俩共用一个tag
-        rocketMQUtil.send(userChatTopic.getTopicName(),userChatTopic.getChatInform().getTag(),new RoomInformMQDTO(roomId,anotherUserId));
+        rocketMQUtil.send(userChatTopic.getTopicName(),userChatTopic.getChatInform().getTag(),roomId);
     }
 
     //批量查询聊天记录
