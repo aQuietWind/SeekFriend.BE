@@ -185,7 +185,6 @@
         <module>AiFriend</module>
         <module>UserChat</module>
         <module>AiChat</module>
-        <module>Report</module>
         <module>Util</module>
         <module>Config</module>
         <module>ServiceObject</module>
