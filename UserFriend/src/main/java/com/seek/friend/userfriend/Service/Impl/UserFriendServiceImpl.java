@@ -10,7 +10,10 @@ import com.seek.friend.userfriend.Mapper.UserFriendMapper;
 import com.seek.friend.userfriend.Service.UserFriendService;
 import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
+import com.seek.friend.util.Exception.BizException;
+import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
+import com.seek.friend.util.Redis.RedissonUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +34,10 @@ public class UserFriendServiceImpl implements UserFriendService {
     private final RocketMQUtil rocketMQUtil;
     private final UserFriendTopic userFriendTopic;
     private final IdUtil idUtil;
+    private final RedissonUtil redissonUtil;
     @Autowired
     public UserFriendServiceImpl(CommonParamRulesConfig commonParamRulesConfig, RedisUtil redisUtil, UserFriendRedisKeyConfig userFriendRedisKeyConfig
-    , UserFriendMapper userFriendMapper, RocketMQUtil rocketMQUtil, UserFriendTopic userFriendTopic, IdUtil idUtil) {
+    , UserFriendMapper userFriendMapper, RocketMQUtil rocketMQUtil, UserFriendTopic userFriendTopic, IdUtil idUtil,RedissonUtil redissonUtil) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.redisUtil = redisUtil;
         this.userFriendRedisKeyConfig = userFriendRedisKeyConfig;
@@ -41,6 +45,7 @@ public class UserFriendServiceImpl implements UserFriendService {
         this.rocketMQUtil = rocketMQUtil;
         this.userFriendTopic = userFriendTopic;
         this.idUtil = idUtil;
+        this.redissonUtil = redissonUtil;
     }
     @PostConstruct
     public void init(){
@@ -51,10 +56,14 @@ public class UserFriendServiceImpl implements UserFriendService {
     public void applyFriend(long userId){
         commonParamRulesConfig.userIdCheck(userId);
         long ownId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
+        if (userId==ownId)throw new BizException(ErrorCodeEnum.DATA_NOT_RIGHT);
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getApplyConnectionCooldown(),userId);
         Long connectionId=userFriendMapper.getConnectionIdByUser(ownId,userId);
         if (connectionId==null){
-            userFriendMapper.insertFriendApplication(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId);
+            //通过双向绑定解决，虽然有极小的概率，在两个用户几乎同时互相添加对方时因为锁不同而导致产生两个数据，但是影响不大，且几率超级超级小
+            redissonUtil.lock(userFriendRedisKeyConfig.getInsertConnectionLock()
+                    , userId
+                    , ()->userFriendMapper.insertFriendApplication(idUtil.IdGenerateByIncrease(userFriendRedisKeyConfig.getConnectionIdCount()),ownId,userId));
         }else {
             userFriendMapper.applyFriend(connectionId,ownId,userId);
         }

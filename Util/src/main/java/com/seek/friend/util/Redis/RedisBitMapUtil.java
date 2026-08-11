@@ -33,7 +33,7 @@ public class RedisBitMapUtil {
 
     //设置BitMap值成功后执行函数
     public void globalSetIdBitAndAct(RedisKeyData key, long id, boolean value, long idCapacity,int areaNumber, RunFunction runFunction){
-        if (globalSetIdBit(key,id,value,idCapacity,areaNumber)) runFunction.function();
+        if (globalSetIdBit(key,id,value,idCapacity,areaNumber)) runFunction.run();
     }
 
     //全局BitMap获取值

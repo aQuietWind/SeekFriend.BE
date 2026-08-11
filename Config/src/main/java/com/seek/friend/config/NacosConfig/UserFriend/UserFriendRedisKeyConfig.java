@@ -11,6 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Data
 public class UserFriendRedisKeyConfig {
     private RedisKeyData applyConnectionCooldown;
+    private RedisKeyData insertConnectionLock;
     private RedisKeyData getApplicantListCooldown;
     private RedisKeyData getRespondentListCooldown;
     private RedisKeyData getFriendListCooldown;

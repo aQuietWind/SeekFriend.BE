@@ -6,6 +6,8 @@ import com.seek.friend.util.OPT.OPTUtil;
 import com.seek.friend.util.Redis.RedisBitMapUtil;
 import com.seek.friend.util.Redis.RedisStreamUtil;
 import com.seek.friend.util.Redis.RedisUtil;
+import com.seek.friend.util.Redis.RedissonUtil;
+import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;

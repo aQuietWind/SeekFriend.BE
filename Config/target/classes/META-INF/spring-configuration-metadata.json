@@ -74,6 +74,26 @@
       "name": "userchat.self.redis.key",
       "type": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig",
       "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules",
+      "type": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendParamsRulesConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules",
+      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key",
+      "type": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key",
+      "type": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
     }
   ],
   "properties": [
@@ -415,7 +435,17 @@
     {
       "name": "userfriend.self.redis.key.apply-connection-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.apply-connection-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.connection-id-count",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
     },
     {
       "name": "userfriend.self.redis.key.connection-id-count",
@@ -425,7 +455,17 @@
     {
       "name": "userfriend.self.redis.key.delete-connection-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.delete-connection-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-applicant-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
     },
     {
       "name": "userfriend.self.redis.key.get-applicant-list-cooldown",
@@ -435,12 +475,32 @@
     {
       "name": "userfriend.self.redis.key.get-friend-list-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-friend-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
     },
     {
       "name": "userfriend.self.redis.key.get-respondent-list-cooldown",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.get-respondent-list-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.insert-connection-lock",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig"
+    },
+    {
+      "name": "userfriend.self.redis.key.respond-application-cooldown",
+      "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig"
     },
     {
       "name": "userfriend.self.redis.key.respond-application-cooldown",

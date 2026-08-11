@@ -8,22 +8,22 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="UserFriend" />
+        <module name="AiChat" />
         <module name="User" />
         <module name="AiFriend" />
-        <module name="MQUtil" />
-        <module name="Report" />
-        <module name="Config" />
-        <module name="Util" />
-        <module name="AiChat" />
         <module name="UserChat" />
+        <module name="MQUtil" />
+        <module name="Config" />
         <module name="Gateway" />
         <module name="ServiceObject" />
+        <module name="Util" />
         <module name="ConfigObject" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
       <module name="Admin" target="21" />
       <module name="Friend" target="21" />
+      <module name="Report" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

@@ -31,6 +31,8 @@ public enum ErrorCodeEnum {
     FLOW_REQUEST(14404,HttpStatus.TOO_MANY_REQUESTS, "请求被限流"),
     PARAM_FLOW_REQUEST(14405,HttpStatus.TOO_MANY_REQUESTS, "请求被热点参数限流"),
     DEGRADE_REQUEST(14406,HttpStatus.TOO_MANY_REQUESTS, "请求被熔断降级"),
+    //请求异常,
+    REQUEST_CONFLICT(14501,HttpStatus.CONFLICT, "该次请求在服务器中冲突,请重试"),
 
     //服务异常
     SERVER_ERROR(15101,HttpStatus.INTERNAL_SERVER_ERROR, "服务器内部异常"),

@@ -3,3 +3,4 @@
 # 如: com.seek.food.config.NacosConfig.Common.JWTConfig
 
 com.seek.friend.util.AutoConfig.UtilAutoConfig
+com.seek.friend.util.Redis.RedissonConfig
