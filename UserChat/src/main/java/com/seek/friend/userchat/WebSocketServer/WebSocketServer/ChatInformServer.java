@@ -1,6 +1,7 @@
 package com.seek.friend.userchat.WebSocketServer.WebSocketServer;
 
 import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
+import com.seek.friend.config.NacosConfig.Common.JWTConfig;
 import com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig;
 import com.seek.friend.userchat.Mapper.UserChatRoomMapper;
 import com.seek.friend.util.Context.TokenIdContext;
@@ -34,24 +35,27 @@ public class ChatInformServer implements WebSocketHandler {
     private final UserChatRedisKeyConfig userChatRedisKeyConfig;
     private final RedisUtil redisUtil;
     private final UserChatRoomMapper userChatRoomMapper;
+    private final JWTConfig jwtConfig;
 
     @Autowired
     public ChatInformServer(CommonParamRulesConfig commonParamRulesConfig
-    , UserChatRedisKeyConfig userChatRedisKeyConfig, RedisUtil redisUtil, UserChatRoomMapper userChatRoomMapper) {
+    , UserChatRedisKeyConfig userChatRedisKeyConfig, RedisUtil redisUtil, UserChatRoomMapper userChatRoomMapper, JWTConfig jwtConfig) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.userChatRedisKeyConfig = userChatRedisKeyConfig;
         this.redisUtil = redisUtil;
         this.userChatRoomMapper = userChatRoomMapper;
+        this.jwtConfig = jwtConfig;
     }
 
     // 连接建立成功
     @Override
     public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception{
+        System.err.println(session+"进入模块");
         Long roomId=quickGetRoomIdFirst(session);
         //检查该请求参数
         commonParamRulesConfig.commonIdCheck(roomId);
         //获取该请求账户的Id
-        long userId=quickGetIdAndCheckCooldown();
+        long userId=quickGetIdAndCheckCooldown(session);
         //检查该账户是否有权限监听该合格聊天室
         if (!userChatRoomMapper.checkRoomConnectionWithUser(roomId, userId))throw new BizException(ErrorCodeEnum.CONDITION_NOT_PASS);
         //放置该session
@@ -61,6 +65,7 @@ public class ChatInformServer implements WebSocketHandler {
     // 连接关闭
     @Override
     public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus closeStatus) throws Exception {
+        System.err.println(session+"关闭");
         //删除该会话
         quickRemoveSession(session);
     }
@@ -79,14 +84,16 @@ public class ChatInformServer implements WebSocketHandler {
 
     //对指定的聊天室id广播消息
     public void broadcastRoomId(long roomId,String msg) throws IOException {
-        for (Map.Entry<Long, WebSocketSession> entry : Session_Map.get(roomId).entrySet()) {
+        ConcurrentHashMap<Long,WebSocketSession> map=Session_Map.get(roomId);
+        if (map==null)return;
+        for (Map.Entry<Long, WebSocketSession> entry : map.entrySet()) {
             //发送消息
             if (entry.getValue().isOpen()) entry.getValue().sendMessage(new TextMessage(msg));
         }
     }
 
-    private long quickGetIdAndCheckCooldown(){
-        long userId= TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
+    private long quickGetIdAndCheckCooldown(WebSocketSession session) {
+        long userId= Long.parseLong(session.getHandshakeHeaders().getFirst(jwtConfig.getGlobal().getRequestHeaderTokenIdName()));
         redisUtil.checkCooldown(userChatRedisKeyConfig.getRoomInformListenCooldown(),userId);
         return userId;
     }

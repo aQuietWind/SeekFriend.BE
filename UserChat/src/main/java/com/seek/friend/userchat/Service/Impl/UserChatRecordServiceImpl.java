@@ -131,6 +131,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
 
     private void quickDeleteFileDelay(String addr) throws MQBrokerException, RemotingException, UnsupportedEncodingException, InterruptedException, MQClientException {
         rocketMQUtil.sendDelay(userChatTopic.getTopicName(),userChatTopic.getDeleteFile().getTag(),
-                Paths.get(userChatParamsRulesConfig.getChatRecordImageDest(),addr).toString(),userChatParamsRulesConfig.getFileDeleteDelaySeconds());
+                Paths.get(userChatParamsRulesConfig.getChatRecordImageDest(),addr).toString()
+                ,userChatParamsRulesConfig.getFileDeleteDelaySeconds() );
     }
 }

@@ -27,7 +27,7 @@
         #{ableWithdrawTime})
     </insert>
 
-    <select id="userGetList" resultMap="ChatRecordResultMap">
+    <select id="getList" resultMap="ChatRecordResultMap">
         select
         record_id,
         room_id,

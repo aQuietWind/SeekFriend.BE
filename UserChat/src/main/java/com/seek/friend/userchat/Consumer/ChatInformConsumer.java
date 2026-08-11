@@ -1,7 +1,6 @@
 package com.seek.friend.userchat.Consumer;
 
 
-import com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO;
 import com.seek.friend.userchat.WebSocketServer.WebSocketServer.ChatInformServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -16,7 +15,7 @@ import java.io.IOException;
 //可以用配置地址取代该常量配置,But,I am too lazy to do it!
 //下次我还是更加喜欢RabbitMQ
 @RocketMQMessageListener(consumerGroup = "userChatTopicChatInformConsumer-"+"${userchat.self.server-id}",
-        topic = "userFriendTopic",
+        topic = "userChatTopic",
         selectorExpression = "insertChatRecord")
 public class ChatInformConsumer implements RocketMQListener<Long> {
 
@@ -29,6 +28,7 @@ public class ChatInformConsumer implements RocketMQListener<Long> {
     @Override
     public void onMessage(Long roomId){
         try {
+            System.err.println("开始通知");
             chatInformServer.broadcastRoomId(roomId,"有新的消息");
         } catch (IOException e) {
             log.error("消费者广播聊天消息时出现异常",e);

@@ -36,7 +36,7 @@
     </insert>
 
     <update id="syncLastestChatTime">
-        update "user_friend_connection"
+        update "chat_room"
         set lastest_chat_time=CURRENT_TIMESTAMP
         where room_id=#{roomId}
     </update>
