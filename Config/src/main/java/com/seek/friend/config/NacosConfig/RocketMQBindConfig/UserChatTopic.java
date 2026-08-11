@@ -14,4 +14,5 @@ public class UserChatTopic {
     private String topicName;
     private ConsumerData syncLastestChatTimeRoom;
     private ConsumerData deleteFile;
+    private ConsumerData chatInform;
 }

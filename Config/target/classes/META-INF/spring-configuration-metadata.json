@@ -88,11 +88,6 @@
       "sourceType": "com.seek.friend.config.NacosConfig.Common.JWTConfig"
     },
     {
-      "name": "common.param.rules.admin-id-start",
-      "type": "java.lang.Integer",
-      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
-    },
-    {
       "name": "common.param.rules.code-regex",
       "type": "java.lang.String",
       "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
@@ -118,11 +113,6 @@
       "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
     },
     {
-      "name": "common.param.rules.merchant-id-start",
-      "type": "java.lang.Integer",
-      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
-    },
-    {
       "name": "common.param.rules.need-number-max",
       "type": "java.lang.Integer",
       "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
@@ -145,11 +135,6 @@
     {
       "name": "common.param.rules.phone-number-regex",
       "type": "java.lang.String",
-      "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
-    },
-    {
-      "name": "common.param.rules.rider-id-start",
-      "type": "java.lang.Integer",
       "sourceType": "com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig"
     },
     {
@@ -231,6 +216,16 @@
       "name": "gateway.self.request.path.reject-path",
       "type": "java.util.HashSet<java.lang.String>",
       "sourceType": "com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRequestPathConfig"
+    },
+    {
+      "name": "mq.name.bind.user-chat-topic.chat-inform",
+      "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
+    },
+    {
+      "name": "mq.name.bind.user-chat-topic.delete-file",
+      "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
+      "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserChatTopic"
     },
     {
       "name": "mq.name.bind.user-chat-topic.sync-lastest-chat-time-room",
@@ -370,6 +365,16 @@
     {
       "name": "userfriend.self.params.rules.description-max",
       "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules.file-delete-delay-seconds",
+      "type": "java.lang.Long",
+      "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
+    },
+    {
+      "name": "userfriend.self.params.rules.record-able-withdraw-seconds",
+      "type": "java.lang.Long",
       "sourceType": "com.seek.friend.config.NacosConfig.UserChat.UserChatParamsRulesConfig"
     },
     {

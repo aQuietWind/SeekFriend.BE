@@ -7,6 +7,8 @@ import com.seek.friend.serviceobject.UserChat.ChatRoomDTO;
 import com.seek.friend.userchat.Mapper.UserChatRoomMapper;
 import com.seek.friend.userchat.Service.UserChatRoomService;
 import com.seek.friend.util.Context.TokenIdContext;
+import com.seek.friend.util.Exception.BizException;
+import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.Redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

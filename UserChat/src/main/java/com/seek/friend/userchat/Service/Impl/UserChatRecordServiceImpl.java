@@ -7,8 +7,11 @@ import com.seek.friend.config.NacosConfig.UserChat.UserChatRedisKeyConfig;
 import com.seek.friend.configobject.RedisData.RedisKeyData;
 import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
 import com.seek.friend.serviceobject.UserChat.ChatRecordDTO;
+import com.seek.friend.serviceobject.UserChat.RoomInformMQDTO;
 import com.seek.friend.userchat.Mapper.UserChatRecordMapper;
+import com.seek.friend.userchat.Mapper.UserChatRoomMapper;
 import com.seek.friend.userchat.Service.UserChatRecordService;
+import com.seek.friend.userchat.Service.UserChatRoomService;
 import com.seek.friend.util.CommonUtil.IdUtil;
 import com.seek.friend.util.Context.TokenIdContext;
 import com.seek.friend.util.Exception.BizException;
@@ -47,11 +50,13 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
     private final RocketMQUtil rocketMQUtil;
     private final UserChatTopic userChatTopic;
     private final IdUtil idUtil;
+    private final UserChatRoomService userChatRoomService;
 
     @Autowired
     public UserChatRecordServiceImpl(StringRedisTemplate stringRedisTemplate, UserChatRedisKeyConfig userChatRedisKeyConfig
             , CommonParamRulesConfig commonParamRulesConfig, UserChatParamsRulesConfig userChatParamsRulesConfig
-            , UserChatRecordMapper userChatRecordMapper, RedisUtil redisUtil, RocketMQUtil rocketMQUtil, UserChatTopic userChatTopic, IdUtil idUtil) {
+            , UserChatRecordMapper userChatRecordMapper, RedisUtil redisUtil, RocketMQUtil rocketMQUtil, UserChatTopic userChatTopic
+            , IdUtil idUtil , UserChatRoomService userChatRoomService) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.userChatRedisKeyConfig = userChatRedisKeyConfig;
         this.commonParamRulesConfig = commonParamRulesConfig;
@@ -61,6 +66,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         this.rocketMQUtil = rocketMQUtil;
         this.userChatTopic = userChatTopic;
         this.idUtil = idUtil;
+        this.userChatRoomService = userChatRoomService;
     }
 
     @PostConstruct
@@ -77,21 +83,20 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         commonParamRulesConfig.commonIdCheck(roomId);
         //获取tokenId,并且检测冷却
         long userId=quickGetIdAndCheckCooldown(userChatRedisKeyConfig.getRecordInsertCooldown());
-        //检查是否存在该关联
-        chatRoomService.checkIdAndRoom(roomId,user);
+        //事先检查是否存在该关联以及是否可以去聊天，该操作可以通过redis实现（但是会引入redis宕机所必须应对麻烦，对该操作性能提升可能不是很明显），此处不多展示
+        //顺便获取另外一个用户Id,目的是用于等一会的通知效果
+        Long anotherUserId=userChatRoomService.checkRoomConnectionWithUser(roomId,userId);
         //先保存文件
         String addr=null;
         if (file!=null&&!file.isEmpty())addr=quickSaveRecordImage(file);
         //延时删除该图片
         if (addr!=null)quickDeleteFileDelay(addr);
-        //初始化聊天记录
-        ChatRecordDTO record=new ChatRecordDTO( idUtil.IdGenerateByIncrease(userChatRedisKeyConfig.getRecordIdCount())
-                , roomId, userId, description, addr
-                , LocalDateTime.now().plusSeconds(userChatParamsRulesConfig.getRecordAbleWithdrawSeconds())
-                , null);
-        userChatRecordMapper.insert(record);
-        //通知WebSocket有新的聊天记录
-        quickSend(chatExchangeConfig.getChatInformQueue().getRoutingKey(),roomId);
+        //插入聊天记录
+        userChatRecordMapper.insert(new ChatRecordDTO( idUtil.IdGenerateByIncrease(userChatRedisKeyConfig.getRecordIdCount()), roomId, userId
+                , description, addr, LocalDateTime.now().plusSeconds(userChatParamsRulesConfig.getRecordAbleWithdrawSeconds()),null, null));
+        //通过MQ消费者通知WebSocket有新的聊天记录,当然,此处也可以选择直接进行通知,我也不清楚性能相差怎么样
+        //同时这里的消息也会被另外一个消费者组拿走消费（同步最新聊天时间）,因为他俩共用一个tag
+        rocketMQUtil.send(userChatTopic.getTopicName(),userChatTopic.getChatInform().getTag(),new RoomInformMQDTO(roomId,anotherUserId));
     }
 
     //批量查询聊天记录
@@ -100,7 +105,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         //检查参数
         commonParamRulesConfig.commonIdCheck(roomId);
         commonParamRulesConfig.needNumberCheck(need);
-        //检查冷却并且获取tokenId
+        //检查冷却并且获取userId
         long userId=quickGetIdAndCheckCooldown(userChatRedisKeyConfig.getRecordGetListCooldown());
         return userChatRecordMapper.getList(start,need,roomId,userId);
     }
@@ -110,7 +115,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
     public void withdraw(long recordId){
         //检查参数
         commonParamRulesConfig.commonIdCheck(recordId);
-        //检查冷却并且获取tokenId
+        //检查冷却并且获取userId
         long userId=quickGetIdAndCheckCooldown(userChatRedisKeyConfig.getRecordWithdrawCooldown());
         //尝试撤回
         if (!userChatRecordMapper.withdraw(recordId,userId)) throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 //下次我还是更加喜欢RabbitMQ
 @RocketMQMessageListener(consumerGroup = "userFriendTopicSyncLastestChatTimeConsumer",
         topic = "userChatTopic",
-        selectorExpression = "syncLastestChatTimeRoom")
+        selectorExpression = "insertChatRecord")
 public class SyncLastestChatConsumer implements RocketMQListener<Long> {
 
     private final UserChatRedisKeyConfig userChatRedisKeyConfig;

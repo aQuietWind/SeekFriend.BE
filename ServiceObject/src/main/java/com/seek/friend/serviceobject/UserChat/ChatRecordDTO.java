@@ -16,5 +16,6 @@ public class ChatRecordDTO {
     private String description;
     private String imageAddr;
     private LocalDateTime ableWithdrawTime;
+    private LocalDateTime createTime;
     private Boolean withdraw;
 }

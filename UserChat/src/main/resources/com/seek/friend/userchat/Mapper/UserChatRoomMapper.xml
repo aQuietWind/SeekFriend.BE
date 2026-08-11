@@ -40,4 +40,14 @@
         set lastest_chat_time=CURRENT_TIMESTAMP
         where room_id=#{roomId}
     </update>
+
+    <select id="checkRoomConnectionWithUser" resultMap="UserChatRoomResultMap">
+        select
+        room_id,
+        first_user_id,
+        second_user_id,
+        from "chat_room"
+        where room_id=#{roomId} and (first_user_id=#{userId} or second_user_id=#{userId})
+        and able_chat=true
+    </select>
 </mapper>
