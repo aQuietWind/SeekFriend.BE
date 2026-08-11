@@ -1,0 +1,40 @@
+spring:
+  #PostgreSQL的配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # jdbc格式：jdbc:PostgreSQL://ip:端口/数据库名?参数
+    url: jdbc:postgresql://127.0.0.1:5432/seek_friend_user_friend?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: postgres
+    password: 439176
+
+userfriend:
+  self:
+    params:
+      rules:
+    redis:
+      key:
+        apply-connection-cooldown: 
+          name: "userfriend:apply:connection:cooldown"
+          duration-seconds: 4
+        insert-connection-lock: 
+          name: "userfriend:insert:connection:lock"
+          duration-seconds:
+        get-applicant-list-cooldown: 
+          name: "userfriend:applicant:list:cooldown:"
+          duration-seconds: 1
+        get-respondent-list-cooldown: 
+          name: "userfriend:get:respondent:list:cooldown"
+          duration-seconds: 1
+        get-friend-list-cooldown: 
+          name: "userfriend:get:respondent:list:cooldown"
+          duration-seconds: 1
+        respond-application-cooldown: 
+          name: "userfriend:respond:application:cooldown:"
+          duration-seconds: 2
+        delete-connection-cooldown: 
+          name: "userfriend:delete:connection:cooldown"
+          duration-seconds: 2
+        connection-id-count: 
+          name: "userfriend:connection:id:count"
+          duration-seconds: null
+

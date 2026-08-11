@@ -1,28 +1,24 @@
 gateway:
   self:
-    black::
-      ip:
-        caffeine-max-size: 10000 
-        caffeine-time-unit: minute
-        caffeine-expire-time: 10
-        counts: 60
-        time-unit: hour
-        duration: 24
-      id:
-        caffeine-max-size: 10000
-        caffeine-time-unit: minute
-        caffeine-expire-time: 10
-        counts: 180
-        time-unit: hour
-        duration: 12
+    block:
+      ip-counts: 60
+      id-counts: 180
+      block-ip-request-header-name: X-Ip
     redis:
       key:
         name:
-          token-login: "common:token:login:Id:"
-          ip-check: "gateway:check:ip:"
-          id-check: "gateway:check:id:"
-          ip-black: "gateway:black:ip:"
-          id-black: "gateway:black:id:"
+          ip-check: 
+            name: "gateway:check:ip:"
+            durationSeconds: 60
+          id-check: 
+            name: "gateway:check:id:"
+            durationSeconds: 60
+          ip-block: 
+            name: "gateway:block:ip:"
+            durationSeconds: 43200
+          id-block: 
+            name: "gateway:block:id:"
+            durationSeconds: 86400
     request:
       path:
         allow-path:
@@ -31,22 +27,20 @@ gateway:
         - /user/login/password
         - /user/register
         - /user/register/opt
-        - /merchant/register
-        - /merchant/register/opt
-        - /merchant/login
-        - /merchant/login/opt
-        - /merchant/login/password
-        - /rider/register
-        - /rider/register/opt
-        - /rider/login
-        - /rider/login/opt
-        - /rider/login/password
         - /admin/login
+        - /admin/login/opt
+        - /admin/login/password
+        - /admin/register
+        - /admin/register/opt
         reject-path:
-        - /testsetstes43435324634645746785
-        - /654654
-        - /t543erfgt
-
+        - /user/test/reject
+    jvm-caffeine:
+      ip-block:
+        max-size: 100000
+        expire-seconds: 600
+      id-block:
+        max-size: 100000
+        expire-seconds: 600
 
 
 

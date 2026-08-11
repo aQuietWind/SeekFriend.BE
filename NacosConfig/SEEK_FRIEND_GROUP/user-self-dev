@@ -1,0 +1,65 @@
+spring:
+  #PostgreSQL的配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # jdbc格式：jdbc:PostgreSQL://ip:端口/数据库名?参数
+    url: jdbc:postgresql://127.0.0.1:5432/seek_friend_user?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: postgres
+    password: 439176
+
+user:
+  self:
+    params:
+      rules:
+        user-id-start: 1
+        username-length-max: 20
+        header-image-dest: "D:/home/admin/seek_friend/image/user/header"
+    redis:
+      key:
+        register-opt:
+          name: "user:register:opt:"
+          duration-seconds: 60
+        login-opt: 
+          name: "user:login:opt:"
+          duration-seconds: 60
+        delete-user-opt: 
+          name: "user:delete:self:opt:"
+          duration-seconds: 60
+        update-password-opt: 
+          name: "user:update:password:opt:"
+          duration-seconds: 60
+        register-cooldown: 
+          name: "user:register:cooldown"
+          duration-seconds: 86400
+        login-password-cooldown: 
+          name: "user:login:password:cooldown:"
+          duration-seconds: 2
+        login-refresh-cooldown: 
+          name: "user:refresh:cooldown"
+          duration-seconds: 432000
+        update-header-image-cooldown: 
+          name: "user:update:header:image:cooldown:"
+          duration-seconds: 2
+        update-info-cooldown: 
+          name: "user:update:info:cooldown:"
+          duration-seconds: 1
+        update-password-cooldown:
+          name: "user:update:password:cooldown:"
+          duration-seconds: 10
+        caffeine-info: 
+          name: "user:caffeine:info:"
+          duration-seconds: 600
+        caffeine-phone: 
+          name: "user:caffeine:phone:"
+          duration-seconds: 900
+        user-id-count: 
+          name: "user:id:count"
+          duration-seconds: null
+    jvm-caffeine:
+      user:
+        max-size: 100000
+        expire-seconds: 300
+      phone:
+        max-size: 100000
+        expire-seconds: 600
+

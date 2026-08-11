@@ -1,0 +1,48 @@
+spring:
+  #PostgreSQL的配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # jdbc格式：jdbc:PostgreSQL://ip:端口/数据库名?参数
+    url: jdbc:postgresql://127.0.0.1:5432/seek_friend_user_chat?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: postgres
+    password: 439176
+
+
+userchat:
+  self:
+    params: 
+      rules:
+        description-max: 500
+        chat-record-image-dest: "D:/home/admin/seek_friend/image/userchat/record"
+        #两天半，因为rokcetMQ限制，推荐用rabbitmq，虽然性能差些，但是功能全
+        file-delete-delay-seconds: 216000
+        record-able-withdraw-seconds: 60
+    redis:
+      key:
+        room-get-list-cooldown:
+          name: "userchat:room:get:list:cooldown:"
+          duration-seconds: 1
+        room-inform-listen-cooldown:
+          name: "userchat:record:inform:listen:cooldown:"
+          duration-seconds: 3
+        record-get-list-cooldown:
+          name: "userchat:record:get:list:cooldown:"
+          duration-seconds: 1
+        record-insert-cooldown:
+          name: "userchat:record:insert:cooldown:"
+          duration-seconds: 2
+        record-withdraw-cooldown:
+          name: "userchat:record:withdraw:cooldown:"
+          duration-seconds: 2
+        room-id-count:
+          name: "userchat:room:id:count"
+          duration-seconds: null
+        record-id-count:
+          name: "userchat:record:id:count"
+          duration-seconds: null
+
+
+
+
+
+

@@ -3,12 +3,6 @@ spring:
     multipart:
       max-file-size: 4MB               #这个代表最大的单个文件大小
       max-request-size: 16MB           #这个代表最大的单次请求传输的数据大小（应对一次传输数个文件）
-  #es的连接地址
-  elasticsearch:
-    uris: http://127.0.0.1:9200
-    username:
-    password:
-    connection-timeout: 10s
   cloud:
     #sentinel的配置
     sentinel:
@@ -23,9 +17,6 @@ spring:
       host: 127.0.0.1
       port: 6379
       password:
-    mongodb:
-      # 连接地址，集群填写多个逗号分隔
-      uri: mongodb://127.0.0.1:27017/?authSource=admin
 #  Mybatsi的配置
 mybatis:
   configuration:

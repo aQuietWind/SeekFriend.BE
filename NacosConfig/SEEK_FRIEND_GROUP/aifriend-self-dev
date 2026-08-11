@@ -1,0 +1,36 @@
+spring:
+  #PostgreSQL的配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # jdbc格式：jdbc:PostgreSQL://ip:端口/数据库名?参数
+    url: jdbc:postgresql://127.0.0.1:5432/seek_friend_ai_friend?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: postgres
+    password: 439176
+
+aifriend:
+  self:
+    params:
+      rules:
+        description-max: 300
+        hobby-max: 300
+        characteristic-max: 300
+        history-max: 1100
+        name-max: 20
+        like-score-max: 10
+        header-image-dest: "D:/home/admin/seek_friend/image/aifriend/header"
+    redis:
+      key:
+        init-ai-friend-cooldown:
+          name: "aifriend:init:cooldown"
+          duration-seconds: 10
+        ai-friend-id-count:
+          name: "aifriend:id:count"
+          duration-seconds:
+        ai-friend-info-caffeine:
+          name: "aifriend:info:caffeine"
+          duration-seconds: 600
+    jvm-caffeine:
+      friend:
+        max-size: 100000
+        expire-seconds: 300
+

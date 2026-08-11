@@ -1,0 +1,50 @@
+gateway-self-route:
+  user-id: user
+  userfriend-id: userfriend
+  aifriend-id: aifriend
+  userchat-id: userchat
+  aichat-id: aichat
+  report-id: report
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        forward-headers-strategy: native
+      server:
+        webflux:
+          default-filters:
+            # 给所有响应添加统一请求头标识,用于sentinel鉴定
+            - AddRequestHeader=x-origin,gateway
+            #去除掉第一段路径
+            - StripPrefix=1   
+          routes:
+            - id: ${gateway-self-route.user-id}   #路由标识,必须唯一
+              # 显式指定目标服务分组，路由地址，lb代表负载均衡，user代表模块服务名。该项可以直接用ip地址代替
+              uri: lb://${gateway-self-route.user-id}
+              predicates:       #断言，判断是否转发给该路由
+                - Path=/${gateway-self-route.user-id}/**    #路径断言，代表将路径为user的都转发
+
+            - id: ${gateway-self-route.userfriend-id}
+              uri: lb://${gateway-self-route.userfriend-id}
+              predicates:
+                - Path=/${gateway-self-route.userfriend-id}/**
+
+            - id: ${gateway-self-route.aifriend-id}
+              uri: lb://${gateway-self-route.aifriend-id}
+              predicates:
+                - Path=/${gateway-self-route.aifriend-id}/**
+
+            - id: ${gateway-self-route.userchat-id}
+              uri: lb://${gateway-self-route.userchat-id}
+              predicates:
+                - Path=/${gateway-self-route.userchat-id}/**
+
+            - id: ${gateway-self-route.aichat-id}
+              uri: lb://${gateway-self-route.aichat-id}
+              predicates:
+                - Path=/${gateway-self-route.aichat-id}/**
+
+            - id: ${gateway-self-route.report-id}
+              uri: lb://${gateway-self-route.report-id}
+              predicates:
+                - Path=/${gateway-self-route.report-id}/**

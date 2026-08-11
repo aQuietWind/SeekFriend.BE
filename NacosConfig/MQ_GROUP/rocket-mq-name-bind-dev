@@ -1,0 +1,33 @@
+mq:
+  name:
+    bind:
+      user-topic:
+        topic-name: userTopic
+        delete-file:
+          consumerGroupName: userTopicDeleteFileConsumer
+          tag: "deleteFile"
+        change-user-friend-amount:
+          consumerGroupName: userTopicChangeUserFriendAmountConsumer
+          tag: "changeUserFriendAmount"
+        change-ai-friend-amount:
+          consumerGroupName: userTopicChangeAiFriendAmountConsumer
+          tag: "changeAiFriendAmount"
+      user-friend-topic:
+        topic-name: userFriendTopic
+        init-chat-room:
+          consumerGroupName: userFriendTopicInitChatRoomConsumer
+          tag: "initChatRoom"
+        delete-chat-room:
+          consumerGroupName: userFriendTopicDeleteChatRoomConsumer
+          tag: "deleteChatRoom"
+      user-chat-topic:
+        topic-name: userChatTopic
+        sync-lastest-chat-time:
+          consumerGroupName: userChatTopicSyncLastestChatTimeConsumer
+          tag: "insertChatRecord"
+        delete-file:
+          consumerGroupName: userChatTopicDeleteFileConsumer
+          tag: "deleteFile"
+        chat-inform:
+          consumerGroupName: userChatTopicChatInformConsumer
+          tag: "insertChatRecord"
