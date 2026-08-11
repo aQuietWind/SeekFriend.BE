@@ -82,6 +82,11 @@
             <groupId>com.seek.friend</groupId>
             <artifactId>Util</artifactId>
         </dependency>
+        <!--        该项目的MQUtil依赖-->
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>MQUtil</artifactId>
+        </dependency>
         <!--        该项目的Config依赖-->
         <dependency>
             <groupId>com.seek.friend</groupId>
