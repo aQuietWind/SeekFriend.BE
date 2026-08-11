@@ -21,6 +21,6 @@ public class AiFriendServiceImpl implements AiFriendService {
 
     @Override
     public void init(AiFriendDTO aiFriend){
-        
+
     }
 }
