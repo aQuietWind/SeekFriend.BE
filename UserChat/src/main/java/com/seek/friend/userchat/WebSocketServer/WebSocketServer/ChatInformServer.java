@@ -50,7 +50,6 @@ public class ChatInformServer implements WebSocketHandler {
     // 连接建立成功
     @Override
     public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception{
-        System.err.println(session+"进入模块");
         Long roomId=quickGetRoomIdFirst(session);
         //检查该请求参数
         commonParamRulesConfig.commonIdCheck(roomId);
@@ -65,7 +64,6 @@ public class ChatInformServer implements WebSocketHandler {
     // 连接关闭
     @Override
     public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus closeStatus) throws Exception {
-        System.err.println(session+"关闭");
         //删除该会话
         quickRemoveSession(session);
     }
@@ -87,8 +85,11 @@ public class ChatInformServer implements WebSocketHandler {
         ConcurrentHashMap<Long,WebSocketSession> map=Session_Map.get(roomId);
         if (map==null)return;
         for (Map.Entry<Long, WebSocketSession> entry : map.entrySet()) {
-            //发送消息
-            if (entry.getValue().isOpen()) entry.getValue().sendMessage(new TextMessage(msg));
+            //上锁, 因为这个冲突会报错
+            synchronized (entry.getValue().getId()) {
+                //发送消息
+                if (entry.getValue().isOpen()) entry.getValue().sendMessage(new TextMessage(msg));
+            }
         }
     }
 

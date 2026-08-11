@@ -28,7 +28,6 @@ public class ChatInformConsumer implements RocketMQListener<Long> {
     @Override
     public void onMessage(Long roomId){
         try {
-            System.err.println("开始通知");
             chatInformServer.broadcastRoomId(roomId,"有新的消息");
         } catch (IOException e) {
             log.error("消费者广播聊天消息时出现异常",e);
