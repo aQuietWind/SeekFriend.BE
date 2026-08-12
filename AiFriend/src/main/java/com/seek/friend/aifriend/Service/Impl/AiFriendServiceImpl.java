@@ -17,6 +17,7 @@ import com.seek.friend.util.Exception.BizException;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.FileUtil.FileSave;
 import com.seek.friend.util.Redis.RedisUtil;
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.model.chat.ChatModel;
 import jakarta.annotation.PostConstruct;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RefreshScope
@@ -120,10 +122,17 @@ public class AiFriendServiceImpl implements AiFriendService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void complete(long aiFriendId){
         AiFriendDTO aiFriend=getDetail(aiFriendId);
         if (aiFriend.getComplete()==true)throw new BizException(ErrorCodeEnum.CONDITION_NOT_PASS);
+        long userId=quickCheckCooldownAndGetUserId(aiFriendRedisKeyConfig.getCompleteAiFriendCooldown());
         SystemMessage systemMessage=completeFactory.getHistory(aiFriend);
+        List<ChatMessage> msgs=List.of(systemMessage);
+        String history=chatModel.chat(msgs).aiMessage().text();
+        if (!aiFriendMapper.complete(history,aiFriendId,userId))throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
+        //清除缓存
+        aiFriendCaffeine.deleteAllCaffeine(aiFriendId);
     }
 
     //批量获取预览
@@ -139,7 +148,10 @@ public class AiFriendServiceImpl implements AiFriendService {
     @Override
     public AiFriendDTO getDetail(long aiFriendId){
         commonParamRulesConfig.commonIdCheck(aiFriendId);
-        return aiFriendCaffeine.getAndAutoLoad(aiFriendId,k->aiFriendMapper.getDetail(k,quickGetUserId()));
+        long userId=quickGetUserId();
+        AiFriendDTO aiFriend=aiFriendCaffeine.getAndAutoLoad(aiFriendId,k->aiFriendMapper.getDetail(k,userId));
+        if (aiFriend==null||aiFriend.getUserId()!=userId)throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
+        return aiFriend;
     }
 
 

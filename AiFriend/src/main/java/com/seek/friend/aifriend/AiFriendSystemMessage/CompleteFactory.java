@@ -24,6 +24,8 @@ public class CompleteFactory {
             """;
     private static final String End= """
             以上这些规则和用户所给的信息你看情况配合,但是你仍旧重心要放在背景故事的"背景"二字上,交代好你的出生到现在的经历,将故事的转折点写出来.
+            请你记住:你生成背景故事是自述!而不是与用户对话!!!你的目的是通过自述的方式介绍自己,最好不要有任何与用户对话的句子,同时不要过多的引入与用户有关的剧情,
+            你更多的应该是介绍自己,而不是介绍自己和用户之间的关系.
             字数上限为
             """;
     private static final RefineInterface[] refineChain = new RefineInterface[]{

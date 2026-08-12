@@ -189,7 +189,6 @@
         <module>Config</module>
         <module>ServiceObject</module>
         <module>ConfigObject</module>
-        <module>Config</module>
         <module>MQUtil</module>
     </modules>
 

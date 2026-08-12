@@ -39,7 +39,7 @@ public class AiFriendParamsRulesConfig {
         if (name!=null && name.length()>nameMax)throwParamError();
     }
     public void likeScoreCheck(Integer likeScore){
-        if (likeScore!=null && likeScore>likeScoreMax)throwParamError();
+        if (likeScore!=null && (likeScore>likeScoreMax||likeScore<=0))throwParamError();
     }
 
     private void throwParamError(){

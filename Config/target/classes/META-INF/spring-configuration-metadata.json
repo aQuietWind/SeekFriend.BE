@@ -76,6 +76,11 @@
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserTopic"
     },
     {
+      "name": "user.self.jvm-caffeine",
+      "type": "com.seek.friend.config.NacosConfig.User.UserCaffeineConfig",
+      "sourceType": "com.seek.friend.config.NacosConfig.User.UserCaffeineConfig"
+    },
+    {
       "name": "user.self.params.rules",
       "type": "com.seek.friend.config.NacosConfig.User.UserParamsRulesConfig",
       "sourceType": "com.seek.friend.config.NacosConfig.User.UserParamsRulesConfig"

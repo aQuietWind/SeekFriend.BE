@@ -11,7 +11,7 @@ CREATE TABLE "ai_friend" (
                              "characteristic" varchar(300) ,
                              "encounter_reason" varchar(300) ,
                              "like_score" int not null default 10,
-                             "character_history" varchar(1100) ,
+                             "character_history" varchar(2100) ,
                              "header_image_addr" varchar(50) unique ,
                              "create_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              "is_complete" boolean NOT NULL DEFAULT false,
