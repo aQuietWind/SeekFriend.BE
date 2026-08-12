@@ -20,5 +20,6 @@ public class AiFriendDTO {
     private String characterHistory;
     private String headerImageAddr;
     private LocalDateTime createTime;
+    private Boolean complete;
     private Boolean delete;
 }

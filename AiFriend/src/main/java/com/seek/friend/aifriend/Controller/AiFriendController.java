@@ -5,7 +5,7 @@ import com.seek.friend.aifriend.Service.AiFriendService;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import com.seek.friend.serviceobject.Common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +19,8 @@ public class AiFriendController {
         this.aiFriendService = aiFriendService;
     }
 
-    @GetMapping(RequestPathEnum.Ai_Friend_Init)
-    public Result<Void> init(AiFriendDTO aiFriend){
-        aiFriendService.init(aiFriend);
-        return Result.success();
+    @PostMapping(RequestPathEnum.Ai_Friend_Init_Text)
+    public Result<Long> initText(AiFriendDTO aiFriend){
+        return Result.success(aiFriendService.initText(aiFriend));
     }
 }

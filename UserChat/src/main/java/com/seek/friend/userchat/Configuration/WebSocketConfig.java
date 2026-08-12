@@ -1,7 +1,7 @@
 package com.seek.friend.userchat.Configuration;
 
 import com.seek.friend.userchat.Enum.RequestPathEnum;
-import com.seek.friend.userchat.WebSocketServer.WebSocketServer.ChatInformServer;
+import com.seek.friend.userchat.WebSocketServer.ChatInformServer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

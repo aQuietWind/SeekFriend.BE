@@ -1,7 +1,9 @@
 package com.seek.friend.userchat.Consumer;
 
 
-import com.seek.friend.userchat.WebSocketServer.WebSocketServer.ChatInformServer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seek.friend.serviceobject.Common.Result;
+import com.seek.friend.userchat.WebSocketServer.ChatInformServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -20,6 +22,7 @@ import java.io.IOException;
 public class ChatInformConsumer implements RocketMQListener<Long> {
 
     private final ChatInformServer chatInformServer;
+    private static final ObjectMapper objectMapper=new ObjectMapper();
     @Autowired
     public ChatInformConsumer(ChatInformServer chatInformServer) {
         this.chatInformServer = chatInformServer;
@@ -28,7 +31,7 @@ public class ChatInformConsumer implements RocketMQListener<Long> {
     @Override
     public void onMessage(Long roomId){
         try {
-            chatInformServer.broadcastRoomId(roomId,"有新的消息");
+            chatInformServer.broadcastRoomId(roomId,objectMapper.writeValueAsString(Result.success(roomId)));
         } catch (IOException e) {
             log.error("消费者广播聊天消息时出现异常",e);
         }

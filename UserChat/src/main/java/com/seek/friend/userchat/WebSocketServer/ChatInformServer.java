@@ -1,4 +1,4 @@
-package com.seek.friend.userchat.WebSocketServer.WebSocketServer;
+package com.seek.friend.userchat.WebSocketServer;
 
 import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
 import com.seek.friend.config.NacosConfig.Common.JWTConfig;
