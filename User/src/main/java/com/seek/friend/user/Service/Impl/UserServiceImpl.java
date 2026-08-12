@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         //验证id是否属于userId而不是别的
         commonParamRulesConfig.userIdCheck(userId);
         //从缓存中取出结果并且返回
-        return userCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeineInfo(), key->userMapper.getUserDetailInfo(userId));
+        return userCaffeine.getAndAutoLoad(userId, key->userMapper.getUserDetailInfo(userId));
     }
 
 
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if (!userMapper.updateUserHeader(userId,addr,oldAddr)) {
             //发消息使已经保存文件删除
             quickDeleteHeaderImage(addr);
-            userCaffeine.deleteAllCaffeine(userId,userRedisKeyConfig.getCaffeineInfo());
+            userCaffeine.deleteAllCaffeine(userId);
             throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
         }
         //发送消息到mq中删除旧文件
@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
         //获取userId并且校验
         long userId=TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         //获取手机号,只做业务的手机号获取模拟，无实际用途
-        String phoneNumber=phoneCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeinePhone(),userMapper::getPhoneNumber);
+        String phoneNumber=phoneCaffeine.getAndAutoLoad(userId,userMapper::getPhoneNumber);
         //产生验证码
         return oPTUtil.generateAndRecordRedis(userRedisKeyConfig.getDeleteUserOpt(),phoneNumber,6);
     }
@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
         //userId获取
         long userId=TokenIdContext.getAndCheck(commonParamRulesConfig.getUserIdStart(),commonParamRulesConfig.getIdCapacity());
         //检验验证码
-        oPTUtil.checkFromRedis(userRedisKeyConfig.getDeleteUserOpt(),phoneCaffeine.getAndAutoLoad(userId,userRedisKeyConfig.getCaffeinePhone(),userMapper::getPhoneNumber),opt);
+        oPTUtil.checkFromRedis(userRedisKeyConfig.getDeleteUserOpt(),phoneCaffeine.getAndAutoLoad(userId,userMapper::getPhoneNumber),opt);
         //逻辑删除用户
         quickUpdateUser(k->userMapper.deleteUser(userId),userId);
         //清空token
@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
 
 
     private void quickUpdateUser(Function<Long,Boolean> function,long userId){
-        userCaffeine.updateAndRemoveCaffeine(userId,userRedisKeyConfig.getCaffeineInfo(),function);
+        userCaffeine.updateAndRemoveCaffeine(userId,function);
     }
 
     private void quickDeleteHeaderImage(String addr){

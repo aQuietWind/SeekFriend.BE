@@ -19,6 +19,7 @@ import java.util.function.Function;
 public class JvmCaffeineParent<T,E> {
     public static final String caffeineFail="n";
     private final RedisUtil redisUtil;
+    private final RedisKeyData redisKey;
     private static final ObjectMapper mapper;
     private final Class<E> resultClass;
     static{
@@ -30,9 +31,10 @@ public class JvmCaffeineParent<T,E> {
     // 全局单例缓存（唯一实例）
     protected Cache<T, E> CACHE;
 
-    public JvmCaffeineParent(RedisUtil redisUtil,Class<E> resultClass) {
+    public JvmCaffeineParent(RedisUtil redisUtil,Class<E> resultClass,RedisKeyData redisKey) {
         this.redisUtil=redisUtil;
         this.resultClass=resultClass;
+        this.redisKey=redisKey;
     }
 
     protected void defaultInit(CaffeineData setting){
@@ -76,7 +78,7 @@ public class JvmCaffeineParent<T,E> {
 
 
     //jvm-redis-mysql多级缓存逻辑方法
-    public E getAndAutoLoad(T key, RedisKeyData redisKey,Function<T, E> loader){
+    public E getAndAutoLoad(T key,Function<T, E> loader){
         if (key == null||key.equals("")) return null;
         return CACHE.get(key,k->{
             //从redis中获取分布式缓存
@@ -109,8 +111,9 @@ public class JvmCaffeineParent<T,E> {
         });
     }
 
+
     //jvm-redis-mysql库修改，缓存共同删除方法
-    public void updateAndRemoveCaffeine(T key,RedisKeyData redisKey,Function<T, Boolean> loader) {
+    public void updateAndRemoveCaffeine(T key,Function<T, Boolean> loader) {
         if (key == null||key.equals("")) return;
         //执行修改或者删除操作，并且判断该操作是否成功
         if (!loader.apply(key)) throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
@@ -121,7 +124,7 @@ public class JvmCaffeineParent<T,E> {
     }
 
     //删除redis-jvm缓存
-    public void deleteAllCaffeine(T key,RedisKeyData redisKey) {
+    public void deleteAllCaffeine(T key) {
         if (key == null||key.equals("")) return;
         //redis清除缓存
         redisUtil.delete(redisKey,key);
