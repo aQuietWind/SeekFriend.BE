@@ -9,7 +9,7 @@ import java.util.List;
 public interface AiFriendMapper {
     public void initText(AiFriendDTO aiFriend);
     public boolean initHeader(String addr,String history,long aiFriendId,long userId);
-    public List<AiFriendDTO> simpleGetList(int start, int need, long userId);
+    public List<AiFriendDTO> simpleGetList(int start, int need, long userId,Boolean complete);
     public AiFriendDTO getDetail(long aiFriendId,long userId);
     public boolean delete(long aiFriendId,long userId);
 }

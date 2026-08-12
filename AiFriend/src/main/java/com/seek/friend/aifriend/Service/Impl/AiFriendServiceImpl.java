@@ -47,8 +47,9 @@ public class AiFriendServiceImpl implements AiFriendService {
         this.aiFriendCaffeine = aiFriendCaffeine;
     }
 
+
     @Override
-    public long initText(AiFriendDTO aiFriend){
+    public void updateText(AiFriendDTO aiFriend){
         //检查参数
         aiFriendParamsRulesConfig.nameCheck(aiFriend.getName());
         aiFriendParamsRulesConfig.descriptionCheck(aiFriend.getDescription());
@@ -66,21 +67,27 @@ public class AiFriendServiceImpl implements AiFriendService {
         return aiFriend.getAiFriendId();
     }
 
+
     @Override
-    public void initHeader(MultipartFile file, long aiFriendId){
+    public void updateHeader(MultipartFile file, long aiFriendId){
 
     }
 
-    @Override
-    public List<AiFriendDTO> simpleGetList(int start, int need){
 
+    @Override
+    public List<AiFriendDTO> simpleGetList(int start, int need,Boolean complete){
+        commonParamRulesConfig.needNumberCheck(need);
+        long userId=quickCheckCooldownAndGetUserId(aiFriendRedisKeyConfig.getAiFriendSimpleGetListCooldown());
+        return aiFriendMapper.simpleGetList(start,need,userId,complete);
     }
+
 
     @Override
     public AiFriendDTO getDetail(long aiFriendId){
         commonParamRulesConfig.commonIdCheck(aiFriendId);
         return aiFriendCaffeine.getAndAutoLoad(aiFriendId,k->aiFriendMapper.getDetail(k,quickGetUserId()));
     }
+
 
     @Override
     public void delete(long aiFriendId){

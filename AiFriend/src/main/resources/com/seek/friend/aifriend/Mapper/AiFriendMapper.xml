@@ -10,7 +10,19 @@
         <result property="delete" column="is_delete" />
     </resultMap>
 
-    <insert id="initText">
+
+    <insert id="init">
+        insert into "ai_friend"
+        (ai_friend_id,
+        user_id,
+        name)
+        values(
+        #{aiFriendId},
+        #{userId},
+        #{name})
+    </insert>
+
+    <insert id="updateText">
         insert into "ai_friend"
         (ai_friend_id,
         user_id,
@@ -31,12 +43,14 @@
         #{characterHistory});
     </insert>
 
-    <update id="initHeader">
+    <update id="updateHeader">
         update "ai_friend"
-        set header_image_addr=#{addr},character_history=#{history},is_complete=true
+        set header_image_addr=#{addr}
         where ai_friend_id=#{aiFriendId}
         and user_id=#{userId}
         and is_delete=false and is_complete=false
+<!--    pg18的语法-->
+        returning old.header_image_addr
     </update>
 
     <select id="simpleGetList" resultMap="AiFriendResultMap">
@@ -49,6 +63,8 @@
         is_complete
         from "ai_friend"
         where user_id=#{userId} and is_delete=false
+        <if test="complete!=null">and is_complete=#{complete}</if>
+        order by ai_friend_id desc
         limit #{need} offset #{start}
     </select>
 

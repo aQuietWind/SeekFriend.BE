@@ -12,7 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 public class AiFriendRedisKeyConfig {
     private RedisKeyData initAiFriendTextCooldown;
     private RedisKeyData initAiFriendHeaderCooldown;
-    private RedisKeyData aiFriendGetListCooldown;
+    private RedisKeyData aiFriendSimpleGetListCooldown;
     private RedisKeyData aiFriendDeleteCooldown;
     private RedisKeyData aiFriendIdCount;
     private RedisKeyData aiFriendInfoCaffeine;

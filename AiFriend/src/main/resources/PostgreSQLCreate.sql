@@ -25,6 +25,7 @@ COMMENT ON COLUMN "ai_friend"."description" IS '该ai的描述';
 COMMENT ON COLUMN "ai_friend"."hobbies" IS '该ai的爱好';
 COMMENT ON COLUMN "ai_friend"."characteristic" IS '特点，个性等等';
 COMMENT ON COLUMN "ai_friend"."like_score" IS '对你的喜爱分数';
+COMMENT ON COLUMN "ai_friend"."header_image_addr" IS '头像地址';
 COMMENT ON COLUMN "ai_friend"."character_history" IS 'ai角色的历史背景，由ai自己生成';
 COMMENT ON COLUMN "ai_friend"."create_time" IS '创建时间';
 COMMENT ON COLUMN "ai_friend"."is_complete" IS '是否完成创建';
