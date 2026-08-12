@@ -16,6 +16,7 @@ public class AiFriendDTO {
     private String description;
     private String hobbies;
     private String characteristic;
+    private String encounterReason;
     private Integer likeScore;
     private String characterHistory;
     private String headerImageAddr;

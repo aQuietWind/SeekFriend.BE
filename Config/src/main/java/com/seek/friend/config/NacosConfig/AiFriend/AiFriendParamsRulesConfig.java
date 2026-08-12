@@ -14,6 +14,7 @@ public class AiFriendParamsRulesConfig {
     private Integer descriptionMax;
     private Integer hobbyMax;
     private Integer characteristicMax;
+    private Integer encounterReasonMax;
     private Integer historyMax;
     private Integer nameMax;
     private Integer likeScoreMax;
@@ -27,6 +28,9 @@ public class AiFriendParamsRulesConfig {
     }
     public void characteristicCheck(String characteristic){
         if (characteristic!=null && characteristic.length()>characteristicMax)throwParamError();
+    }
+    public void encounterReasonCheck(String encounterReason){
+        if (encounterReason!=null && encounterReason.length()>encounterReasonMax)throwParamError();
     }
     public void historyCheck(String history){
         if (history!=null && history.length()>historyMax)throwParamError();

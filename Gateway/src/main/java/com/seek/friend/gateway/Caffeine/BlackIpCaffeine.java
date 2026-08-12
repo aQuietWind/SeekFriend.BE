@@ -1,6 +1,7 @@
 package com.seek.friend.gateway.Caffeine;
 
 import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayCaffeineConfig;
+import com.seek.friend.config.NacosConfig.GatewayConfig.GatewayRedisKeyConfig;
 import com.seek.friend.util.Caffeine.JvmCaffeineParent;
 import com.seek.friend.util.Redis.RedisUtil;
 import jakarta.annotation.PostConstruct;
@@ -15,8 +16,8 @@ public class BlackIpCaffeine extends JvmCaffeineParent<String,Long> {
     private final GatewayCaffeineConfig gatewayCaffeineConfig;
 
     @Autowired
-    public BlackIpCaffeine(GatewayCaffeineConfig gatewayCaffeineConfig, RedisUtil redisUtil) {
-        super(redisUtil,Long.class);
+    public BlackIpCaffeine(GatewayCaffeineConfig gatewayCaffeineConfig, RedisUtil redisUtil, GatewayRedisKeyConfig gatewayRedisKeyConfig) {
+        super(redisUtil,Long.class,gatewayRedisKeyConfig.getIpBlock());
         this.gatewayCaffeineConfig = gatewayCaffeineConfig;
     }
 

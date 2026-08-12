@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @RefreshScope
-@ConfigurationProperties(ConfigKeyEnum.User_Caffeine_Config)
+@ConfigurationProperties(ConfigKeyEnum.Ai_Friend_Caffeine_Config)
 @Data
 public class AiFriendCaffeineConfig {
     private CaffeineData aiFriend;

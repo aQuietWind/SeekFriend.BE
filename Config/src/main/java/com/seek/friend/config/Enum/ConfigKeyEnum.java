@@ -22,8 +22,11 @@ public class ConfigKeyEnum {
 
     public static final String Ai_Friend_Params_Rules_Config="aifriend.self.params.rules";
     public static final String Ai_Friend_Redis_Key_Config="aifriend.self.redis.key";
+    public static final String Ai_Friend_Caffeine_Config="aifriend.self.jvm-caffeine";
 
     public static final String User_Topic_Config="mq.name.bind.user-topic";
     public static final String User_Friend_Topic_Config="mq.name.bind.user-friend-topic";
     public static final String User_Chat_Topic_Config="mq.name.bind.user-chat-topic";
+    public static final String Ai_Friend_Topic_Config="mq.name.bind.ai-friend-topic";
+    public static final String Ai_Chat_Topic_Config="mq.name.bind.ai-chat-topic";
 }
