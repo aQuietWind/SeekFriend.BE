@@ -1,5 +1,6 @@
 package com.seek.friend.aifriend.Service.Impl;
 
+import com.seek.friend.aifriend.AiFriendSystemMessage.CompleteFactory;
 import com.seek.friend.aifriend.Caffeine.AiFriendCaffeine;
 import com.seek.friend.aifriend.Mapper.AiFriendMapper;
 import com.seek.friend.aifriend.Service.AiFriendService;
@@ -16,6 +17,7 @@ import com.seek.friend.util.Exception.BizException;
 import com.seek.friend.util.Exception.ErrorCodeEnum;
 import com.seek.friend.util.FileUtil.FileSave;
 import com.seek.friend.util.Redis.RedisUtil;
+import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.model.chat.ChatModel;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -43,11 +45,12 @@ public class AiFriendServiceImpl implements AiFriendService {
     private final AiFriendCaffeine aiFriendCaffeine;
     private final RocketMQUtil rocketMQUtil;
     private final AiFriendTopic aiFriendTopic;
+    private final CompleteFactory completeFactory;
 
     @Autowired
     public AiFriendServiceImpl(CommonParamRulesConfig commonParamRulesConfig,AiFriendParamsRulesConfig aiFriendParamsRulesConfig
             ,AiFriendRedisKeyConfig aiFriendRedisKeyConfig, ChatModel chatModel,RedisUtil redisUtil,IdUtil idUtil,AiFriendMapper aiFriendMapper
-            ,AiFriendCaffeine aiFriendCaffeine,RocketMQUtil rocketMQUtil,AiFriendTopic aiFriendTopic) {
+            ,AiFriendCaffeine aiFriendCaffeine,RocketMQUtil rocketMQUtil,AiFriendTopic aiFriendTopic,CompleteFactory completeFactory) {
         this.commonParamRulesConfig = commonParamRulesConfig;
         this.aiFriendParamsRulesConfig = aiFriendParamsRulesConfig;
         this.aiFriendRedisKeyConfig = aiFriendRedisKeyConfig;
@@ -58,10 +61,11 @@ public class AiFriendServiceImpl implements AiFriendService {
         this.aiFriendCaffeine = aiFriendCaffeine;
         this.rocketMQUtil = rocketMQUtil;
         this.aiFriendTopic = aiFriendTopic;
+        this.completeFactory = completeFactory;
     }
 
     @PostConstruct
-    public void init(){
+    public void initContext(){
         redisUtil.trySetString(aiFriendRedisKeyConfig.getAiFriendIdCount(),null,""+commonParamRulesConfig.getIdCapacity());
         FileSave.createDestDir(aiFriendParamsRulesConfig.getHeaderImageDest());
     }
@@ -117,7 +121,9 @@ public class AiFriendServiceImpl implements AiFriendService {
 
     @Override
     public void complete(long aiFriendId){
-
+        AiFriendDTO aiFriend=getDetail(aiFriendId);
+        if (aiFriend.getComplete()==true)throw new BizException(ErrorCodeEnum.CONDITION_NOT_PASS);
+        SystemMessage systemMessage=completeFactory.getHistory(aiFriend);
     }
 
     //批量获取预览
