@@ -12,6 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(ConfigKeyEnum.User_Friend_Topic_Config)
 public class UserFriendTopic {
     private String topicName;
+    private ConsumerData changeUserFriendAmount;
     private ConsumerData initChatRoom;
     private ConsumerData deleteChatRoom;
 }

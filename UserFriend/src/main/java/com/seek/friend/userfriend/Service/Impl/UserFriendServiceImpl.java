@@ -4,6 +4,7 @@ import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
 import com.seek.friend.config.NacosConfig.RocketMQBindConfig.UserFriendTopic;
 import com.seek.friend.config.NacosConfig.UserFriend.UserFriendRedisKeyConfig;
 import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
+import com.seek.friend.serviceobject.Common.ChangeAmountDTO;
 import com.seek.friend.serviceobject.UserFriend.ChatConnectionMQDTO;
 import com.seek.friend.serviceobject.UserFriend.UserFriendConnectionDTO;
 import com.seek.friend.userfriend.Mapper.UserFriendMapper;
@@ -102,6 +103,8 @@ public class UserFriendServiceImpl implements UserFriendService {
         ChatConnectionMQDTO result=userFriendMapper.respondApplication(connectionId,value,userId);
         if (value&&result!=null){
             rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getInitChatRoom().getTag(),result);
+            rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getChangeUserFriendAmount().getTag(),new ChangeAmountDTO(result.getFirstUserId(),1));
+            rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getChangeUserFriendAmount().getTag(),new ChangeAmountDTO(result.getSecondUserId(),1));
         }
     }
 
@@ -110,8 +113,12 @@ public class UserFriendServiceImpl implements UserFriendService {
         commonParamRulesConfig.commonIdCheck(connectionId);
         long userId=quickGetUserId();
         redisUtil.checkCooldown(userFriendRedisKeyConfig.getDeleteConnectionCooldown(),userId);
+        ChatConnectionMQDTO result=userFriendMapper.deleteFriend(connectionId,userId);
         //逻辑删除该好友关系，并且发送信息到UserChat模块进行聊天室状态切换
-        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag(),userFriendMapper.deleteFriend(connectionId,userId));
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getDeleteChatRoom().getTag(),result);
+        //可合并进行作为优化,但是我懒
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getChangeUserFriendAmount().getTag(),new ChangeAmountDTO(userId,-1));
+        rocketMQUtil.send(userFriendTopic.getTopicName(),userFriendTopic.getChangeUserFriendAmount().getTag(),new ChangeAmountDTO(result.getSecondUserId(), -1));
     }
 
     private long quickGetUserId(){

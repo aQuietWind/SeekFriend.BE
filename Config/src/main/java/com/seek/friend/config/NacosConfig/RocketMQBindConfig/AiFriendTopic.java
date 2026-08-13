@@ -12,7 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(ConfigKeyEnum.Ai_Friend_Topic_Config)
 public class AiFriendTopic {
     private String topicName;
-    private ConsumerData initChatRoom;
+    private ConsumerData changeAiFriendAmount;
     private ConsumerData deleteChatRoom;
     private ConsumerData deleteFile;
 }

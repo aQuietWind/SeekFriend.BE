@@ -72,6 +72,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
+        <!--        该项目的ServiceObject依赖-->
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>ServiceObject</artifactId>
+        </dependency>
         <!-- langchain4j的ollama版本的spring集成 -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -82,15 +87,15 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-spring-boot-starter</artifactId>
         </dependency>
-        <!--        该项目的ServiceObject依赖-->
-        <dependency>
-            <groupId>com.seek.friend</groupId>
-            <artifactId>ServiceObject</artifactId>
-        </dependency>
         <!--        该项目的Util依赖-->
         <dependency>
             <groupId>com.seek.friend</groupId>
             <artifactId>Util</artifactId>
+        </dependency>
+        <!--        该项目的MQUtil依赖-->
+        <dependency>
+            <groupId>com.seek.friend</groupId>
+            <artifactId>MQUtil</artifactId>
         </dependency>
         <!--        该项目的Config依赖-->
         <dependency>

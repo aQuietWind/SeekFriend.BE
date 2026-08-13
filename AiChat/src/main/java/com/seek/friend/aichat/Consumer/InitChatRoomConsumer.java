@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 //可以用配置地址取代该常量配置,But,I am too lazy to do it!
 //下次我还是更加喜欢RabbitMQ
-@RocketMQMessageListener(consumerGroup = "aiChatTopicDeleteFileConsumer",
-        topic = "aiChatTopic",
-        selectorExpression = "deleteFile")
-public class DeleteFileConsumer implements RocketMQListener<String> {
+@RocketMQMessageListener(consumerGroup = "aiFriendTopicInitChatRoomConsumer",
+        topic = "aiFriendTopic",
+        selectorExpression = "initChatRoom")
+public class InitChatRoomConsumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String path){

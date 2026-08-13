@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RocketMQMessageListener(consumerGroup = "userTopicChangeAiFriendAmountConsumer",
-        topic = "userTopic",
+@RocketMQMessageListener(consumerGroup = "aiFriendTopicChangeAiFriendAmountConsumer",
+        topic = "aiFriendTopic",
         selectorExpression = "changeAiFriendAmount")
 public class ChangeAiFriendAmountConsumer implements RocketMQListener<ChangeAmountDTO> {
     private final UserMapper userMapper;

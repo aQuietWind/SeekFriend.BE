@@ -10,12 +10,11 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(ConfigKeyEnum.Ai_Chat_Redis_Key_Config)
 @Data
 public class AiChatRedisKeyConfig {
-    private RedisKeyData initAiFriendCooldown;
-    private RedisKeyData updateAiFriendTextCooldown;
-    private RedisKeyData updateAiFriendHeaderCooldown;
-    private RedisKeyData completeAiFriendCooldown;
-    private RedisKeyData aiFriendSimpleGetListCooldown;
-    private RedisKeyData aiFriendDeleteCooldown;
-    private RedisKeyData aiFriendIdCount;
+    private RedisKeyData roomGetListCooldown;
+    private RedisKeyData recordGetListCooldown;
+    private RedisKeyData recordInsertCooldown;
+    private RedisKeyData recordInitiativeCooldown;
+    private RedisKeyData roomIdCount;
+    private RedisKeyData recordIdCount;
     private RedisKeyData aiFriendInfoCaffeine;
 }
