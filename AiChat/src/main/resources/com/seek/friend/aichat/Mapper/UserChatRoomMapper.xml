@@ -2,49 +2,48 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.seek.friend.userchat.Mapper.UserChatRoomMapper">
+<mapper namespace="com.seek.friend.aichat.Mapper.RoomMapper">
 
     <!-- 全局统一字段映射 -->
-    <resultMap id="UserChatRoomResultMap" type="com.seek.friend.serviceobject.UserChat.ChatRoomDTO">
+    <resultMap id="AiChatRoomResultMap" type="com.seek.friend.serviceobject.AiChat.ChatRoomDTO">
     </resultMap>
 
-    <select id="getList" resultMap="UserChatRoomResultMap">
+
+
+    <insert id="insertChatRoom">
+        insert into "chat_room"
+        (ai_friend_id,user_id)
+        values(#{aiFriendId},#{userId});
+    </insert>
+
+    <select id="getList" resultMap="AiChatRoomResultMap">
         select
-        room_id,
-        first_user_id,
-        second_user_id,
-        connection_id,
-        version,
+        ai_friend_id,
+        user_id,
         lastest_chat_time,
         create_time,
         able_chat
         from "chat_room"
-        where first_user_id=#{userId} or second_user_id=#{userId}
+        where user_id=#{userId} and able_chat=true
         limit #{need} offset #{start}
     </select>
 
-    <update id="updateAbleChat">
+    <update id="delete">
         update "chat_room"
-        set able_chat=#{value},version=#{version}
-        where connection_id=#{connectionId} and version &lt;= #{version}
+        set able_chat=false
+        where ai_friend_id=#{aiFriendId}
     </update>
-
-    <insert id="insertChatRoom">
-        insert into "chat_room"
-        (room_id,connection_id,first_user_id,second_user_id)
-        values(#{roomId},#{connectionId},#{firstUserId},#{secondUserId});
-    </insert>
 
     <update id="syncLastestChatTime">
         update "chat_room"
         set lastest_chat_time=CURRENT_TIMESTAMP
-        where room_id=#{roomId}
+        where ai_friend_id=#{aiFriendId}
     </update>
 
-    <select id="checkRoomConnectionWithUser" resultType="java.lang.Boolean">
+    <select id="exist" resultType="java.lang.Boolean">
         select exists(select 1
         from "chat_room"
-        where room_id=#{roomId} and (first_user_id=#{userId} or second_user_id=#{userId})
+        where ai_friend_id=#{aiFriendId} and user_id=#{userId}
         and able_chat=true)
     </select>
 </mapper>

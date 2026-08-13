@@ -26,7 +26,7 @@ public class SyncLastestChatConsumer implements RocketMQListener<Long> {
 
     @Override
     public void onMessage(Long aiFriendId) {
-        roomMapper.syncChatTime(aiFriendId);
+        roomMapper.syncLastestChatTime(aiFriendId);
     }
 
 
