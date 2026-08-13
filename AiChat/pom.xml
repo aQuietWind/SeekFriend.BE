@@ -102,6 +102,11 @@
             <groupId>com.seek.friend</groupId>
             <artifactId>Config</artifactId>
         </dependency>
+        <!--        Websocket通话技术依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,13 +1,13 @@
 package com.seek.friend.aichat.Enum;
 
 public class RequestPathEnum {
-    //AiFriend
-    public static final String Ai_Friend = "/friend";
-    public static final String Ai_Friend_Init = "/init";
-    public static final String Ai_Friend_Update_Text = "/update/text";
-    public static final String Ai_Friend_Update_Header = "/update/header";
-    public static final String Ai_Friend_Complete = "/complete";
-    public static final String Ai_Friend_Simple_Get_List = "/simple/list";
-    public static final String Ai_Friend_Get_Detail = "/detail";
-    public static final String Ai_Friend_Delete = "/delete";
+    //ChatRoom
+    public static final String Chat_Room="/room";
+    public static final String Chat_Room_List="/list";
+    public static final String Chat_Room_Inform="/inform";
+    //ChatRecord
+    public static final String Chat_Record="/record";
+    public static final String Chat_Record_List="/list";
+    public static final String Chat_Record_Chat="/chat";
+    public static final String Chat_Record_Withdraw="/withdraw";
 }

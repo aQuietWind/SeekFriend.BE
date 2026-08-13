@@ -11,6 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Data
 public class AiChatRedisKeyConfig {
     private RedisKeyData roomGetListCooldown;
+    private RedisKeyData roomInformListenCooldown;
     private RedisKeyData recordGetListCooldown;
     private RedisKeyData recordInsertCooldown;
     private RedisKeyData recordInitiativeCooldown;

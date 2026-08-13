@@ -35,11 +35,6 @@ public class SyncLastestChatConsumer implements RocketMQListener<Long> {
         this.commonParamRulesConfig = commonParamRulesConfig;
     }
 
-    @PostConstruct
-    public void init() {
-        redisUtil.trySetString(userChatRedisKeyConfig.getRoomIdCount(),null,""+commonParamRulesConfig.getIdCapacity());
-    }
-
     @Override
     public void onMessage(Long roomId){
         userChatRoomMapper.syncLastestChatTime(roomId);

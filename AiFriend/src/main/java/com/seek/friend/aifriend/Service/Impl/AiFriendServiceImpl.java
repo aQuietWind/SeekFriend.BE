@@ -135,6 +135,8 @@ public class AiFriendServiceImpl implements AiFriendService {
         if (!aiFriendMapper.complete(history,aiFriendId,userId))throw new BizException(ErrorCodeEnum.DATA_NOT_FOUND);
         //清除缓存
         aiFriendCaffeine.deleteAllCaffeine(aiFriendId);
+        aiFriend.setCharacterHistory(history);
+        rocketMQUtil.send(aiFriendTopic.getTopicName(),aiFriendTopic.getInitChatRoom().getTag(),aiFriend);
     }
 
     //批量获取预览

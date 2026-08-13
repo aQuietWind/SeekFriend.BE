@@ -47,7 +47,30 @@ CREATE INDEX "record_user_index" ON "chat_record"(user_id);
 
 
 
-
+drop table if exists "ai_friend";
+CREATE TABLE "ai_friend" (
+                             "ai_friend_id" bigint NOT NULL,
+                             "user_id" bigint NOT NULL,
+                             "name" varchar(20) not null ,
+                             "description" varchar(300),
+                             "hobbies" varchar(300) ,
+                             "characteristic" varchar(300) ,
+                             "encounter_reason" varchar(300) ,
+                             "like_score" int not null default 10,
+                             "character_history" varchar(2100) ,
+                             PRIMARY KEY ("ai_friend_id")
+);
+COMMENT ON TABLE "ai_friend" IS 'ai好友表';
+COMMENT ON COLUMN "ai_friend"."ai_friend_id" IS '该ai好友的id';
+COMMENT ON COLUMN "ai_friend"."user_id" IS '所属用户的id';
+COMMENT ON COLUMN "ai_friend"."name" IS 'ai的名称';
+COMMENT ON COLUMN "ai_friend"."description" IS '该ai的描述';
+COMMENT ON COLUMN "ai_friend"."hobbies" IS '该ai的爱好';
+COMMENT ON COLUMN "ai_friend"."characteristic" IS '特点，个性等等';
+COMMENT ON COLUMN "ai_friend"."like_score" IS '对你的喜爱分数';
+COMMENT ON COLUMN "ai_friend"."character_history" IS 'ai角色的历史背景，由ai自己生成';
+-- 普通索引（pg CREATE INDEX 放在表外面）
+CREATE INDEX "ai_friend_user_index" ON "ai_friend"(user_id);
 
 
 

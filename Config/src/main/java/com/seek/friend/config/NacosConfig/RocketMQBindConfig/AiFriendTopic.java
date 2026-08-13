@@ -14,5 +14,6 @@ public class AiFriendTopic {
     private String topicName;
     private ConsumerData changeAiFriendAmount;
     private ConsumerData deleteChatRoom;
+    private ConsumerData initChatRoom;
     private ConsumerData deleteFile;
 }

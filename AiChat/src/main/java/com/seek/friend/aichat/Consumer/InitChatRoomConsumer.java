@@ -1,9 +1,13 @@
 package com.seek.friend.aichat.Consumer;
 
-import com.seek.friend.util.FileUtil.FileRemove;
+import com.seek.friend.aichat.Mapper.AiFriendMapper;
+import com.seek.friend.aichat.Mapper.RoomMapper;
+import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,11 +17,23 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(consumerGroup = "aiFriendTopicInitChatRoomConsumer",
         topic = "aiFriendTopic",
         selectorExpression = "initChatRoom")
-public class InitChatRoomConsumer implements RocketMQListener<String> {
+public class InitChatRoomConsumer implements RocketMQListener<AiFriendDTO> {
+
+    private final RoomMapper roomMapper;
+    private final AiFriendMapper aiFriendMapper;
+
+    @Autowired
+    public InitChatRoomConsumer(RoomMapper roomMapper, AiFriendMapper aiFriendMapper) {
+        this.roomMapper = roomMapper;
+        this.aiFriendMapper = aiFriendMapper;
+    }
 
     @Override
-    public void onMessage(String path){
-        FileRemove.removeFileByPath(path);
+    public void onMessage(AiFriendDTO aiFriend) {
+        try {
+            roomMapper.insert(aiFriend.getAiFriendId(),aiFriend.getUserId());
+        } catch (DuplicateKeyException ignore){}
+        aiFriendMapper.insert(aiFriend);
     }
 
 
