@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seek.friend.aichat.Mapper.AiFriendMapper">
+
+    <!-- 全局统一字段映射 -->
+    <resultMap id="AiFriendResultMap" type="com.seek.friend.serviceobject.AiFriend.AiFriendDTO">
+    </resultMap>
+
+    <insert id="insert">
+        insert into "ai_friend"
+        (
+        ai_friend_id,
+        user_id,
+        name,
+        description,
+        hobbies,
+        characteristic,
+        encounter_reason,
+        like_score,
+        character_history
+        )
+        values(
+        #{aiFriendId},
+        #{userId},
+        #{name},
+        #{description},
+        #{hobbies},
+        #{characteristic},
+        #{encounterReason},
+        #{likeScore},
+        #{characterHistory}
+        );
+    </insert>
+
+    <select id="getDetail" resultMap="AiFriendResultMap">
+        select
+        ai_friend_id,
+        user_id,
+        name,
+        description,
+        hobbies,
+        characteristic,
+        encounter_reason,
+        like_score,
+        character_history
+        from "ai_friend"
+        where ai_friend_id=#{aiFriendId}
+    </select>
+</mapper>

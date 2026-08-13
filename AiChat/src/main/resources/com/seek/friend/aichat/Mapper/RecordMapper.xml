@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seek.friend.aichat.Mapper.RecordMapper">
+
+    <!-- 全局统一字段映射 -->
+    <resultMap id="ChatRecordResultMap" type="com.seek.friend.serviceobject.UserChat.ChatRecordDTO">
+        <result property="withdraw" column="is_withdraw" />
+    </resultMap>
+
+
+    <insert id="insert">
+        insert into "chat_record" (
+        record_id,
+        room_id,
+        user_id,
+        description,
+        image_addr,
+        able_withdraw_time)
+        values(
+        #{recordId},
+        #{roomId},
+        #{userId},
+        #{description},
+        #{imageAddr},
+        #{ableWithdrawTime})
+    </insert>
+
+    <select id="getList" resultMap="ChatRecordResultMap">
+        select
+        record_id,
+        room_id,
+        user_id,
+        description,
+        image_addr,
+        able_withdraw_time,
+        create_time,
+        is_withdraw
+        from "chat_record"
+        where
+        (select exists
+        ( select 1 from chat_room where room_id=#{roomId} and able_chat=true and (first_user_id=#{userId} or second_user_id=#{userId})) )=true
+        and is_withdraw=false
+        order by record_id desc limit #{need} offset #{start}
+    </select>
+
+    <update id="withdraw">
+        update "chat_record" set is_withdraw=true
+        where record_id=#{recordId} and user_id=#{userId} and is_withdraw=false and now() &lt; able_withdraw_time
+    </update>
+
+</mapper>

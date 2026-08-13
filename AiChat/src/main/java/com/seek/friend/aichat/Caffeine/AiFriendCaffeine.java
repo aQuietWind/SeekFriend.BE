@@ -1,7 +1,7 @@
 package com.seek.friend.aichat.Caffeine;
 
-import com.seek.friend.config.NacosConfig.AiFriend.AiFriendCaffeineConfig;
-import com.seek.friend.config.NacosConfig.AiFriend.AiFriendRedisKeyConfig;
+import com.seek.friend.config.NacosConfig.AiChat.AiChatCaffeineConfig;
+import com.seek.friend.config.NacosConfig.AiChat.AiChatRedisKeyConfig;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import com.seek.friend.util.Caffeine.JvmCaffeineParent;
 import com.seek.friend.util.Redis.RedisUtil;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AiFriendCaffeine extends JvmCaffeineParent<Long, AiFriendDTO> {
     @Autowired
-    public AiFriendCaffeine(AiFriendCaffeineConfig aiFriendCaffeineConfig, RedisUtil redisUtil , AiFriendRedisKeyConfig aiFriendRedisKeyConfig) {
-        super(redisUtil, AiFriendDTO.class ,aiFriendRedisKeyConfig.getAiFriendInfoCaffeine());
-        defaultInit(aiFriendCaffeineConfig.getAiFriend());
+    public AiFriendCaffeine(AiChatCaffeineConfig aiChatCaffeineConfig, RedisUtil redisUtil , AiChatRedisKeyConfig aiChatRedisKeyConfig) {
+        super(redisUtil, AiFriendDTO.class ,aiChatRedisKeyConfig.getAiFriendInfoCaffeine());
+        defaultInit(aiChatCaffeineConfig.getAiFriend());
     }
 
     // 容器销毁清理缓存

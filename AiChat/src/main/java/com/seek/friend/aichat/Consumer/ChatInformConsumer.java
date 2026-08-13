@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
+//@Component
 @Slf4j
 //可以用配置地址取代该常量配置,But,I am too lazy to do it!
 //下次我还是更加喜欢RabbitMQ
-@RocketMQMessageListener(consumerGroup = "userChatTopicChatInformConsumer-"+"${userchat.self.server-id}",
-        topic = "userChatTopic",
+@RocketMQMessageListener(consumerGroup = "aiChatTopicChatInformConsumer-"+"${aichat.self.server-id}",
+        topic = "aiChatTopic",
         selectorExpression = "insertChatRecord")
 public class ChatInformConsumer implements RocketMQListener<Long> {
 
