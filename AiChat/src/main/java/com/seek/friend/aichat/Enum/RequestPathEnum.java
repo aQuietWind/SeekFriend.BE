@@ -7,7 +7,7 @@ public class RequestPathEnum {
     public static final String Chat_Room_Inform="/inform";
     //ChatRecord
     public static final String Chat_Record="/record";
-    public static final String Chat_Record_List="/list";
+    public static final String Chat_Record_Get_List="/list";
     public static final String Chat_Record_Chat="/chat";
-    public static final String Chat_Record_Withdraw="/withdraw";
+    public static final String Chat_Record_Initiative_Chat="/initiative";
 }

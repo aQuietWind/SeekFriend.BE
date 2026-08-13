@@ -78,12 +78,12 @@
         select header_image_addr from "user" where user_id=#{userId} and is_delete=true
     </select>
 
-    <update id="updateUserFriendAmount">
+    <update id="changeUserFriendAmount">
         update "user" set user_friend_amount=user_friend_amount+#{changeNumber} where user_id=#{userId} and is_delete=false
     </update>
 
-    <update id="updateAiFriendAmount">
-        update "user" set user_ai_amount=user_ai_amount+#{changeNumber} where user_id=#{userId} and is_delete=false
+    <update id="changeAiFriendAmount">
+        update "user" set ai_friend_amount=ai_friend_amount+#{changeNumber} where user_id=#{userId} and is_delete=false
     </update>
 
 

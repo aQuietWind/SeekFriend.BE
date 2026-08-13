@@ -9,4 +9,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ChatRecordServiceImpl implements ChatRecordService {
+    private static final String record="";
+
 }

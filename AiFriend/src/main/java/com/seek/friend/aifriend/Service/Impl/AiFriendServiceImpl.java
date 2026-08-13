@@ -137,6 +137,7 @@ public class AiFriendServiceImpl implements AiFriendService {
         aiFriendCaffeine.deleteAllCaffeine(aiFriendId);
         aiFriend.setCharacterHistory(history);
         rocketMQUtil.send(aiFriendTopic.getTopicName(),aiFriendTopic.getInitChatRoom().getTag(),aiFriend);
+        rocketMQUtil.send(aiFriendTopic.getTopicName(),aiFriendTopic.getChangeAiFriendAmount().getTag(),new ChangeAmountDTO(userId,1));
     }
 
     //批量获取预览
