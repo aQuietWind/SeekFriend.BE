@@ -1,8 +1,9 @@
-package com.seek.friend.aifriend.AiFriendSystemMessage;
+package com.seek.friend.aichat.AiFriendSystemMessage;
 
+import com.seek.friend.aifriend.AiFriendSystemMessage.RefineInterface;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 
-public class EncounterReasonRefine implements RefineInterface{
+public class EncounterReasonRefine implements RefineInterface {
 
     public String refine(AiFriendDTO aiFriend){
         return "用户给出你们邂逅和互相添加的剧情:\""+aiFriend.getEncounterReason()+"\".\n"+

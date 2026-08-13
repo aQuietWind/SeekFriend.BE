@@ -1,4 +1,4 @@
-package com.seek.friend.aifriend.AiFriendSystemMessage;
+package com.seek.friend.aichat.AiFriendSystemMessage;
 
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 

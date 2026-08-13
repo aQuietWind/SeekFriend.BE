@@ -1,8 +1,9 @@
-package com.seek.friend.aifriend.AiFriendSystemMessage;
+package com.seek.friend.aichat.AiFriendSystemMessage;
 
+import com.seek.friend.aifriend.AiFriendSystemMessage.RefineInterface;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 
-public class CharacteristicRefine implements RefineInterface{
+public class CharacteristicRefine implements RefineInterface {
 
     public String refine(AiFriendDTO aiFriend){
         return "用户给出的人物个性特点:\""+aiFriend.getCharacteristic()+"\".\n"+

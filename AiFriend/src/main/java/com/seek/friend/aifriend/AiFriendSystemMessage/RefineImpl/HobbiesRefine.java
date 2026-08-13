@@ -1,8 +1,9 @@
-package com.seek.friend.aifriend.AiFriendSystemMessage;
+package com.seek.friend.aifriend.AiFriendSystemMessage.RefineImpl;
 
+import com.seek.friend.aifriend.AiFriendSystemMessage.RefineInterface;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 
-public class HobbiesRefine implements RefineInterface{
+public class HobbiesRefine implements RefineInterface {
 
     public String refine(AiFriendDTO aiFriend){
         return "用户给你的兴趣爱好设定:\""+aiFriend.getHobbies()+"\".\n"+

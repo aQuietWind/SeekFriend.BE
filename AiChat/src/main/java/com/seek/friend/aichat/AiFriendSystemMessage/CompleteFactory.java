@@ -1,6 +1,7 @@
-package com.seek.friend.aifriend.AiFriendSystemMessage;
+package com.seek.friend.aichat.AiFriendSystemMessage;
 
-import com.seek.friend.aifriend.AiFriendSystemMessage.RefineImpl.*;
+import com.seek.friend.aifriend.AiFriendSystemMessage.HeaderImageRefine;
+import com.seek.friend.aifriend.AiFriendSystemMessage.LikeScoreRefine;
 import com.seek.friend.config.NacosConfig.AiFriend.AiFriendParamsRulesConfig;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import dev.langchain4j.data.message.SystemMessage;

@@ -23,6 +23,7 @@ public class CommonParamRulesConfig {
     private String codeRegex;
     private HashSet<Integer> sexValues;
     private HashSet<String> imageType;
+    private HashSet<String> imageMusicType;
     private long imageSize;
     private int needNumberMin;
     private int needNumberMax;
