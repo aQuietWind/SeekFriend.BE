@@ -1,6 +1,6 @@
-package com.seek.friend.aichat.AiFriendSystemMessage;
+package com.seek.friend.aichat.AiChatSystemMessage;
 
-import com.seek.friend.aichat.AiFriendSystemMessage.RefineImpl.*;
+import com.seek.friend.aichat.AiChatSystemMessage.RefineImpl.*;
 import com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import dev.langchain4j.data.message.SystemMessage;

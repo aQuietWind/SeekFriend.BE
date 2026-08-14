@@ -167,7 +167,7 @@ public class AiFriendServiceImpl implements AiFriendService {
         commonParamRulesConfig.commonIdCheck(aiFriendId);
         long userId=quickCheckCooldownAndGetUserId(aiFriendRedisKeyConfig.getAiFriendDeleteCooldown());
         //逻辑删除用户,并且获取其是否完成初始化的状态
-        Boolean complete=aiFriendMapper.delete(aiFriendId,quickCheckCooldownAndGetUserId(aiFriendRedisKeyConfig.getAiFriendDeleteCooldown()));
+        Boolean complete=aiFriendMapper.delete(aiFriendId,userId);
         //发送销毁聊天室
         if (complete!=null&&complete) rocketMQUtil.send(aiFriendTopic.getTopicName(),aiFriendTopic.getDeleteChatRoom().getTag(),aiFriendId);
         rocketMQUtil.send(aiFriendTopic.getTopicName(),aiFriendTopic.getChangeAiFriendAmount().getTag(),new ChangeAmountDTO(userId,-1));

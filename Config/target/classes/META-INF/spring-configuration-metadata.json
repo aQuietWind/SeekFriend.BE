@@ -133,6 +133,11 @@
       "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatCaffeineConfig"
     },
     {
+      "name": "aichat.self.params.rules.initiative-interval-hours",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig"
+    },
+    {
       "name": "aichat.self.params.rules.record-description-max",
       "type": "java.lang.Integer",
       "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig"
@@ -428,7 +433,7 @@
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.AiChatTopic"
     },
     {
-      "name": "mq.name.bind.ai-chat-topic.sync-lastest-chat-time-room",
+      "name": "mq.name.bind.ai-chat-topic.sync-lastest-chat-time",
       "type": "com.seek.friend.configobject.RocketMQData.ConsumerData",
       "sourceType": "com.seek.friend.config.NacosConfig.RocketMQBindConfig.AiChatTopic"
     },

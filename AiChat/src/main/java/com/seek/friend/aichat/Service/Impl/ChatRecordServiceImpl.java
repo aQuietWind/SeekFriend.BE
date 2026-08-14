@@ -1,6 +1,6 @@
 package com.seek.friend.aichat.Service.Impl;
 
-import com.seek.friend.aichat.AiFriendSystemMessage.ChatFactory;
+import com.seek.friend.aichat.AiChatSystemMessage.ChatFactory;
 import com.seek.friend.aichat.Caffeine.AiFriendCaffeine;
 import com.seek.friend.aichat.Mapper.AiFriendMapper;
 import com.seek.friend.aichat.Mapper.RecordMapper;
@@ -9,6 +9,8 @@ import com.seek.friend.aichat.Service.ChatRecordService;
 import com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig;
 import com.seek.friend.config.NacosConfig.AiChat.AiChatRedisKeyConfig;
 import com.seek.friend.config.NacosConfig.Common.CommonParamRulesConfig;
+import com.seek.friend.config.NacosConfig.RocketMQBindConfig.AiChatTopic;
+import com.seek.friend.mqutil.RocketMQ.RocketMQUtil;
 import com.seek.friend.serviceobject.AiChat.ChatRecordDTO;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 import com.seek.friend.util.CommonUtil.IdUtil;
@@ -34,7 +36,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class ChatRecordServiceImpl implements ChatRecordService {
-    private static final String record="";
 
     private final AiFriendCaffeine aiFriendCaffeine;
     private final AiFriendMapper aiFriendMapper;
@@ -47,11 +48,14 @@ public class ChatRecordServiceImpl implements ChatRecordService {
     private final ChatModel chatModel;
     private final IdUtil idUtil;
     private final ChatFactory chatFactory;
+    private final RocketMQUtil rocketMQUtil;
+    private final AiChatTopic aiChatTopic;
 
     @Autowired
     public ChatRecordServiceImpl(AiFriendCaffeine aiFriendCaffeine , AiFriendMapper aiFriendMapper , CommonParamRulesConfig commonParamRulesConfig
     , RedisUtil redisUtil , AiChatRedisKeyConfig aiChatRedisKeyConfig, RecordMapper recordMapper, RoomMapper roomMapper
-    , AiChatParamsRulesConfig aiChatParamsRulesConfig, ChatModel chatModel , IdUtil idUtil, ChatFactory chatFactory) {
+    , AiChatParamsRulesConfig aiChatParamsRulesConfig, ChatModel chatModel , IdUtil idUtil, ChatFactory chatFactory, RocketMQUtil rocketMQUtil
+    , AiChatTopic aiChatTopic) {
         this.aiFriendCaffeine = aiFriendCaffeine;
         this.aiFriendMapper = aiFriendMapper;
         this.commonParamRulesConfig = commonParamRulesConfig;
@@ -63,6 +67,8 @@ public class ChatRecordServiceImpl implements ChatRecordService {
         this.chatModel = chatModel;
         this.idUtil = idUtil;
         this.chatFactory = chatFactory;
+        this.rocketMQUtil = rocketMQUtil;
+        this.aiChatTopic = aiChatTopic;
     }
 
     @PostConstruct
@@ -102,13 +108,9 @@ public class ChatRecordServiceImpl implements ChatRecordService {
         recordNow.setRecordId(idUtil.IdGenerateByIncrease(aiChatRedisKeyConfig.getRecordIdCount()));
         ChatRecordDTO aiRecord=new ChatRecordDTO(idUtil.IdGenerateByIncrease(aiChatRedisKeyConfig.getRecordIdCount()),aiFriendId,userId,result,null,null,true);
         recordMapper.insertMany(List.of(recordNow,aiRecord));
+        //发送MQ
+        rocketMQUtil.send(aiChatTopic.getTopicName(),aiChatTopic.getSyncLastestChatTime().getTag(),aiFriendId);
         return result;
-    }
-
-    //前端主动希望ai挑起话题
-    @Override
-    public String initiativeChat(long aiFriendId){
-        return "";
     }
 
     @Override

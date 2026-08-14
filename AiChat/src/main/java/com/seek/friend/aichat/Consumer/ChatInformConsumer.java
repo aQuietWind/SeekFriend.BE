@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-//@Component
+@Component
 @Slf4j
 //可以用配置地址取代该常量配置,But,I am too lazy to do it!
 //下次我还是更加喜欢RabbitMQ

@@ -40,7 +40,7 @@ server:
 
 aichat:
   self:
-    sever-id: 0
+    server-id: 0
 
 
 

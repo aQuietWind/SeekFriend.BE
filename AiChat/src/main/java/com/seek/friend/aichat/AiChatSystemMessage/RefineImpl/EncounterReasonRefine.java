@@ -1,6 +1,6 @@
-package com.seek.friend.aichat.AiFriendSystemMessage.RefineImpl;
+package com.seek.friend.aichat.AiChatSystemMessage.RefineImpl;
 
-import com.seek.friend.aichat.AiFriendSystemMessage.RefineInterface;
+import com.seek.friend.aichat.AiChatSystemMessage.RefineInterface;
 import com.seek.friend.serviceobject.AiFriend.AiFriendDTO;
 
 public class EncounterReasonRefine implements RefineInterface {

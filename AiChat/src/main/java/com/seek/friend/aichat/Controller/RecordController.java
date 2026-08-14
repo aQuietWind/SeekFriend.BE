@@ -29,11 +29,6 @@ public class RecordController {
         return Result.success(chatRecordService.chat(description,file,aiFriendId));
     }
 
-    @GetMapping(RequestPathEnum.Chat_Record_Initiative_Chat)
-    public Result<String> initiativeChat(long aiFriendId){
-        return Result.success(chatRecordService.initiativeChat(aiFriendId));
-    }
-
     @GetMapping(RequestPathEnum.Chat_Record_Get_List)
     public Result<List<ChatRecordDTO>> getList(int start,int need,long aiFriendId){
         return Result.success(chatRecordService.getList(start,need,aiFriendId));

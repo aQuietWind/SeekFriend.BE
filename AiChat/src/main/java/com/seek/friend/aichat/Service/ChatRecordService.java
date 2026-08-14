@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface ChatRecordService {
     public String chat(String description, MultipartFile file,long aiFriendId);
-    public String initiativeChat(long aiFriendId);
     public List<ChatRecordDTO> getList(int start, int need,long aiFriendId);
 }

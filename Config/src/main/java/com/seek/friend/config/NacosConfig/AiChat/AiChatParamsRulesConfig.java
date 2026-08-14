@@ -13,6 +13,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 public class AiChatParamsRulesConfig {
     private Integer recordDescriptionMax;
     private Integer recordStoreMax;
+    private Integer initiativeIntervalHours;
     private String recordFileDest;
 
     public void recordDescriptionCheck(String description){

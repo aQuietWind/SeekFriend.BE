@@ -12,7 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(ConfigKeyEnum.Ai_Chat_Topic_Config)
 public class AiChatTopic {
     private String topicName;
-    private ConsumerData syncLastestChatTimeRoom;
+    private ConsumerData syncLastestChatTime;
     private ConsumerData deleteFile;
     private ConsumerData chatInform;
 }

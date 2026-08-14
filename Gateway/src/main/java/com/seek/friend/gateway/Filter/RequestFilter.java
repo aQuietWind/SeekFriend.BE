@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 
 
 @Order(2)
-@Component
+//@Component
 @RefreshScope
 @Slf4j
 public class RequestFilter implements GlobalFilter{
