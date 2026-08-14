@@ -143,6 +143,11 @@
       "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig"
     },
     {
+      "name": "aichat.self.params.rules.record-store-max",
+      "type": "java.lang.Integer",
+      "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatParamsRulesConfig"
+    },
+    {
       "name": "aichat.self.redis.key.ai-friend-info-caffeine",
       "type": "com.seek.friend.configobject.RedisData.RedisKeyData",
       "sourceType": "com.seek.friend.config.NacosConfig.AiChat.AiChatRedisKeyConfig"

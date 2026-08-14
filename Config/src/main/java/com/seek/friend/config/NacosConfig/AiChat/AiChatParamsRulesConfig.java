@@ -12,6 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Data
 public class AiChatParamsRulesConfig {
     private Integer recordDescriptionMax;
+    private Integer recordStoreMax;
     private String recordFileDest;
 
     public void recordDescriptionCheck(String description){

@@ -55,7 +55,7 @@ public class FileSave {
     }
 
     //保存文件
-    private static void saveFile(MultipartFile file,Path destPath) {
+    public static void saveFile(MultipartFile file,Path destPath) {
         //尝试保存文件
         try {Files.copy(file.getInputStream(), destPath);}
         catch (IOException e) {throw new RuntimeException("文件保存失败",e);}

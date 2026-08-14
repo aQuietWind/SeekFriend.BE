@@ -29,6 +29,8 @@ public class CompleteFactory {
             你更多的应该是介绍自己,而不是介绍自己和用户之间的关系,所以在背景故事中不要出现"你"这个字,你是说给未来的你自己听,而不是给用户.
             你一定要把自己当成一个真人,把这个背景故事当作日记写,同时这段背景故事的剧情必须是在用户与你邂逅之前的故事,所以你不应该涉及到用户或者我,所以不应该带有"你","用户"
             之类的称呼在你的背景故事中!!!这是你的自传,而不是你分享你的故事给用户或者我听,你的职责是生成符合规则的背景故事,不需要管别的.
+            我要的是从你小时候到你与用户邂逅之前的故事,所以不能有指代用户的词,因为该故事不能与用户有关,同时我要的是从小到大的按岁数的将一件件事情讲清楚,重点应该放在
+            发生了些什么事,简单说说对你造成的影响,不要过多着墨于你自己的内心描写.
             字数上限为
             """;
     private static final RefineInterface[] refineChain = new RefineInterface[]{
@@ -37,8 +39,7 @@ public class CompleteFactory {
             new HobbiesRefine(),
             new CharacteristicRefine(),
             new EncounterReasonRefine(),
-            new LikeScoreRefine(),
-            new HeaderImageRefine()
+            new LikeScoreRefine()
     };
     public CompleteFactory(AiFriendParamsRulesConfig aiFriendParamsRulesConfig){
         this.aiFriendParamsRulesConfig = aiFriendParamsRulesConfig;

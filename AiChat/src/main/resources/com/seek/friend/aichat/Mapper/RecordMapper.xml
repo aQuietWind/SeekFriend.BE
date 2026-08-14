@@ -27,6 +27,21 @@
         #{ai})
     </insert>
 
+
+    <insert id="insertMany">
+        insert into "chat_record" (
+        record_id,
+        ai_friend_id,
+        user_id,
+        description,
+        file_addr,
+        is_ai)
+        values
+        <foreach collection="records" item="record" separator=",">
+        ( #{record.recordId}, #{record.aiFriendId}, #{record.userId}, #{record.description}, #{record.fileAddr}, #{record.ai})
+        </foreach>
+    </insert>
+
     <select id="getList" resultMap="ChatRecordResultMap">
         select
         record_id,

@@ -5,49 +5,56 @@
 <mapper namespace="com.seek.friend.aichat.Mapper.RecordMapper">
 
     <!-- 全局统一字段映射 -->
-    <resultMap id="ChatRecordResultMap" type="com.seek.friend.serviceobject.UserChat.ChatRecordDTO">
-        <result property="withdraw" column="is_withdraw" />
+    <resultMap id="ChatRecordResultMap" type="com.seek.friend.serviceobject.AiChat.ChatRecordDTO">
+        <result property="ai" column="is_ai" />
     </resultMap>
 
 
     <insert id="insert">
         insert into "chat_record" (
         record_id,
-        room_id,
+        ai_friend_id,
         user_id,
         description,
-        image_addr,
-        able_withdraw_time)
+        file_addr,
+        is_ai)
         values(
         #{recordId},
-        #{roomId},
+        #{aiFriendId},
         #{userId},
         #{description},
-        #{imageAddr},
-        #{ableWithdrawTime})
+        #{fileAddr},
+        #{ai})
+    </insert>
+
+
+    <insert id="insertMany">
+        insert into "chat_record" (
+        record_id,
+        ai_friend_id,
+        user_id,
+        description,
+        file_addr,
+        is_ai)
+        values
+        <foreach collection="records" item="record" separator=",">
+        ( #{record.recordId}, #{record.aiFriendId}, #{record.userId}, #{record.description}, #{record.fileAddr}, #{record.ai})
+        </foreach>
     </insert>
 
     <select id="getList" resultMap="ChatRecordResultMap">
         select
         record_id,
-        room_id,
+        ai_friend_id,
         user_id,
         description,
-        image_addr,
-        able_withdraw_time,
+        file_addr,
         create_time,
-        is_withdraw
+        is_ai
         from "chat_record"
         where
-        (select exists
-        ( select 1 from chat_room where room_id=#{roomId} and able_chat=true and (first_user_id=#{userId} or second_user_id=#{userId})) )=true
-        and is_withdraw=false
+        (select exists ( select 1 from chat_room where ai_friend_id=#{aiFriendId} and able_chat=true and user_id=#{userId}) )=true
         order by record_id desc limit #{need} offset #{start}
     </select>
-
-    <update id="withdraw">
-        update "chat_record" set is_withdraw=true
-        where record_id=#{recordId} and user_id=#{userId} and is_withdraw=false and now() &lt; able_withdraw_time
-    </update>
 
 </mapper>
