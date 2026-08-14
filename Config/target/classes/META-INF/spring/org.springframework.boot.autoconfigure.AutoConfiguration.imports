@@ -1,0 +1,10 @@
+# 基础通用配置（引入依赖自动加载）
+# 全类名即可
+# 如: com.seek.food.config.NacosConfig.Common.JWTConfig
+com.seek.friend.config.NativeConfig.Handler.GlobalRequestExceptionHandler
+com.seek.friend.config.NativeConfig.Interceptor.FeignTokenInterceptor
+com.seek.friend.config.NativeConfig.Interceptor.TokenInterceptor
+com.seek.friend.config.NativeConfig.SentinelConfig.HeaderOriginParser
+com.seek.friend.config.NativeConfig.SentinelConfig.SentinelBlockHandler
+com.seek.friend.config.NativeConfig.SentinelConfig.SentinelGlobalApiConfig
+com.seek.friend.config.NativeConfig.CommonConfig.WebConfig

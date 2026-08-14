@@ -14,7 +14,8 @@ aifriend:
         description-max: 300
         hobby-max: 300
         characteristic-max: 300
-        history-max: 1100
+        encounter-reason-max: 300
+        history-max: 2100
         name-max: 20
         like-score-max: 10
         header-image-dest: "D:/home/admin/seek_friend/image/aifriend/header"
@@ -22,7 +23,22 @@ aifriend:
       key:
         init-ai-friend-cooldown:
           name: "aifriend:init:cooldown"
+          duration-seconds: 2
+        update-ai-friend-text-cooldown:
+          name: "aifriend:update:text:cooldown"
+          duration-seconds: 4
+        update-ai-friend-header-cooldown:
+          name: "aifriend:update:header:cooldown"
+          duration-seconds: 4
+        complete-ai-friend-cooldown:
+          name: "aifriend:complete:cooldown"
           duration-seconds: 10
+        ai-friend-simple-get-list-cooldown:
+          name: "aifriend:simple:get:list:cooldown"
+          duration-seconds: 1
+        ai-friend-delete-cooldown:
+          name: "aifriend:delete:cooldown"
+          duration-seconds: 3
         ai-friend-id-count:
           name: "aifriend:id:count"
           duration-seconds:
@@ -30,7 +46,7 @@ aifriend:
           name: "aifriend:info:caffeine"
           duration-seconds: 600
     jvm-caffeine:
-      friend:
+      ai-friend:
         max-size: 100000
         expire-seconds: 300
 

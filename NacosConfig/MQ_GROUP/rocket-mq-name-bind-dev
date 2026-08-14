@@ -6,14 +6,11 @@ mq:
         delete-file:
           consumerGroupName: userTopicDeleteFileConsumer
           tag: "deleteFile"
-        change-user-friend-amount:
-          consumerGroupName: userTopicChangeUserFriendAmountConsumer
-          tag: "changeUserFriendAmount"
-        change-ai-friend-amount:
-          consumerGroupName: userTopicChangeAiFriendAmountConsumer
-          tag: "changeAiFriendAmount"
       user-friend-topic:
         topic-name: userFriendTopic
+        change-user-friend-amount:
+          consumerGroupName: userFriendTopicChangeUserFriendAmountConsumer
+          tag: "changeUserFriendAmount"
         init-chat-room:
           consumerGroupName: userFriendTopicInitChatRoomConsumer
           tag: "initChatRoom"
@@ -30,4 +27,29 @@ mq:
           tag: "deleteFile"
         chat-inform:
           consumerGroupName: userChatTopicChatInformConsumer
+          tag: "insertChatRecord"
+      ai-friend-topic:
+        topic-name: aiFriendTopic
+        change-ai-friend-amount:
+          consumerGroupName: aiFriendTopicChangeAiFriendAmountConsumer
+          tag: "changeAiFriendAmount"
+        init-chat-room:
+          consumerGroupName: aiFriendTopicInitChatRoomConsumer
+          tag: "initChatRoom"
+        delete-chat-room:
+          consumerGroupName: aiFriendTopicDeleteChatRoomConsumer
+          tag: "deleteChatRoom"
+        delete-file:
+          consumerGroupName: aiFriendTopicDeleteFileConsumer
+          tag: "deleteFile"
+      ai-chat-topic:
+        topic-name: aiChatTopic
+        delete-file:
+          consumerGroupName: aiChatTopicDeleteFileConsumer
+          tag: "deleteFile"
+        sync-lastest-chat-time:
+          consumerGroupName: aiChatTopicSyncLastestChatTimeConsumer
+          tag: "insertChatRecord"
+        chat-inform:
+          consumerGroupName: aiChatTopicChatInformConsumer
           tag: "insertChatRecord"

@@ -16,6 +16,17 @@ common:
         - ".img"
         - ".png"
         - ".jpg"
+      image-music-type:
+        - ".img"
+        - ".png"
+        - ".jpg"
+        - ".mp3"
+        - ".aac"
+        - ".m4a"
+        - ".ogg"
+        - ".opus"
+        - ".flac"
+        - ".wav"
       #3mb的数值,1mb是1048576
       image-size: 3145728
       need-number-min: 10

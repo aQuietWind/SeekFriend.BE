@@ -83,14 +83,14 @@ langchain4j:
   ollama:
     chat‑model:
       base‑url: http://127.0.0.1:11434
-      model‑name: qwen3.5:4b
-      temperature: 0.8
-      timeout: 180s
+      model‑name: qwen3.5:2b
+      temperature: 1.2
+      timeout: 3600s
       connect‑timeout: 20s
       log‑requests: true
       log‑responses: true
     streaming‑chat‑model:
       base‑url: http://127.0.0.1:11434
-      model‑name: qwen3.5:4b
-      temperature: 0.2
-      timeout: 180s
+      model‑name: qwen3.5:2b
+      temperature: 1.4
+      timeout: 3600s

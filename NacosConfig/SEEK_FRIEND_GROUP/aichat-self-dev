@@ -1,67 +1,46 @@
 spring:
-  #mysql的配置
+  #PostgreSQL的配置
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/seek_friend_admin
-    username: root
+    driver-class-name: org.postgresql.Driver
+    # jdbc格式：jdbc:PostgreSQL://ip:端口/数据库名?参数
+    url: jdbc:postgresql://127.0.0.1:5432/seek_friend_ai_chat?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: postgres
     password: 439176
 
 
-admin:
+aichat:
   self:
     params: 
       rules:
-        meal-name-max: 15
-        show-image-number-max: 10
-        meal-description-max: 300
-        meal-content-max: 60
-        meal-type-max: 5
-        meal-file-delete-day: 30
-        meal-show-image-dest: "D:/home/admin/image/meal/show"
+        record-description-max: 300
+        record-store-max: 120
+        initiative-interval-hours: 2
+        record-file-dest: "D:/home/admin/seek_friend/aichat/record"
     redis:
       key:
-        meal-insert-cooldown:
-          name: "meal:insert:cooldown:"
-          duration: 5
-        meal-get-simple-cooldown:
-          name: "meal:get:simple:cooldown:"
-          duration: 1
-        meal-get-simple-by-type-cooldown:
-          name: "meal:get:simple:type:cooldown:"
-          duration: 1
-        meal-update-message-cooldown:
-          name: "meal:update:message:cooldown:"
-          duration: 3
-        meal-update-show-image-cooldown:
-          name: "meal:update:show:image:cooldown:"
-          duration: 3
-        meal-update-price-cooldown:
-          name: "meal:update:price:cooldown:"
-          duration: 3
-        meal-update-sell-cooldown:
-          name: "meal:update:sell:cooldown:"
-          duration: 3
-        meal-delete-cooldown:
-          name: "meal:delete:cooldown:"
-          duration: 3
-        meal-id-count:
-          name: "meal:id:count"
-          duration: null
-        meal-message-caffeine:
-          name: "meal:message:caffeine:"
-          duration: 600
-      stream:
-        oldFileStream:
-          name: meal:stream:old:file
-          key-name: fileName
-          consumer:
-            group-name: DeleteGroup
-            number: 1
+        room-get-list-cooldown:
+          name: "aichat:room:get:list:cooldown:"
+          duration-seconds: 3
+        room-inform-listen-cooldown:
+          name: "aichat:room:inform:listen:cooldown:"
+          duration-seconds: 3
+        record-get-list-cooldown:
+          name: "record:get:list:cooldown:"
+          duration-seconds: 1
+        record-insert-cooldown:
+          name: "aichat:record:insert:cooldown:"
+          duration-seconds: 3
+        room-id-count:
+          name: "aichat:room:id:count"
+          duration-seconds: null
+        record-id-count:
+          name: "aichat:record:id:count"
+          duration-seconds: null
+        ai-friend-info-caffeine:
+          name: "aichat:aifriend:info:caffeine:"
+          duration-seconds: 600
     jvm-caffeine:
-      meal:
-        max-size: 100000
-        expire-time: 300
-      meal-merchant:
+      ai-friend:
         max-size: 100000
         expire-time: 300
 
